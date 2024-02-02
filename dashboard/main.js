@@ -97,9 +97,10 @@ $(document).ready(function () {
         //$("#modalCRUD").modal("hide");
 
     });*/
-    $("#formPersonas").submit(function(e){
-        e.preventDefault();    
-        console.log("Actualizado");
+
+    function guardarDatos()  {
+        e.preventDefault();
+
         // Obtén los valores de los campos del formulario
         nombre = $.trim($("#nombre").val());
         fechaNacimiento = $.trim($("#fechaNacimiento").val());
@@ -111,6 +112,23 @@ $(document).ready(function () {
         numeroLicencia = $.trim($("#numeroLicencia").val());
         numeroPasaporte = $.trim($("#numeroPasaporte").val());
         fechaIngreso = $.trim($("#fechaIngreso").val());
+
+        //datos medicos
+        alergias = $.trim($("#alergias").val());
+        enfermedadesCronicas = $.trim($("#enfermedadesCronicas").val());
+        lesiones = $.trim($("#lesiones").val());
+        alergiasMedicamentos = $.trim($("#alergiasMedicamentos").val());
+        numeroSeguro = $.trim($("#numeroSeguro").val());
+        numeroEmergencia = $.trim($("#numeroEmergencia").val());
+        tipoSangre = $.trim($("#tipoSangre").val());
+
+        //datos academicos
+        cedula = $.trim($("#cedula").val());
+        carrera = $.trim($("#carrera").val());
+        expLaboral = $.trim($("#expLaboral").val());
+        certificaciones = $.trim($("#certificaciones").val());
+        gradoEstudio = $.trim($("#gradoEstudio").val());
+
         // Configura la solicitud Ajax
         $.ajax({
             url: "bd/crud.php",
@@ -128,11 +146,23 @@ $(document).ready(function () {
                 numeroPasaporte: numeroPasaporte,
                 fechaIngreso: fechaIngreso,
                 id: id,
-                opcion: opcion
+                opcion: opcion,
+                alergias: alergias,
+                enfermedadesCronicas: enfermedadesCronicas,
+                lesiones: lesiones,
+                alergiasMedicamentos: alergiasMedicamentos,
+                numeroSeguro: numeroSeguro,
+                numeroEmergencia: numeroEmergencia,
+                tipoSangre: tipoSangre,
+                cedula: cedula,
+                carrera: carrera,
+                expLaboral: expLaboral,
+                certificaciones: certificaciones,
+                gradoEstudio: gradoEstudio
             },
-            success: function(data){  
+            success: function (data) {
                 console.log(data);
-                id = data[0].id;            
+                id = data[0].id;
                 nombre = data[0].nombre;
                 fechaNacimiento = data[0].fechaNacimiento;
                 curp = data[0].curp;
@@ -143,20 +173,35 @@ $(document).ready(function () {
                 numeroLicencia = data[0].numeroLicencia;
                 numeroPasaporte = data[0].numeroPasaporte;
                 fechaIngreso = data[0].fechaIngreso;
-    
-                if(opcion == 1){
+                alergias = data[0].alergias;
+                enfermedadesCronicas = data[0].enfermedadesCronicas;
+                lesiones = data[0].lesiones;
+                alergiasMedicamentos = data[0].alergiasMedicamentos;
+                numeroSeguro = data[0].numeroSeguro;
+                numeroEmergencia = data[0].numeroEmergencia;
+                tipoSangre = data[0].tipoSangre;
+                cedula = data[0].cedula;
+                carrera = data[0].carrera;
+                expLaboral = data[0].expLaboral;
+                certificaciones = data[0].certificaciones;
+                gradoEstudio = data[0].gradoEstudio;
+
+                /*
+                if (opcion == 1) {
                     // Agrega una nueva fila a la tabla
-                    tablaPersonas.row.add([id, nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso]).draw();
+                    tablaPersonas.row.add([id, nombre, fechaNacimiento]).draw();
                 } else {
                     // Actualiza la fila existente
-                    tablaPersonas.row(fila).data([id, nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso]).draw();
-                }            
-            }        
+                    tablaPersonas.row(fila).data([id, nombre, fechaNacimiento]).draw();
+                }
+                */
+            }
         });
-    
+
         // Oculta el modal después de enviar la solicitud
-        $("#modalCRUD").modal("hide");    
-    });
-    
+        //$("#modalCRUD").modal("hide");
+    };
+
+
 
 });
