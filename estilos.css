@@ -18,6 +18,7 @@
   src: url('fuentes/poppins/Poppins-SemiBold.ttf'); 
 }
 
+
 *{
 	margin: 0px; 
 	padding: 0px; 
@@ -48,7 +49,7 @@ button:hover {
 /*-- contenedor del Login--*/
 
 .container-login {
-  width: 100%;  
+ width: 100%;  
   min-height: 100vh;
   display: -webkit-flex;
   display: flex;
@@ -56,8 +57,38 @@ button:hover {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: -webkit-linear-gradient(to right, #00dbde, #fc00ff);
-  background: linear-gradient(to right, #00dbde, #fc00ff);
+  background: -webkit-linear-gradient(to right, #21d4fd, #3085d6);
+  background: linear-gradient(to right, #21d4fd, #3085d6);
+}
+
+.imagen-profile {
+  width: 150px;
+  height: 145px;
+  /*border-radius: 130%;*/
+  overflow: hidden;
+  margin: 0 auto 10px; 
+}
+
+.imagen-profile img {
+  width: 97%;
+  height: 93%;
+  object-fit: cover;
+  display: block;
+}
+
+.imagen-con-marco {
+  width: 150px;
+  height: 145px;
+  /*border-radius: 130%;*/
+  overflow: hidden;
+  margin: 0 auto 10px; 
+}
+
+.imagen-con-marco img {
+  width: 97%;
+  height: 93%;
+  object-fit: cover;
+  display: block;
 }
 
 .wrap-login {
@@ -70,7 +101,6 @@ button:hover {
  /* box-shadow: eje-x | eje-y | blur-radius | color */
 }
 
-
 /*----Formulario de user y password----*/
 
 .login-form {
@@ -80,7 +110,7 @@ button:hover {
 .login-form-title {
   display: block;
   font-family: Poppins-Bold;
-  font-size: 40px;
+  font-size: 20px;
   color: #333333;
   line-height: 1.5;
   text-align: center;
@@ -136,10 +166,10 @@ button:hover {
   transition: all 0.4s;
 
   background: #6a7dfe;
-  background: -webkit-linear-gradient(left, #21d4fd, #b721ff);
-  background: -o-linear-gradient(left, #21d4fd, #b721ff);
-  background: -moz-linear-gradient(left, #21d4fd, #b721ff);
-  background: linear-gradient(left, #21d4fd, #b721ff);
+  background: -webkit-linear-gradient(left, #21d4fd, #3085d6);
+  background: -o-linear-gradient(left, #21d4fd, #3085d6);
+  background: -moz-linear-gradient(left, #21d4fd, #3085d6);
+  background: linear-gradient(left, #21d4fd, #3085d6);
 }
 
 .focus-efecto::after {
@@ -209,11 +239,11 @@ button:hover {
   z-index: -1;
   width: 300%;
   height: 100%;
-  background: #a64bf4;
-  background: -webkit-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
-  background: -o-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
-  background: -moz-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
-  background: linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
+  background: #3085d6;
+  background: -webkit-linear-gradient(right, #21d4fd, #3085d6, #21d4fd, #3085d6);
+  background: -o-linear-gradient(right, #21d4fd, #3085d6, #21d4fd, #3085d6);
+  background: -moz-linear-gradient(right, #21d4fd, #3085d6, #21d4fd, #3085d6);
+  background: linear-gradient(right, #21d4fd, #3085d6, #21d4fd, #3085d6);
   top: 0;
   left: -100%;
 

@@ -19,6 +19,7 @@
      
       <div class="container-login">
         <div class="wrap-login">
+            <img src="dashboard\img\oceanus-logo.svg" alt="logo oceanus, nautiloide representado">
             <form class="login-form validate-form" id="formLogin" action="" method="post">
                 <span class="login-form-title">LOGIN</span>
                 

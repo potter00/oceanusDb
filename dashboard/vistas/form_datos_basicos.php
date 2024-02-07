@@ -1,40 +1,43 @@
 <div class="form-group">
-    <label for="nombre" class="col-form-label">Nombre:</label>
+    <label for="nombre" class="col-form-label">Nombre: <span class="required">*</span> </label>
     <input type="text" class="form-control" id="nombre" name="nombre">
 </div>
 <div class="form-group">
-    <label for="fechaNacimiento" class="col-form-label">Fecha nacimiento:</label>
+    <label for="fechaNacimiento" class="col-form-label">Fecha nacimiento: <span class="required">*</span></label>
     <input type="text" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
 </div>
 <div class="form-group">
-    <label for="curp" class="col-form-label">Curp:</label>
+    <label for="curp" class="col-form-label">Curp: <span class="required">*</span></label>
     <input type="text" class="form-control" id="curp" name="curp">
 </div>
 <div class="form-group">
-    <label for="rfc" class="col-form-label">RFC</label>
+    <label for="rfc" class="col-form-label">RFC: <span class="required">*</span></label>
     <input type="text" class="form-control" id="rfc" name="rfc">
 </div>
 <div class="form-group">
-    <label for="numeroFijo" class="col-form-label">Numero de casa</label>
+    <label for="numeroFijo" class="col-form-label">Numero de casa:</label>
     <input type="text" class="form-control" id="numeroFijo" name="numeroFijo">
 </div>
 <div class="form-group">
-    <label for="numeroCelular" class="col-form-label">Numero de celular</label>
+    <label for="numeroCelular" class="col-form-label">Numero de celular: <span class="required">*</span></label>
     <input type="text" class="form-control" id="numeroCelular" name="numeroCelular">
 </div>
 <div class="form-group">
-    <label for="direccion" class="col-form-label">Direccion</label>
+    <label for="direccion" class="col-form-label">Direccion: <span class="required">*</span></label>
     <input type="text" class="form-control" id="direccion" name="direccion">
 </div>
 <div class="form-group">
-    <label for="numeroLicencia" class="col-form-label">Numero licencia</label>
+    <label for="numeroLicencia" class="col-form-label">Numero licencia:</label>
     <input type="text" class="form-control" id="numeroLicencia" name="numeroLicencia">
 </div>
 <div class="form-group">
-    <label for="numeroPasaporte" class="col-form-label">Nuemero de pasaporte</label>
+    <label for="numeroPasaporte" class="col-form-label">Nuemero de pasaporte:</label>
     <input type="text" class="form-control" id="numeroPasaporte" name="numeroPasaporte">
 </div>
 <div class="form-group">
-    <label for="fechaIngreso" class="col-form-label">Fecha de ingreso</label>
+    <label for="fechaIngreso" class="col-form-label">Fecha de ingreso: <span class="required">*</span></label>
     <input type="text" class="form-control" id="fechaIngreso" name="fechaIngreso">
+</div>
+<div class="button-container">
+    <button type="button" class="btn btn-light" onclick="mostrarSeccion(1)">Siguiente</button>
 </div>

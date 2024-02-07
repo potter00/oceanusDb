@@ -6,31 +6,44 @@
     .section.active {
         display: block;
     }
+
+    .required {
+        color: #e74c3c;
+        /* Color rojo */
+        margin-left: 5px;
+    }
 </style>
 
 <form id="formPersonas2" method="post">
     <div class="modal-body">
         <!-- Sección 1 -->
         <div class="section active" id="seccion1">
+            <h1>Datos personales</h1>
+            <div id="erroresContainer" style="color: red;"></div>
             <?php require_once "vistas/form_datos_basicos.php" ?>
 
         </div>
 
         <!-- Sección 2 -->
         <div class="section" id="seccion2">
+            <h1>Datos Medicos</h1>
+            <div id="erroresContainer" style="color: red;"></div>
             <?php require_once "vistas/form_datos_medicos.php" ?>
         </div>
 
         <!-- Sección 3 -->
         <div class="section" id="seccion3">
+            <h1>Datos Academicos</h1>
+            <div id="erroresContainer" style="color: red;"></div>
             <?php require_once "vistas/form_datos_academicos.php" ?>
         </div>
+        <!--
         <div class="button-container">
-            <button type="button" class="btn" onclick="mostrarSeccion(1)">Siguiente</button>
-            <button type="button" class="btn" onclick="mostrarSeccion(-1)">Anterior</button>
+            <button type="button" class="btn btn-light" onclick="mostrarSeccion(1)">Siguiente</button>
+            <button type="button" class="btn btn-light" onclick="mostrarSeccion(-1)">Anterior</button>
             <button type="submit" id="btnGuardar" class="btn btn-dark">Guardar</button>
         </div>
-
+        -->
     </div>
 </form>
 <script>
@@ -46,7 +59,7 @@
 
     document.getElementById('formPersonas2').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
-        console.log("metodo fetch");
+       
         // Obtener los datos del formulario
         var formData = new FormData(document.getElementById('formPersonas2'));
         // Crear un objeto vacío para almacenar los datos
@@ -54,7 +67,7 @@
         // Iterar sobre las entradas de formData y agregarlas al objeto
         formData.forEach(function (value, key) {
             if (value === '') {
-                value = 'vacio';
+                value = 'NA';
             }
 
             formDataObject[key] = value;
@@ -65,7 +78,7 @@
         // Convertir el objeto a una cadena JSON
         var formDataJSON = JSON.stringify(formDataObject);
         //console.log('Datos en formato JSON:', formDataJSON);
-        console.log('Datos codificados:', formDataJSON);
+        
 
         // Realizar la solicitud POST
         fetch('bd/CopiaCrud.php', {
@@ -82,6 +95,14 @@
                 return response.json();
             })
             .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('En termino de errores');
+                    console.log('Errores:', data.errores);
+                    mostrarErrores(data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                }
                 console.log('Datos recibidos:', data);
             })
             .catch(error => {
@@ -89,4 +110,19 @@
             });
 
     });
+
+    //mostrar los errores
+    function mostrarErrores(errores) {
+        const erroresContainer = document.getElementById('erroresContainer');
+        erroresContainer.innerHTML = ''; // Limpiar cualquier mensaje de error existente
+
+        const listaErrores = document.createElement('ul');
+        errores.forEach(error => {
+            const li = document.createElement('li');
+            li.textContent = error;
+            listaErrores.appendChild(li);
+        });
+
+        erroresContainer.appendChild(listaErrores);
+    }
 </script>
