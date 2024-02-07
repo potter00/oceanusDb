@@ -3,19 +3,12 @@ include_once '../bd/conexion.php';
 include_once 'funciones.php';
 $objeto = new Conexion();
 $conexion = $objeto->Conectar();
-// Recepción de los datos enviados mediante POST desde el JS   
+error_log("dentro de crud.php");
 
-//Datos personales
-$nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
-$fechaNacimiento = isset($_POST['fechaNacimiento']) ? $_POST['fechaNacimiento'] : '';
-$curp = isset($_POST['curp']) ? $_POST['curp'] : '';
-$rfc = isset($_POST['rfc']) ? $_POST['rfc'] : '';
-$numeroFijo = isset($_POST['numeroFijo']) ? $_POST['numeroFijo'] : '';
-$numeroCelular = isset($_POST['numeroCelular']) ? $_POST['numeroCelular'] : '';
-$direccion = isset($_POST['direccion']) ? $_POST['direccion'] : '';
-$numeroLicencia = isset($_POST['numeroLicencia']) ? $_POST['numeroLicencia'] : '';
-$numeroPasaporte = isset($_POST['numeroPasaporte']) ? $_POST['numeroPasaporte'] : '';
-$fechaIngreso = isset($_POST['fechaIngreso']) ? $_POST['fechaIngreso'] : '';
+
+// Recepción de los datos enviados mediante POST desde el JS
+$datos = json_decode(file_get_contents("php://input"), true);
+
 
 //Datos medicos
 $alergias = isset($_POST['alergias']) ? $_POST['alergias'] : '';
@@ -36,26 +29,37 @@ $gradoEstudio = isset($_POST['gradoEstudio']) ? $_POST['gradoEstudio'] : '';
 // También puedes acceder a la variable 'id' y 'opcion' si las enviaste
 $id = isset($_POST['id']) ? $_POST['id'] : '';
 $opcion = isset($_POST['opcion']) ? $_POST['opcion'] : '';
-$datosPost = $_POST;
-/*foreach ($datosPost as $clave => $valor) {
-    error_log("$clave: $valor");
-}
-*/
-switch ($opcion) {
+
+
+
+switch ($datos['opcion']) {
     case 1: //alta
+        //recopilamos los datos necesarios para la operacion
+        //Datos personales
+        $nombre = $datos['nombre'];
+        $fechaNacimiento = $datos['fechaNacimiento'];
+        $curp = $datos['curp'];
+        $rfc = $datos['rfc'];
+        $numeroFijo = $datos['numeroFijo'];
+        $numeroCelular = $datos['numeroCelular'];
+        $direccion = $datos['direccion'];
+        $numeroLicencia = $datos['numeroLicencia'];
+        $numeroPasaporte = $datos['numeroPasaporte'];
+        $fechaIngreso = $datos['fechaIngreso'];
+
         //verifica el formato de las fechas
         //compilamos los errores en caso de a ver en un solo string
         error_log("opcion 1");
         $errores = array();
 
         if (verificarFormatoFecha($fechaIngreso, 'Y-m-d')) {
-            $errores[] = "La fecha de ingreso esta correcto";
-        }else {
+            error_log("La fecha de ingreso es valida");
+        } else {
             $errores[] = "La fecha de ingreso no es valida";
         }
         if (verificarFormatoFecha($fechaNacimiento, 'Y-m-d')) {
-            $errores[] = "La fecha de nacimiento no es valida";
-        }else {
+            error_log("La fecha de nacimiento es valida");
+        } else {
             $errores[] = "La fecha de nacimiento no es valida";
         }
 
@@ -103,30 +107,45 @@ switch ($opcion) {
 
 
 
-        //verifica la longitud de las cadenas --Fin
-        //preparacion para la insercion
-        $consulta = "INSERT INTO personas (nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso) VALUES (:nombre, :fechaNacimiento, :curp, :rfc, :numeroFijo, :numeroCelular, :direccion, :numeroLicencia, :numeroPasaporte, :fechaIngreso)";
-        $resultado = $conexion->prepare($consulta);
+        if ($errores == null) {
+            error_log("No hay errores");
 
-        //Ejecucion de la insercion con sus medidas de seguridad
-        $resultado->bindParam(':nombre', $nombre);
-        $resultado->bindParam(':fechaNacimiento', $fechaNacimiento);
-        $resultado->bindParam(':curp', $curp);
-        $resultado->bindParam(':rfc', $rfc);
-        $resultado->bindParam(':numeroFijo', $numeroFijo);
-        $resultado->bindParam(':numeroCelular', $numeroCelular);
-        $resultado->bindParam(':direccion', $direccion);
-        $resultado->bindParam(':numeroLicencia', $numeroLicencia);
-        $resultado->bindParam(':numeroPasaporte', $numeroPasaporte);
-        $resultado->bindParam(':fechaIngreso', $fechaIngreso);
-        $resultado = $conexion->prepare($consulta);
-        $resultado->execute();
+            //preparacion para la insercion
+            $consulta = "INSERT INTO personas (nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso) VALUES (:nombre, :fechaNacimiento, :curp, :rfc, :numeroFijo, :numeroCelular, :direccion, :numeroLicencia, :numeroPasaporte, :fechaIngreso)";
+            $resultado = $conexion->prepare($consulta);
 
-        $consulta = "SELECT id, nombre, pais, edad FROM personas ORDER BY id DESC LIMIT 1";
-        $resultado = $conexion->prepare($consulta);
-        $resultado->execute();
-        $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
-        break;
+            //Ejecucion de la insercion con sus medidas de seguridad
+            $resultado->bindParam(':nombre', $nombre);
+            $resultado->bindParam(':fechaNacimiento', $fechaNacimiento);
+            $resultado->bindParam(':curp', $curp);
+            $resultado->bindParam(':rfc', $rfc);
+            $resultado->bindParam(':numeroFijo', $numeroFijo);
+            $resultado->bindParam(':numeroCelular', $numeroCelular);
+            $resultado->bindParam(':direccion', $direccion);
+            $resultado->bindParam(':numeroLicencia', $numeroLicencia);
+            $resultado->bindParam(':numeroPasaporte', $numeroPasaporte);
+            $resultado->bindParam(':fechaIngreso', $fechaIngreso);
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            
+            header('Content-Type: application/json');
+            $response = array(
+                'success' => true,
+                'message' => 'Datos procesados con exito',
+                'data' => $datos // Puedes incluir datos adicionales si es necesario
+            );
+            break;
+        }else{
+            header('Content-Type: application/json');
+            $response = array(
+                'success' => false,
+                'message' => 'Datos no procesados',
+                'data' => $datos // Puedes incluir datos adicionales si es necesario
+            );
+            break;
+        }
+
+
     case 2: //modificación
         error_log("opcion 2");
         $consulta = "UPDATE personas SET nombre='$nombre', pais='$pais', edad='$edad' WHERE id='$id' ";
@@ -138,15 +157,21 @@ switch ($opcion) {
         $resultado->execute();
         $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
         break;
+
+
     case 3: //baja
         error_log("opcion 3");
         $consulta = "DELETE FROM personas WHERE id='$id' ";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         break;
+
+
     case 4:
         error_log("opcion 4");
 }
 
-print json_encode($data, JSON_UNESCAPED_UNICODE); //enviar el array final en formato json a JS
+// Devuelve una respuesta de éxito
+
+
 $conexion = NULL;

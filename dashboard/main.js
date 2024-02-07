@@ -97,10 +97,11 @@ $(document).ready(function () {
         //$("#modalCRUD").modal("hide");
 
     });*/
-
-    function guardarDatos()  {
+    
+    
+    $("#formPersonas").submit(function (e) {
         e.preventDefault();
-
+        console.log("Enviando datos");
         // Obtén los valores de los campos del formulario
         nombre = $.trim($("#nombre").val());
         fechaNacimiento = $.trim($("#fechaNacimiento").val());
@@ -129,38 +130,20 @@ $(document).ready(function () {
         certificaciones = $.trim($("#certificaciones").val());
         gradoEstudio = $.trim($("#gradoEstudio").val());
 
+        //opciones
+        opcion = $.trim($("#opcion").val());
+        id = $.trim($("#id").val());
         // Configura la solicitud Ajax
+        
+        console.log(nombre);
+        
         $.ajax({
             url: "bd/crud.php",
             type: "POST",
             dataType: "json",
-            data: {
-                nombre: nombre,
-                fechaNacimiento: fechaNacimiento,
-                curp: curp,
-                rfc: rfc,
-                numeroFijo: numeroFijo,
-                numeroCelular: numeroCelular,
-                direccion: direccion,
-                numeroLicencia: numeroLicencia,
-                numeroPasaporte: numeroPasaporte,
-                fechaIngreso: fechaIngreso,
-                id: id,
-                opcion: opcion,
-                alergias: alergias,
-                enfermedadesCronicas: enfermedadesCronicas,
-                lesiones: lesiones,
-                alergiasMedicamentos: alergiasMedicamentos,
-                numeroSeguro: numeroSeguro,
-                numeroEmergencia: numeroEmergencia,
-                tipoSangre: tipoSangre,
-                cedula: cedula,
-                carrera: carrera,
-                expLaboral: expLaboral,
-                certificaciones: certificaciones,
-                gradoEstudio: gradoEstudio
-            },
+            data: formData,
             success: function (data) {
+                console.log("dentro del log");
                 console.log(data);
                 id = data[0].id;
                 nombre = data[0].nombre;
@@ -186,21 +169,29 @@ $(document).ready(function () {
                 certificaciones = data[0].certificaciones;
                 gradoEstudio = data[0].gradoEstudio;
 
-                /*
+
                 if (opcion == 1) {
                     // Agrega una nueva fila a la tabla
+                    console.log("Agregando nueva fila");
                     tablaPersonas.row.add([id, nombre, fechaNacimiento]).draw();
                 } else {
                     // Actualiza la fila existente
+                    console.log("Actualizando fila");
                     tablaPersonas.row(fila).data([id, nombre, fechaNacimiento]).draw();
                 }
-                */
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                // Handle any errors here
+                console.error("Error: " + textStatus, errorThrown);
             }
         });
 
         // Oculta el modal después de enviar la solicitud
         //$("#modalCRUD").modal("hide");
-    };
+
+
+    });
 
 
 
