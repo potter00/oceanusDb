@@ -9,7 +9,7 @@ $conexion = $objeto->Conectar();
 
 //recepcion de datos
 $datos = json_decode(file_get_contents("php://input"), true);
-
+error_log("Datos recibidos en copiaCrud.php (antes): " . print_r($datos, true));
 
 switch ($datos['opcion']) {
     case 1: //alta
@@ -43,7 +43,7 @@ switch ($datos['opcion']) {
         $certificaciones = $datos['certificaciones'];
         $gradoEstudios = $datos['gradoEstudios'];
         //verificamos que los datos sean validos --inicio
-        
+
 
         //Verificamos que el nombre sea valido
         if (!preg_match("/^[a-zA-Z-' ]*$/", $nombre) || strlen($nombre) < 3 || strlen($nombre) > 50) {
@@ -128,7 +128,7 @@ switch ($datos['opcion']) {
             }
         }
         //verificamos tipo de sangre
-        
+
         if (!verificarTipoSangre($tipoSangre)) {
             $message = 'El tipo de sangre no es valido';
             if (isset($errores)) {
@@ -149,7 +149,7 @@ switch ($datos['opcion']) {
         }
 
         //verificamos carrera
-        if (strlen($carrera) === "vacio" || strlen($carrera) < 5 || strlen($carrera) > 50) {
+        if (strlen($carrera) === "NA" || strlen($carrera) < 5 || strlen($carrera) > 50) {
             $message = 'La carrera no es valida';
             if (isset($errores)) {
                 $errores[] = $message;
@@ -158,7 +158,7 @@ switch ($datos['opcion']) {
             }
         }
         //verificamos grado de estudios
-        if (strlen($gradoEstudios) === "vacio" || strlen($gradoEstudios) < 5 || strlen($gradoEstudios) > 50) {
+        if (strlen($gradoEstudios) === "NA" || strlen($gradoEstudios) < 5 || strlen($gradoEstudios) > 50) {
             $message = 'El grado de estudios no es valido';
             if (isset($errores)) {
                 $errores[] = $message;
@@ -168,7 +168,7 @@ switch ($datos['opcion']) {
         }
         if (isset($errores)) {
             $message = 'Uno o mas campos no son validos';
-            
+
         } else {
             # code...
 
@@ -246,20 +246,74 @@ switch ($datos['opcion']) {
                 $message = 'Datos procesados con exito';
             } catch (PDOException $e) {
                 $message = 'Error al procesar los datos: ' . $e->getMessage();
+
             }
 
             //fin de la insercion
         }
         break;
-
-    default:
+    case 2: //borrado
         # code...
+        $id = $datos['id'];
+        
+        //Eliminacion datos personales
+
+        try {
+            $consulta = "DELETE FROM personas WHERE id = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $message = 'Datos eliminados con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al eliminar los datos: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+        //Eliminacion datos medicos
+        try {
+            $consulta = "DELETE FROM datosmedicos WHERE idEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $message = 'Datos eliminados con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al eliminar los datos: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+        //Eliminacion datos academicos
+        try {
+            $consulta = "DELETE FROM formacademica WHERE idEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $message = 'Datos eliminados con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al eliminar los datos: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+
+        }
+        break;
+    default:
+        $message = 'Opcion no valida';
         break;
 }
 
 // Devuelve una respuesta de éxito
 header('Content-Type: application/json');
-
+//si algo salio mal, se manda el error y los datos
 if (isset($errores)) {
     $response = array(
         'success' => true,
@@ -267,7 +321,7 @@ if (isset($errores)) {
         'data' => $datos,
         'errores' => $errores // Puedes incluir datos adicionales si es necesario
     );
-}else{
+} else {
     $response = array(
         'success' => false,
         'message' => $message,
@@ -276,4 +330,5 @@ if (isset($errores)) {
 }
 error_log("Datos recibidos en copiaCrud.php (después): " . print_r($response, true));
 echo json_encode($response);
+$conexion = NULL;
 ?>

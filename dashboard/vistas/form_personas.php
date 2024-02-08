@@ -13,13 +13,12 @@
         margin-left: 5px;
     }
 </style>
-
+<div id="erroresContainer" style="color: red;"></div>
 <form id="formPersonas2" method="post">
     <div class="modal-body">
         <!-- Sección 1 -->
         <div class="section active" id="seccion1">
             <h1>Datos personales</h1>
-            <div id="erroresContainer" style="color: red;"></div>
             <?php require_once "vistas/form_datos_basicos.php" ?>
 
         </div>
@@ -27,14 +26,12 @@
         <!-- Sección 2 -->
         <div class="section" id="seccion2">
             <h1>Datos Medicos</h1>
-            <div id="erroresContainer" style="color: red;"></div>
             <?php require_once "vistas/form_datos_medicos.php" ?>
         </div>
 
         <!-- Sección 3 -->
         <div class="section" id="seccion3">
             <h1>Datos Academicos</h1>
-            <div id="erroresContainer" style="color: red;"></div>
             <?php require_once "vistas/form_datos_academicos.php" ?>
         </div>
         <!--
@@ -80,7 +77,7 @@
         //console.log('Datos en formato JSON:', formDataJSON);
         
 
-        // Realizar la solicitud POST
+        // Realizar la solicitud POST con fetch
         fetch('bd/CopiaCrud.php', {
             method: 'POST',
             body: formDataJSON,
@@ -97,11 +94,11 @@
             .then(data => {
                 if (data.errores && data.errores.length > 0) {
                     // Mostrar los errores en el contenedor
-                    console.log('En termino de errores');
                     console.log('Errores:', data.errores);
                     mostrarErrores(data.errores);
                 } else {
                     // La operación fue exitosa, puedes realizar otras acciones aquí
+                    location.reload();
                 }
                 console.log('Datos recibidos:', data);
             })
