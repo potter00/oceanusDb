@@ -56,7 +56,7 @@
 
     document.getElementById('formPersonas2').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
-       
+        
         // Obtener los datos del formulario
         var formData = new FormData(document.getElementById('formPersonas2'));
         // Crear un objeto vacío para almacenar los datos
@@ -70,7 +70,14 @@
             formDataObject[key] = value;
         });
         // Agregar la opción al objeto en este caso para insertar los datos
-        formDataObject['opcion'] = 1;
+        formDataObject['opcion'] = opcion;
+        // Agregar el id al objeto en caso de que se esté actualizando
+        try {
+            formDataObject['id'] = id;
+        } catch (error) {
+            console.log("No se está actualizando");
+        }
+        
 
         // Convertir el objeto a una cadena JSON
         var formDataJSON = JSON.stringify(formDataObject);

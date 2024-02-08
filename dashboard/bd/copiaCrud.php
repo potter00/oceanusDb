@@ -255,7 +255,7 @@ switch ($datos['opcion']) {
     case 2: //borrado
         # code...
         $id = $datos['id'];
-        
+
         //Eliminacion datos personales
 
         try {
@@ -306,6 +306,291 @@ switch ($datos['opcion']) {
 
         }
         break;
+    case 3: //solicitar datos por id
+        # code...
+        $id = $datos['id'];
+        //datos personales
+        try {
+            $consulta = "SELECT * FROM personas WHERE id = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $dataPersonas = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $message = 'Datos obtenidos con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al ejecutar la consulta buscar por id: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //obtencion de datos medicos
+        try {
+            $consulta = "SELECT * FROM datosmedicos WHERE idEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $dataMedicos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $message = 'Datos obtenidos con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al ejecutar la consulta buscar por id: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //obtencion de datos academicos
+        try {
+            $consulta = "SELECT * FROM formacademica WHERE idEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $dataAcademicos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $message = 'Datos obtenidos con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al ejecutar la consulta buscar por id: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        $datos = array(
+            'personas' => $dataPersonas,
+            'medicos' => $dataMedicos,
+            'academicos' => $dataAcademicos
+        );
+        break;
+    case 4: //actualizar
+        error_log("entro a actualizar");
+        //recopilamos los datos necesarios para la operacion
+
+        //Datos personales
+        $id = $datos['id'];
+        $nombre = $datos['nombre'];
+        $fechaNacimiento = $datos['fechaNacimiento'];
+        $curp = $datos['curp'];
+        $rfc = $datos['rfc'];
+        $numeroFijo = $datos['numeroFijo'];
+        $numeroCelular = $datos['numeroCelular'];
+        $direccion = $datos['direccion'];
+        $numeroLicencia = $datos['numeroLicencia'];
+        $numeroPasaporte = $datos['numeroPasaporte'];
+        $fechaIngreso = $datos['fechaIngreso'];
+
+        //Datos medicos
+        $alergias = $datos['alergias'];
+        $enfermedadesCronicas = $datos['enfermedadesCronicas'];
+        $lesiones = $datos['lesiones'];
+        $alergiasMedicamentos = $datos['alergiasMedicamentos'];
+        $numeroSeguro = $datos['numeroSeguro'];
+        $numeroEmergencia = $datos['numeroEmergencia'];
+        $tipoSangre = $datos['tipoSangre'];
+
+        //datos academicos
+        $cedula = $datos['cedula'];
+        $carrera = $datos['carrera'];
+        $expLaboral = $datos['expLaboral'];
+        $certificaciones = $datos['certificaciones'];
+        $gradoEstudios = $datos['gradoEstudios'];
+        //verificamos que los datos sean validos --inicio
+              //verificamos que los datos sean validos --inicio
+
+
+        //Verificamos que el nombre sea valido
+        if (!preg_match("/^[a-zA-Z-' ]*$/", $nombre) || strlen($nombre) < 3 || strlen($nombre) > 50) {
+            $message = 'El nombre no es valido';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //Verificamos que la fecha de nacimiento sea valida
+        if (!verificarFormatoFecha($fechaNacimiento, 'Y-m-d')) {
+            $message = 'La fecha de nacimiento no es valida';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //Verificamos que la curp sea valida
+        if (!verificarLongitudString($curp, 18)) {
+            $message = 'La curp no es valida';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //Verificamos que el rfc sea valido
+        if (!verificarLongitudString($rfc, 13)) {
+            $message = 'El rfc no es valido';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //Verificamos que el numero celular sea valido
+        if (!verificarLongitudString($numeroCelular, 10)) {
+            $message = 'El numero celular no es valido';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //Verificamos que la direccion sea valida
+        if (strlen($direccion) < 10) {
+            $message = 'La direccion no es valida';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //verificamos que la fecha de ingreso sea valida
+        if (!verificarFormatoFecha($fechaIngreso, 'Y-m-d')) {
+            $message = 'La fecha de ingreso no es valida';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+        //verificamos numero de seguro
+        if (!verificarLongitudString($numeroSeguro, 11)) {
+            $message = 'El numero de seguro no es valido';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //verificamos numero de emergencia
+        if (!verificarLongitudString($numeroEmergencia, 10)) {
+            $message = 'El numero de emergencia no es valido';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //verificamos tipo de sangre
+
+        if (!verificarTipoSangre($tipoSangre)) {
+            $message = 'El tipo de sangre no es valido';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+        //verificamos cedula
+        if (strlen($cedula) < 7 || strlen($cedula) > 8) {
+            $message = 'La cedula no es valida';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+        //verificamos carrera
+        if (strlen($carrera) === "NA" || strlen($carrera) < 5 || strlen($carrera) > 50) {
+            $message = 'La carrera no es valida';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //verificamos grado de estudios
+        if (strlen($gradoEstudios) === "NA" || strlen($gradoEstudios) < 5 || strlen($gradoEstudios) > 50) {
+            $message = 'El grado de estudios no es valido';
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+        if (isset($errores)) {
+            $message = 'Uno o mas campos no son validos';
+
+        } else {
+            
+            //preparacion para la actualizacion
+            $consulta = "UPDATE personas SET nombre = :nombre, fechaNacimiento = :fechaNacimiento, curp = :curp, rfc = :rfc, numeroFijo = :numeroFijo, numeroCelular = :numeroCelular, direccion = :direccion, numeroLicencia = :numeroLicencia, numeroPasaporte = :numeroPasaporte, fechaIngreso = :fechaIngreso WHERE id = :id";
+            $resultado = $conexion->prepare($consulta);
+            
+            try {
+                //Ejecucion de la actualizacion con sus medidas de seguridad
+                $resultado->bindParam(':nombre', $nombre);
+                $resultado->bindParam(':fechaNacimiento', $fechaNacimiento);
+                $resultado->bindParam(':curp', $curp);
+                $resultado->bindParam(':rfc', $rfc);
+                $resultado->bindParam(':numeroFijo', $numeroFijo);
+                $resultado->bindParam(':numeroCelular', $numeroCelular);
+                $resultado->bindParam(':direccion', $direccion);
+                $resultado->bindParam(':numeroLicencia', $numeroLicencia);
+                $resultado->bindParam(':numeroPasaporte', $numeroPasaporte);
+                $resultado->bindParam(':fechaIngreso', $fechaIngreso);
+                $resultado->bindParam(':id', $id);
+                $resultado->execute();
+
+                $message = 'Datos procesados con exito';
+            } catch (PDOException $e) {
+                $message = 'Error al procesar los datos: ' . $e->getMessage();
+            }
+
+            //actualizacion datos medicos
+            $consulta = "UPDATE datosmedicos SET Alergias = :alergias, EnfermedadesCronicas = :enfermedadesCronicas, Lesiones = :lesiones, AlergiasMedicamentos = :alergiasMedicamentos, NumeroSeguro = :numeroSeguro, NumeroEmergencia = :numeroEmergencia, TipoSangre = :tipoSangre WHERE idEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            try {
+                //Ejecucion de la actualizacion con sus medidas de seguridad
+                $resultado->bindParam(':id', $id);
+                $resultado->bindParam(':alergias', $alergias);
+                $resultado->bindParam(':enfermedadesCronicas', $enfermedadesCronicas);
+                $resultado->bindParam(':lesiones', $lesiones);
+                $resultado->bindParam(':alergiasMedicamentos', $alergiasMedicamentos);
+                $resultado->bindParam(':numeroSeguro', $numeroSeguro);
+                $resultado->bindParam(':numeroEmergencia', $numeroEmergencia);
+                $resultado->bindParam(':tipoSangre', $tipoSangre);
+                $resultado->execute();
+
+                $message = 'Datos procesados con exito';
+            } catch (PDOException $e) {
+                $message = 'Error al procesar los datos: ' . $e->getMessage();
+            }
+            //actualizacion datos academicos
+            $consulta = "UPDATE formacademica SET Cedula = :cedula, Carrera = :carrera, ExpLaboral = :expLaboral, Certificaciones = :certificaciones, GradoEstudios = :gradoEstudios WHERE idEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            try {
+                //Ejecucion de la actualizacion con sus medidas de seguridad
+                $resultado->bindParam(':id', $id);
+                $resultado->bindParam(':cedula', $cedula);
+                $resultado->bindParam(':carrera', $carrera);
+                $resultado->bindParam(':expLaboral', $expLaboral);
+                $resultado->bindParam(':certificaciones', $certificaciones);
+                $resultado->bindParam(':gradoEstudios', $gradoEstudios);
+                $resultado->execute();
+
+                $message = 'Datos procesados con exito';
+            } catch (PDOException $e) {
+                $message = 'Error al procesar los datos: ' . $e->getMessage();
+            }
+        
+        
+        }
+        
+
     default:
         $message = 'Opcion no valida';
         break;
