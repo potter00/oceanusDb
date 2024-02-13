@@ -9,7 +9,8 @@ $conexion = $objeto->Conectar();
 
 //recepcion de datos
 $datos = json_decode(file_get_contents("php://input"), true);
-error_log("Datos recibidos en copiaCrud.php (antes): " . print_r($datos, true));
+
+//error_log("Datos recibidos en copiaCrud.php (antes): " . print_r($datos, true));
 
 switch ($datos['opcion']) {
     case 1: //alta
@@ -249,6 +250,27 @@ switch ($datos['opcion']) {
 
             }
 
+            //insertamos los datos de docimentacion
+            $consulta = "INSERT INTO documentacion (IdEmpleado, Credencial, Licencia, Pasaporte, CV, Curp, Inss, ConstanciaSat) VALUES (:idEmpleado, :credencial, :licencia, :pasaporte, :cv, :curp, :inss, :constanciaSat)";
+            $resultado = $conexion->prepare($consulta);
+
+            try {
+                //Ejecucion de la insercion con sus medidas de seguridad
+                $resultado->bindParam(':idEmpleado', $ultimaId);
+                $resultado->bindValue(':credencial', 'sin cambio');
+                $resultado->bindValue(':licencia', 'sin cambio');
+                $resultado->bindValue(':pasaporte', 'sin cambio');
+                $resultado->bindValue(':cv', 'sin cambio');
+                $resultado->bindValue(':curp', 'sin cambio');
+                $resultado->bindValue(':inss', 'sin cambio');
+                $resultado->bindValue(':constanciaSat', 'sin cambio');
+                $resultado->execute();
+
+                $message = 'Datos procesados con exito';
+            } catch (PDOException $e) {
+                $message = 'Error al procesar los datos: ' . $e->getMessage();
+            }
+
             //fin de la insercion
         }
         break;
@@ -396,7 +418,7 @@ switch ($datos['opcion']) {
         $certificaciones = $datos['certificaciones'];
         $gradoEstudios = $datos['gradoEstudios'];
         //verificamos que los datos sean validos --inicio
-              //verificamos que los datos sean validos --inicio
+        //verificamos que los datos sean validos --inicio
 
 
         //Verificamos que el nombre sea valido
@@ -525,11 +547,11 @@ switch ($datos['opcion']) {
             $message = 'Uno o mas campos no son validos';
 
         } else {
-            
+
             //preparacion para la actualizacion
             $consulta = "UPDATE personas SET nombre = :nombre, fechaNacimiento = :fechaNacimiento, curp = :curp, rfc = :rfc, numeroFijo = :numeroFijo, numeroCelular = :numeroCelular, direccion = :direccion, numeroLicencia = :numeroLicencia, numeroPasaporte = :numeroPasaporte, fechaIngreso = :fechaIngreso WHERE id = :id";
             $resultado = $conexion->prepare($consulta);
-            
+
             try {
                 //Ejecucion de la actualizacion con sus medidas de seguridad
                 $resultado->bindParam(':nombre', $nombre);
@@ -586,11 +608,30 @@ switch ($datos['opcion']) {
             } catch (PDOException $e) {
                 $message = 'Error al procesar los datos: ' . $e->getMessage();
             }
-        
-        
-        }
-        
 
+
+        }
+
+        break;
+    case 5: //solicitar documentacion
+        # code...
+        $id = $datos['id'];
+        try {
+            $consulta = "SELECT * FROM documentacion WHERE IdEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $datos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $message = 'Datos obtenidos con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al ejecutar la consulta buscar por id: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        break;
     default:
         $message = 'Opcion no valida';
         break;
@@ -613,7 +654,7 @@ if (isset($errores)) {
         'data' => $datos
     );
 }
-error_log("Datos recibidos en copiaCrud.php (después): " . print_r($response, true));
+
 echo json_encode($response);
 $conexion = NULL;
 ?>

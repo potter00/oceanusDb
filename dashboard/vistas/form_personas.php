@@ -34,13 +34,9 @@
             <h1>Datos Academicos</h1>
             <?php require_once "vistas/form_datos_academicos.php" ?>
         </div>
-        <!--
-        <div class="button-container">
-            <button type="button" class="btn btn-light" onclick="mostrarSeccion(1)">Siguiente</button>
-            <button type="button" class="btn btn-light" onclick="mostrarSeccion(-1)">Anterior</button>
-            <button type="submit" id="btnGuardar" class="btn btn-dark">Guardar</button>
-        </div>
-        -->
+        
+       
+        
     </div>
 </form>
 <script>
