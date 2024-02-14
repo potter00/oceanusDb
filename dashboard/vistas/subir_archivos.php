@@ -24,6 +24,7 @@
                     <th>Documento</th>
                     <th>Estado</th>
                     <th>Acciones</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -31,9 +32,8 @@
                     <td>Credencial</td>
                     <td>sin cambio</td>
                     <td>
-                        <div class='text-center'>
-                            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button>
-                            <button class='btn btn-danger btnBorrarDocumento'>Borrar</button></div>
+                        <div class="text-center">
+                            <input type="file" id="fileInputCredencial" style="width: 200px;">
                         </div>
                     </td>
                 </tr>
@@ -42,8 +42,7 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button><button
-                                    class='btn btn-danger btnBorrarDocumento'>Borrar</button></div>
+                            <input type="file" id="fileInputLicencia" style="width: 200px;">
                         </div>
                     </td>
                 </tr>
@@ -52,18 +51,16 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button><button
-                                    class='btn btn-danger btnBorrarDocumento'>Borrar</button></div>
+                            <input type="file" id="fileInputPasaporte" style="width: 200px;">
                         </div>
                     </td>
                 </tr>
                 <tr data-id="cv">
                     <td>CV</td>
-                    <td >Sin cambio</td>
+                    <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button><button
-                                    class='btn btn-danger btnBorrarDocumento'>Borrar</button></div>
+                            <input type="file" id="fileInputCV" style="width: 200px;">
                         </div>
                     </td>
                 </tr>
@@ -72,8 +69,7 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button><button
-                                    class='btn btn-danger btnBorrarDocumento'>Borrar</button></div>
+                            <input type="file" id="fileInputCurp" style="width: 200px;">
                         </div>
                     </td>
                 </tr>
@@ -82,8 +78,7 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button><button
-                                    class='btn btn-danger btnBorrarDocumento'>Borrar</button></div>
+                            <input type="file" id="fileInputInss" style="width: 200px;">
                         </div>
                     </td>
                 </tr>
@@ -92,14 +87,15 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button><button
-                                    class='btn btn-danger btnBorrarDocumento'>Borrar</button></div>
+                            <input type="file" id="fileInputConstanciaSat" style="width: 200px;">
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
-
+        <div class='text-center'>
+            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button>
+        </div>
 
     </div>
 

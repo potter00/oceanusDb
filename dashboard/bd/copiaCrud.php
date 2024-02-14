@@ -632,6 +632,30 @@ switch ($datos['opcion']) {
             }
         }
         break;
+    case 6: //guardar ruta de guardado
+        # code...
+        $id = $datos['id'];
+        $ruta = $datos['ruta'];
+        $tipoDocumento = $datos['tipoDocumento'];
+        $consulta = "UPDATE documentacion SET $tipoDocumento = :ruta WHERE IdEmpleado = :id";
+        $resultado = $conexion->prepare($consulta);
+        try {
+            //Ejecucion de la actualizacion con sus medidas de seguridad
+            $resultado->bindParam(':id', $id);
+            $resultado->bindParam(':ruta', $ruta);
+            $resultado->execute();
+            $message = 'Datos procesados con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al procesar los datos: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        break;
+        
+
     default:
         $message = 'Opcion no valida';
         break;

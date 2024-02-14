@@ -29,7 +29,7 @@ $data=$resultado->fetchAll(PDO::FETCH_ASSOC);
 <div class="container">
         <div class="row">
                 <div class="col-lg-12">
-                <input type="file" id="fileInput" />
+                
                     <div class="table-responsive">        
                         <table id="tablaPersonas" class="table table-striped table-bordered table-condensed" style="width:100%">
                         <thead class="text-center">

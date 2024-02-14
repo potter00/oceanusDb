@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         error_log("extensión: " . $extension);
         // Mover el archivo al destino
         if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaArchivo)) {
-            $respuesta = array('success' => true, 'message' => 'Archivo subido con éxito');
+            $respuesta = array('success' => true, 'message' => 'Archivo subido con éxito', 'ruta' => $rutaArchivo);
         } else {
             $respuesta = array('success' => false, 'message' => 'Error al subir el archivo');
         }
