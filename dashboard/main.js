@@ -89,12 +89,7 @@ $(document).ready(function () {
         fila = $(this).closest("tr");
         id = parseInt(fila.find('td:eq(0)').text());
         nombre = fila.find('td:eq(1)').text();
-        recargarTablaDocumentos();
-
-
-
-
-
+        recargarTablaDocumentos('tablaDocumentos');
         $(".modal-header").css("background-color", "#4e73df");
         $(".modal-header").css("color", "white");
         $(".modal-title").text("Gestionar Documentos");
@@ -105,8 +100,25 @@ $(document).ready(function () {
     //botón DESCARGAR ARCHIVO (dentro del menú de opciones)
     $(document).on("click", ".btnDescargarArchivo", function (event) {
         event.stopPropagation(); // Evita que el evento de clic se propague a elementos superiores
-        // Aquí puedes agregar la lógica para descargar un archivo
-        alert("Funcionalidad de descargar archivo");
+        // Aquí puedes agregar la lógica para subir un archivo
+
+        try {
+            fila = $(this).closest("tr");
+            id = parseInt(fila.find('td:eq(0)').text());
+            nombre = fila.find('td:eq(1)').text();
+            //recargarTablaDocumentos('tablaDocumentos');
+            $(".modal-header").css("background-color", "#4e73df");
+            $(".modal-header").css("color", "white");
+            $(".modal-title").text("Gestionar Documentos");
+            $("#modalBajar").modal("show");
+        } catch (error) {
+            
+            console.log("no se puede abrir el modal");
+            console.log(error);
+            alert("error al abrir: "+error);
+            
+        }
+
     });
     //botón SUBIR documento
     $(document).on("click", ".btnSubirDocumento", function () {
@@ -125,7 +137,7 @@ $(document).ready(function () {
                 console.log("no hay archivo seleccionado en " + documentos[i]);
             }
         }
-        
+
         $("#modalSubir").modal("hide");
 
     });
@@ -351,7 +363,7 @@ $(document).ready(function () {
     }
 
     //Funcion recargar la tabla de documentos
-    function recargarTablaDocumentos() {
+    function recargarTablaDocumentos(idtabla) {
         var estadoDocumento = {};
         //solicitamos los documentos del empleado
         var dataObject = {};
@@ -390,11 +402,11 @@ $(document).ready(function () {
                     //Credencial
                     if (estadoDocumento[0].Credencial == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="credencial"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="credencial"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
                     } else {
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="credencial"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="credencial"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
                     }
@@ -402,11 +414,11 @@ $(document).ready(function () {
                     //Licencia
                     if (estadoDocumento[0].Licencia == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="licencia"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="licencia"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
                     } else {
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="licencia"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="licencia"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
                     }
@@ -414,12 +426,12 @@ $(document).ready(function () {
                     //pasaporte
                     if (estadoDocumento[0].Pasaporte == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="pasaporte"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="pasaporte"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
                     }
                     else {
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="pasaporte"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="pasaporte"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
                     }
@@ -427,12 +439,12 @@ $(document).ready(function () {
                     //cv
                     if (estadoDocumento[0].CV == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="cv"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="cv"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
                     }
                     else {
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="cv"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="cv"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
                     }
@@ -440,36 +452,36 @@ $(document).ready(function () {
                     //curp
                     if (estadoDocumento[0].Curp == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="curp"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="curp"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
                     }
                     else {
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="curp"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="curp"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
                     }
                     //inss
                     if (estadoDocumento[0].Inss == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="nss"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="nss"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
                     }
                     else {
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="nss"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="nss"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
                     }
                     //Sat
                     if (estadoDocumento[0].ConstanciaSat == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="sat"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="sat"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
                     }
                     else {
-                        fila = document.getElementById('tablaDocumentos').querySelector('tbody tr[data-id="sat"]');
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="sat"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
                     }
