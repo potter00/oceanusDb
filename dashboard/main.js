@@ -147,7 +147,7 @@ $(document).ready(function () {
                     if (Object.hasOwnProperty.call(data.data[0], key)) {
                         const element = data.data[0][key];
                         
-                        descargarDocumento(element, key);
+                        descargarDocumento(element, key, nombre);
                         
                     }
                 }
@@ -592,7 +592,7 @@ $(document).ready(function () {
     }
 
     //descargar documento
-    function descargarDocumento(rutaDocumento, nombreDocumento) {
+    function descargarDocumento(rutaDocumento, nombreDocumento, empleado) {
         // Obtén la referencia a la fila que deseas cambiar
         rutaDocumento = "../" + rutaDocumento;
         fetch(rutaDocumento)
@@ -610,7 +610,7 @@ $(document).ready(function () {
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
                 a.href = url;
-                NombreDocumento = nombreDocumento + '.pdf';
+                NombreDocumento = empleado+"_"+ nombreDocumento + '.pdf';
                 // Asigna un nombre al archivo PDF descargable
                 a.download = NombreDocumento;
 
