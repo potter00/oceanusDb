@@ -33,8 +33,12 @@
                     <td>sin cambio</td>
                     <td>
                         <div class="text-center">
-                            <input type="file" id="fileInputCredencial" style="width: 200px;">
+                            <input class="fileInputDocumentos" type="file" id="fileInputCredencial"
+                                style="width: 200px;">
+                            <button id="btnDescargarCredencial"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
                         </div>
+
                     </td>
                 </tr>
                 <tr data-id="licencia">
@@ -42,7 +46,9 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <input type="file" id="fileInputLicencia" style="width: 200px;">
+                            <input class="fileInputDocumentos" type="file" id="fileInputLicencia" style="width: 200px;">
+                            <button id="btnDescargarLicencia"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
                         </div>
                     </td>
                 </tr>
@@ -51,7 +57,10 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <input type="file" id="fileInputPasaporte" style="width: 200px;">
+                            <input class="fileInputDocumentos" type="file" id="fileInputPasaporte"
+                                style="width: 200px;">
+                            <button id="btnDescargarPasaporte"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
                         </div>
                     </td>
                 </tr>
@@ -60,7 +69,8 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <input type="file" id="fileInputCV" style="width: 200px;">
+                            <input class="fileInputDocumentos" type="file" id="fileInputCV" style="width: 200px;">
+                            <button id="btnDescargarCV" class='btn btn-primary btnDescargarDocumento'>Descargar</button>
                         </div>
                     </td>
                 </tr>
@@ -69,7 +79,9 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <input type="file" id="fileInputCurp" style="width: 200px;">
+                            <input class="fileInputDocumentos" type="file" id="fileInputCurp" style="width: 200px;">
+                            <button id="btnDescargarCurp"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
                         </div>
                     </td>
                 </tr>
@@ -78,7 +90,9 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <input type="file" id="fileInputInss" style="width: 200px;">
+                            <input class="fileInputDocumentos" type="file" id="fileInputInss" style="width: 200px;">
+                            <button id="btnDescargarInss"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
                         </div>
                     </td>
                 </tr>
@@ -87,42 +101,45 @@
                     <td>Sin cambio</td>
                     <td>
                         <div class='text-center'>
-                            <input type="file" id="fileInputConstanciaSat" style="width: 200px;">
+                            <input class="fileInputDocumentos" type="file" id="fileInputConstanciaSat"
+                                style="width: 200px;">
+                            <button id="btnDescargarConstanciaSat"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
         <div class='text-center'>
-            <div class='btn-group'><button class='btn btn-primary btnSubirDocumento'>Subir</button>
+            <div class='btn-group'><button id="btnSubirDocumentosTabla" class='btn btn-primary btnSubirDocumento'>Subir</button>
+            </div>
+
         </div>
 
+        <!-- Sección 2 -->
+        <div class="section" id="seccion2">
+            <h1>Datos Medicos</h1>
+            <?php require_once "vistas/form_datos_medicos.php" ?>
+        </div>
+
+        <!-- Sección 3 -->
+        <div class="section" id="seccion3">
+            <h1>Datos Academicos</h1>
+            <?php require_once "vistas/form_datos_academicos.php" ?>
+        </div>
+
+
+
     </div>
 
-    <!-- Sección 2 -->
-    <div class="section" id="seccion2">
-        <h1>Datos Medicos</h1>
-        <?php require_once "vistas/form_datos_medicos.php" ?>
-    </div>
+    <script>
+        var currentSection = 0;
+        var sections = document.getElementsByClassName('section');
+        console.log("sections");
+        function mostrarSeccion(n) {
+            sections[currentSection].classList.remove('active');
+            currentSection = Math.min(Math.max(currentSection + n, 0), sections.length - 1);
+            sections[currentSection].classList.add('active');
 
-    <!-- Sección 3 -->
-    <div class="section" id="seccion3">
-        <h1>Datos Academicos</h1>
-        <?php require_once "vistas/form_datos_academicos.php" ?>
-    </div>
-
-
-
-</div>
-
-<script>
-    var currentSection = 0;
-    var sections = document.getElementsByClassName('section');
-    console.log("sections");
-    function mostrarSeccion(n) {
-        sections[currentSection].classList.remove('active');
-        currentSection = Math.min(Math.max(currentSection + n, 0), sections.length - 1);
-        sections[currentSection].classList.add('active');
-
-    }
-</script>
+        }
+    </script>

@@ -655,6 +655,26 @@ switch ($datos['opcion']) {
         }
         break;
         
+    case 7: //solicitar ruta documento
+        # code...
+        $id = $datos['id'];
+        $tipoDocumento = $datos['tipoDocumento'];
+        try {
+            $consulta = "SELECT $tipoDocumento FROM documentacion WHERE IdEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $datos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $message = 'Datos obtenidos con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al ejecutar la consulta buscar por id: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        break;
 
     default:
         $message = 'Opcion no valida';

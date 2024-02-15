@@ -93,6 +93,8 @@ $(document).ready(function () {
         $(".modal-header").css("background-color", "#4e73df");
         $(".modal-header").css("color", "white");
         $(".modal-title").text("Gestionar Documentos");
+        mostrarFileInputs();
+        ocultarBotones();
         $("#modalSubir").modal("show");
 
     });
@@ -106,18 +108,52 @@ $(document).ready(function () {
             fila = $(this).closest("tr");
             id = parseInt(fila.find('td:eq(0)').text());
             nombre = fila.find('td:eq(1)').text();
-            //recargarTablaDocumentos('tablaDocumentos');
+
             $(".modal-header").css("background-color", "#4e73df");
             $(".modal-header").css("color", "white");
-            $(".modal-title").text("Gestionar Documentos");
-            $("#modalBajar").modal("show");
+            $(".modal-title").text("Descargar Documentos");
+            ocultarFileInputs();
+            mostrarBotones();
+            //tomamos la lista de los documentos que se an seleccionado
+            $("#modalSubir").modal("show");
+
+            recargarTablaDocumentos('tablaDocumentos');
+
         } catch (error) {
-            
+
             console.log("no se puede abrir el modal");
             console.log(error);
-            alert("error al abrir: "+error);
-            
+            alert("error al abrir: " + error);
+
         }
+
+    });
+    //Boton descargar documento(dentro del modal)
+    $(document).on("click", ".btnDescargarDocumento", function () {
+        fila = $(this).closest("tr");
+        tipoDocumento = fila.find('td:eq(0)').text();
+        if (tipoDocumento == "NSS") {
+            tipoDocumento = "Inss";
+
+        }
+        if (tipoDocumento == "Constancia SAT") {
+            tipoDocumento = "ConstanciaSat";
+        }
+        
+        pedirRutaDocumento(id, tipoDocumento)
+            .then(data => {
+                
+                for (const key in data.data[0]) {
+                    if (Object.hasOwnProperty.call(data.data[0], key)) {
+                        const element = data.data[0][key];
+                        
+                        descargarDocumento(element, key);
+                        
+                    }
+                }
+                
+            });
+
 
     });
     //botón SUBIR documento
@@ -397,6 +433,8 @@ $(document).ready(function () {
                     console.log(estadoDocumento[0].Licencia);
                     var fila = {};
                     var celda = {};
+                    var boton = {};
+                    boton.disabled = true;
                     //verificamos si todos los documentos estan subidos
 
                     //Credencial
@@ -405,10 +443,14 @@ $(document).ready(function () {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="credencial"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarCredencial');
+                        boton.disabled = true;
                     } else {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="credencial"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarCredencial');
+                        boton.disabled = false;
                     }
 
                     //Licencia
@@ -417,10 +459,14 @@ $(document).ready(function () {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="licencia"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarLicencia');
+                        boton.disabled = true;
                     } else {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="licencia"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarLicencia');
+                        boton.disabled = false;
                     }
 
                     //pasaporte
@@ -429,11 +475,15 @@ $(document).ready(function () {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="pasaporte"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarPasaporte');
+                        boton.disabled = true;
                     }
                     else {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="pasaporte"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarPasaporte');
+                        boton.disabled = false;
                     }
 
                     //cv
@@ -442,11 +492,15 @@ $(document).ready(function () {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="cv"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarCV');
+                        boton.disabled = true;
                     }
                     else {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="cv"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarCV');
+                        boton.disabled = false;
                     }
 
                     //curp
@@ -455,11 +509,15 @@ $(document).ready(function () {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="curp"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarCurp');
+                        boton.disabled = true;
                     }
                     else {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="curp"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarCurp');
+                        boton.disabled = false;
                     }
                     //inss
                     if (estadoDocumento[0].Inss == "sin cambio") {
@@ -467,11 +525,15 @@ $(document).ready(function () {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="nss"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarInss');
+                        boton.disabled = true;
                     }
                     else {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="nss"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarInss');
+                        boton.disabled = false;
                     }
                     //Sat
                     if (estadoDocumento[0].ConstanciaSat == "sin cambio") {
@@ -479,11 +541,15 @@ $(document).ready(function () {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="sat"]');
                         celda = fila.cells[1];
                         celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarConstanciaSat');
+                        boton.disabled = true;
                     }
                     else {
                         fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="sat"]');
                         celda = fila.cells[1];
                         celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarConstanciaSat');
+                        boton.disabled = false;
                     }
 
                 }
@@ -493,7 +559,114 @@ $(document).ready(function () {
                 console.error('Error:', error);
             });
     }
+    //oculta los fileinputs
+    function ocultarFileInputs() {
+        var fileInputs = document.getElementsByClassName('fileInputDocumentos');
+        for (var i = 0; i < fileInputs.length; i++) {
+            fileInputs[i].style.display = 'none';
+        }
+        document.getElementById('btnSubirDocumentosTabla').style.display = 'none';
+    }
+    //muestra los fileinputs
+    function mostrarFileInputs() {
+        var fileInputs = document.getElementsByClassName('fileInputDocumentos');
+        for (var i = 0; i < fileInputs.length; i++) {
+            fileInputs[i].style.display = 'inline-block';
+        }
+        document.getElementById('btnSubirDocumentosTabla').style.display = 'inline-block';
+    }
+    //oculta los botones de documentos
+    function ocultarBotones() {
+        var botones = document.getElementsByClassName('btnDescargarDocumento');
+        for (var i = 0; i < botones.length; i++) {
+            botones[i].style.display = 'none';
+        }
+    }
 
+    //muestra los botones de documentos
+    function mostrarBotones() {
+        var botones = document.getElementsByClassName('btnDescargarDocumento');
+        for (var i = 0; i < botones.length; i++) {
+            botones[i].style.display = 'inline-block';
+        }
+    }
+
+    //descargar documento
+    function descargarDocumento(rutaDocumento, nombreDocumento) {
+        // Obtén la referencia a la fila que deseas cambiar
+        rutaDocumento = "../" + rutaDocumento;
+        fetch(rutaDocumento)
+            .then(response => {
+                // Verifica si la solicitud fue exitosa (código de respuesta 200)
+                if (!response.ok) {
+                    throw new Error('Error al descargar el archivo PDF');
+                }
+
+                // Devuelve la respuesta como un blob (datos binarios)
+                return response.blob();
+            })
+            .then(blob => {
+                // Crea un enlace temporal y asigna el blob como su origen
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                NombreDocumento = nombreDocumento + '.pdf';
+                // Asigna un nombre al archivo PDF descargable
+                a.download = NombreDocumento;
+
+                // Agrega el enlace al cuerpo del documento
+                document.body.appendChild(a);
+
+                // Simula un clic en el enlace para iniciar la descarga
+                a.click();
+
+                // Elimina el enlace del DOM después de la descarga
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al descargar el archivo PDF');
+            });
+    }
+
+    //Pedir ruta de documento
+    function pedirRutaDocumento(id, tipoDocumento) {
+        
+        var dataObject = {};
+        dataObject['id'] = id;
+        dataObject['tipoDocumento'] = tipoDocumento;
+        dataObject['opcion'] = 7; //pedir ruta
+        dataJSON = JSON.stringify(dataObject);
+        return fetch('bd/CopiaCrud.php', {
+            method: 'POST',
+            body: dataJSON,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    
+                    return data;
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        
+    }
 
 
 
