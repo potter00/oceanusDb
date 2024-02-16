@@ -326,6 +326,24 @@ switch ($datos['opcion']) {
                 $errores = array($message);
             }
 
+
+        }
+        //Eliminacion datos documentacion
+        try {
+            $consulta = "DELETE FROM documentacion WHERE idEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $message = 'Datos eliminados con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al eliminar los datos: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+
+
         }
         break;
     case 3: //solicitar datos por id

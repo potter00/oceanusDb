@@ -287,6 +287,7 @@ $(document).ready(function () {
 
                     } else {
                         // La operación fue exitosa, puedes realizar otras acciones aquí
+                        borrarCarpeta(id);
                         location.reload();
                     }
 
@@ -303,12 +304,14 @@ $(document).ready(function () {
         const archivoInput = document.getElementById(idFileInput);
         const archivo = archivoInput.files[0];
         //const id = 15; // Reemplaza con la ID deseada
+        var opcion = 1; //subir
         var resultados = {};
         const formData = new FormData();
         formData.append('archivo', archivo);
         formData.append('id', id);
         formData.append('tipoDocumento', tipoDocumento);
         formData.append('nombre', nombre);
+        formData.append('opcion', opcion);
 
         fetch('../upload.php', {
             method: 'POST',
@@ -326,6 +329,42 @@ $(document).ready(function () {
                 resultados = false;
             });
         return resultados;
+    }
+
+    //funcion para borrar carpeta del servidor
+    function borrarCarpeta(id) {
+        var dataObject = {};
+        dataObject['id'] = id;
+        dataObject['opcion'] = 2; //borrar carpeta
+        dataJSON = JSON.stringify(dataObject);
+        fetch('../upload.php', {
+            method: 'POST',
+            body: dataJSON,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     //funcion para verificar si se a seleccionado un archivo
