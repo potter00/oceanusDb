@@ -333,16 +333,14 @@ $(document).ready(function () {
 
     //funcion para borrar carpeta del servidor
     function borrarCarpeta(id) {
-        var dataObject = {};
-        dataObject['id'] = id;
-        dataObject['opcion'] = 2; //borrar carpeta
-        dataJSON = JSON.stringify(dataObject);
+        
+        const formData = new FormData();
+        formData.append('id', id);
+        formData.append('opcion', 2);
         fetch('../upload.php', {
             method: 'POST',
-            body: dataJSON,
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            body: formData
+            
         })
             .then(response => {
                 if (!response.ok) {
