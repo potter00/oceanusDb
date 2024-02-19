@@ -1,0 +1,12 @@
+
+{
+    "database": {
+      "host": "Host de la base de datos",
+      "username": "usuario_db",
+      "password": "contraseña_db",
+      "database_name": "nombre_db"
+    },
+    "ruta_archivos": "Ruta absoluta de los archivos"
+    
+  }
+  

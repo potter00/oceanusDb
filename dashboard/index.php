@@ -43,19 +43,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <?php                            
-                            foreach($data as $dat) {                                                        
-                            ?>
-                            <tr>
-                                <td><?php echo $dat['id'] ?></td>
-                                <td><?php echo $dat['nombre'] ?></td>
-                                <td><?php echo $dat['numeroCelular'] ?></td>
-                                <td><?php echo $dat['fechaNacimiento'] ?></td>    
-                                <td></td>
-                            </tr>
                             <?php
-                                }
-                            ?> 
+                            foreach ($data as $dat) {
+                                ?>
+                                <tr>
+                                    <td class="idEmpleado">
+                                        <?php echo $dat['id'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $dat['nombre'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $dat['numeroCelular'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $dat['fechaNacimiento'] ?>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <?php
+                            }
+                            ?>
+
                         </tbody>
                     </table>
                 </div>
@@ -101,7 +110,7 @@
     </div>
     <!--End Modal para subir archivos-->
     <!--Modal para descargar-->
-    
+
     <div class="modal fade" id="modalBajar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -119,7 +128,7 @@
             </div>
         </div>
     </div>
-    
+
     <!--End Modal para descargar-->
 
 </div>

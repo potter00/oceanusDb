@@ -398,6 +398,7 @@ switch ($datos['opcion']) {
             }
         }
         $datos = array(
+            'id' => $id, //se manda el id para poder hacer la actualizacion
             'personas' => $dataPersonas,
             'medicos' => $dataMedicos,
             'academicos' => $dataAcademicos

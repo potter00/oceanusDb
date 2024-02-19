@@ -108,6 +108,17 @@
                         </div>
                     </td>
                 </tr>
+                <tr data-id="foto">
+                    <td>Foto</td>
+                    <td>Sin cambio</td>
+                    <td>
+                        <div class='text-center'>
+                            <input class="fileInputDocumentos" type="file" id="fileInputFoto" style="width: 200px;">
+                            <button id="btnDescargarFoto"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <div class='text-center'>

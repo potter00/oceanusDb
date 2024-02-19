@@ -34,7 +34,7 @@ $(document).ready(function () {
     });
 
     var fila; //capturar la fila para editar o borrar el registro
-
+    addEvents();
     //boton subir
     $(document).on("click", ".btnSubir", function () {
         fila = $(this).closest("tr");
@@ -139,19 +139,19 @@ $(document).ready(function () {
         if (tipoDocumento == "Constancia SAT") {
             tipoDocumento = "ConstanciaSat";
         }
-        
+
         pedirRutaDocumento(id, tipoDocumento)
             .then(data => {
-                
+
                 for (const key in data.data[0]) {
                     if (Object.hasOwnProperty.call(data.data[0], key)) {
                         const element = data.data[0][key];
-                        
+
                         descargarDocumento(element, key, nombre);
-                        
+
                     }
                 }
-                
+
             });
 
 
@@ -160,7 +160,7 @@ $(document).ready(function () {
     $(document).on("click", ".btnSubirDocumento", function () {
         //tomamos la lista de los documentos que se an seleccionado
         var estadoDocumento = obtenerArrayDeColumna('tablaDocumentos', 1);
-        var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat"];
+        var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat", "Foto"];
         //verificamos si se a seleccionado un archivo
         for (var i = 0; i < estadoDocumento.length; i++) {
             inputId = "fileInput" + documentos[i];
@@ -299,6 +299,7 @@ $(document).ready(function () {
 
     });
 
+    
     //funcion para subir archivo al servidor
     function subirArchivo(id, tipoDocumento, nombre, idFileInput) {
         const archivoInput = document.getElementById(idFileInput);
@@ -333,14 +334,14 @@ $(document).ready(function () {
 
     //funcion para borrar carpeta del servidor
     function borrarCarpeta(id) {
-        
+
         const formData = new FormData();
         formData.append('id', id);
         formData.append('opcion', 2);
         fetch('../upload.php', {
             method: 'POST',
             body: formData
-            
+
         })
             .then(response => {
                 if (!response.ok) {
@@ -588,6 +589,22 @@ $(document).ready(function () {
                         boton = document.getElementById('btnDescargarConstanciaSat');
                         boton.disabled = false;
                     }
+                    //foto
+                    if (estadoDocumento[0].Foto == "sin cambio") {
+                        // Obtén la referencia a la fila que deseas cambiar
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="foto"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarFoto');
+                        boton.disabled = true;
+                    }
+                    else {
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="foto"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarFoto');
+                        boton.disabled = false;
+                    }
 
                 }
 
@@ -647,7 +664,7 @@ $(document).ready(function () {
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
                 a.href = url;
-                NombreDocumento = empleado+"_"+ nombreDocumento + '.pdf';
+                NombreDocumento = empleado + "_" + nombreDocumento + '.pdf';
                 // Asigna un nombre al archivo PDF descargable
                 a.download = NombreDocumento;
 
@@ -668,7 +685,7 @@ $(document).ready(function () {
 
     //Pedir ruta de documento
     function pedirRutaDocumento(id, tipoDocumento) {
-        
+
         var dataObject = {};
         dataObject['id'] = id;
         dataObject['tipoDocumento'] = tipoDocumento;
@@ -694,7 +711,7 @@ $(document).ready(function () {
 
                 } else {
                     // La operación fue exitosa, puedes realizar otras acciones aquí
-                    
+
                     return data;
                 }
 
@@ -702,7 +719,122 @@ $(document).ready(function () {
             .catch(error => {
                 console.error('Error:', error);
             });
-        
+
+    }
+
+    //funcion para añadir eventos a las filas
+    function addEvents() {
+        var rows = document.getElementById('tablaPersonas').rows;
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].onclick = function () {
+                return function () {
+                    var idEmpleado = this.cells[0].innerHTML;
+                    pedirDatosPersona(idEmpleado)
+                        .then(data => {
+                            //datos optenidos
+                            console.log(data);
+                            if (data.errores && data.errores.length > 0) {
+                                // Mostrar los errores en el contenedor
+                                console.log('Errores:', data.errores);
+
+                            } else {
+                                // La operación fue exitosa, puedes realizar otras acciones aquí
+                                //datos personales
+                                $("#nombre").val(data.data.personas[0].Nombre);
+                                
+                                crearPDF(data.data.personas[0].Id, data.data, data.data.personas[0].Nombre, "DatosCompletos");
+
+                            }
+                        });
+                    
+                };
+            }(rows[i]);
+        }
+    }
+
+    //crear pdf en base a la plantilla html
+    function crearPDF(Id, datos, nombre, tipoDocumento) {
+        var dataObject = {};
+        dataObject['id'] = Id;
+        dataObject['opcion'] = 3; //crear pdf
+        dataObject['datos'] = datos;
+        dataObject['nombre'] = nombre;
+        dataObject['tipoDocumento'] = tipoDocumento;
+        dataJSON = JSON.stringify(dataObject);
+        fetch('../upload.php', {
+            method: 'POST',
+            body: dataJSON,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    console.log(data.ruta);
+                    //subirRutaDocumento(Id, tipoDocumento, data.ruta);
+                    console.log(data);
+
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+
+
+
+
+
+    }
+
+    //Pedir todos los datos de una persona
+    function pedirDatosPersona(id) {
+        var dataObject = {};
+        dataObject['id'] = id;
+        dataObject['opcion'] = 3;
+        dataJSON = JSON.stringify(dataObject);
+        return fetch('bd/CopiaCrud.php', {
+            method: 'POST',
+            body: dataJSON,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    return data;
+
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
 

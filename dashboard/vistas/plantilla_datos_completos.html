@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      p {
+        margin-bottom: 5px;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{nombre}}</h1>
+      <p>Edad: {{edad}}</p>
+      <p>Carrera: {{carrera}}</p>
+
+      <div class="section">
+        <h2>Datos personales</h2>
+        <ul>
+          <li>fecha Nacimiento: {{fechaNacimiento}}</li>
+          <li>Curp: {{curp}}</li>
+          <li>RFC: {{rfc}}</li>
+          <li>Numero: {{numero}}</li>
+          <li>Direccion: {{direccion}}</li>
+          <li>Licencia: {{licencia}}</li>
+          <li>Pasaporte: {{pasaporte}}</li>
+          <li>Fecha Ingreso: {{fechaIngreso}}</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Datos Medicos</h2>
+
+        <ul>
+            <li>Alergias: {{alergias}}</li>
+            <li>Enfermedades: {{enfermedades}}</li>
+            <li>Lesiones: {{lesiones}}</li>
+            <li>Alergias: {{alergias}}</li>
+            <li>Inss: {{inss}}</li>
+            <li>Numero Emergencia: {{numeroEmergencia}}</li>
+            <li>Tipo Sangre: {{tipoSangre}}</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Datos academicos</h2>
+        <ul>
+          <li>Carrera: {{carrera}}</li>
+          <li>Cedula: {{cedula}}</li>
+          <li>Esperiencia laboral: {{expLaboral}}</li>
+          <li>Certificaciones: {{certificaciones}}</li>
+          <li>Grado estudios: {{gradoEstudios}}</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>Contacto</h2>
+        <p>Telefono celular: {{numeroTelefono}}</p>
+        
+      </div>
+    </div>
+  </body>
+</html>
