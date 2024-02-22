@@ -6,7 +6,8 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; Oceanus Supervicion y proyectos. Todos los derechos reservados 2024</span>
+         
           </div>
         </div>
       </footer>

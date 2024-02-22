@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resume</title>
+    <title>Datos Completos {{nombre}}</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -23,7 +23,10 @@
         margin-bottom: 5px;
       }
       .section {
-        margin-bottom: 20px;
+        margin-bottom: 0px;
+      }
+      .datos {
+        margin-bottom: 0px;
       }
     </style>
   </head>
@@ -34,7 +37,7 @@
       <p>Carrera: {{carrera}}</p>
 
       <div class="section">
-        <h2>Datos personales</h2>
+        <h2 class="datos">Datos personales</h2>
         <ul>
           <li>fecha Nacimiento: {{fechaNacimiento}}</li>
           <li>Curp: {{curp}}</li>
@@ -45,37 +48,27 @@
           <li>Pasaporte: {{pasaporte}}</li>
           <li>Fecha Ingreso: {{fechaIngreso}}</li>
         </ul>
-      </div>
 
-      <div class="section">
-        <h2>Datos Medicos</h2>
+        <h2 class="datos">Datos Medicos</h2>
 
         <ul>
-            <li>Alergias: {{alergias}}</li>
-            <li>Enfermedades: {{enfermedades}}</li>
-            <li>Lesiones: {{lesiones}}</li>
-            <li>Alergias: {{alergias}}</li>
-            <li>Inss: {{inss}}</li>
-            <li>Numero Emergencia: {{numeroEmergencia}}</li>
-            <li>Tipo Sangre: {{tipoSangre}}</li>
+          <li>Alergias: {{alergias}}</li>
+          <li>Enfermedades: {{enfermedades}}</li>
+          <li>Lesiones: {{lesiones}}</li>
+          <li>Alergias: {{alergias}}</li>
+          <li>Inss: {{inss}}</li>
+          <li>Numero Emergencia: {{numeroEmergencia}}</li>
+          <li>Tipo Sangre: {{tipoSangre}}</li>
         </ul>
-      </div>
 
-      <div class="section">
-        <h2>Datos academicos</h2>
+        <h2 class="datos">Datos academicos</h2>
         <ul>
           <li>Carrera: {{carrera}}</li>
           <li>Cedula: {{cedula}}</li>
-          <li>Esperiencia laboral: {{expLaboral}}</li>
+          <li>Experiencia laboral: {{expLaboral}}</li>
           <li>Certificaciones: {{certificaciones}}</li>
           <li>Grado estudios: {{gradoEstudios}}</li>
         </ul>
-      </div>
-
-      <div class="section">
-        <h2>Contacto</h2>
-        <p>Telefono celular: {{numeroTelefono}}</p>
-        
       </div>
     </div>
   </body>

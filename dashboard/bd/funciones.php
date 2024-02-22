@@ -11,4 +11,11 @@ function verificarTipoSangre($tipoSangre) {
     return in_array($tipoSangre, $tiposValidos);
 }
 
+function calcularEdad($fechaNacimiento) {
+    $fechaActual = new DateTime();
+    $fechaNacimiento = DateTime::createFromFormat('Y-m-d', $fechaNacimiento);
+    $edad = $fechaActual->diff($fechaNacimiento)->y;
+    return $edad;
+}
+
 

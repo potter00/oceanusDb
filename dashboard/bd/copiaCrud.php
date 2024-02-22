@@ -397,11 +397,32 @@ switch ($datos['opcion']) {
                 $errores = array($message);
             }
         }
-        $datos = array(
-            'id' => $id, //se manda el id para poder hacer la actualizacion
+        //datos de documentacion
+        try {
+            $consulta = "SELECT * FROM documentacion WHERE IdEmpleado = :id";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $dataDocumentacion = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $message = 'Datos obtenidos con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al ejecutar la consulta buscar por id: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+
+
+
+
+        $datos = array( 
             'personas' => $dataPersonas,
             'medicos' => $dataMedicos,
-            'academicos' => $dataAcademicos
+            'academicos' => $dataAcademicos,
+            'documentacion' => $dataDocumentacion
         );
         break;
     case 4: //actualizar

@@ -3,7 +3,7 @@ $(document).ready(function () {
         "columnDefs": [{
             "targets": -1,
             "data": null,
-            "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btnEditar'>Editar</button><button class='btn btn-danger btnBorrar'>Borrar</button><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnSubirArchivo' href='#'>Subir Archivo</a><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a></div></div></div>"
+            "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btnEditar'>Editar</button><button class='btn btn-danger btnBorrar'>Borrar</button><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnSubirArchivo' href='#'>Subir Archivo</a><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a><a class='dropdown-item btnGenerarReporte' href='#'>Generar Reporte</a><a class='dropdown-item btnGenerarCredencial' href='#'>Generar Credencial</a><a class='dropdown-item btnDetalles' href='#'>Detalles</a></div></div></div>"
         }],
 
         "language": {
@@ -34,7 +34,7 @@ $(document).ready(function () {
     });
 
     var fila; //capturar la fila para editar o borrar el registro
-    addEvents();
+    //addEvents();
     //boton subir
     $(document).on("click", ".btnSubir", function () {
         fila = $(this).closest("tr");
@@ -179,11 +179,24 @@ $(document).ready(function () {
     });
     //botón EDITAR    
     $(document).on("click", ".btnEditar", function () {
-        fila = $(this).closest("tr");
-        id = parseInt(fila.find('td:eq(0)').text());
+
+        var id;
+        var urlActual = window.location.href;
+        var nombreArchivo = urlActual.split('/').pop(); // Obtiene el último segmento de la URL
+        var nombreArchivo = nombreArchivo.split('?')[0]; // Remueve cualquier query string
+        console.log('Nombre del archivo actual:', nombreArchivo);
+        if (nombreArchivo == "detalles_usuario.php") {
+            console.log("estamos en detalles");
+            id = parseInt(urlActual.split('?').pop().split('=').pop());
+        } else {
+            fila = $(this).closest("tr");
+            id = parseInt(fila.find('td:eq(0)').text());
+        }
+
+
         opcion = 3; //llamar datos relacionados a la persona
         var dataObject = {};
-        console.error(id);
+
         dataObject['id'] = id;
         dataObject['opcion'] = 3;
         dataJSON = JSON.stringify(dataObject);
@@ -254,10 +267,26 @@ $(document).ready(function () {
 
     //botón BORRAR
     $(document).on("click", ".btnBorrar", function () {
+
+        var id;
+        var urlActual = window.location.href;
+        var nombreArchivo = urlActual.split('/').pop(); // Obtiene el último segmento de la URL
+        var nombreArchivo = nombreArchivo.split('?')[0]; // Remueve cualquier query string
+        
+        if (nombreArchivo == "detalles_usuario.php") {
+            console.log("estamos en detalles");
+            id = parseInt(urlActual.split('?').pop().split('=').pop());
+        } else {
+            fila = $(this);
+            id = parseInt($(this).closest("tr").find('td:eq(0)').text());
+        }
+
+
+
+
         //declaramos las variables para el objeto JSON
         var dataObject = {};
-        fila = $(this);
-        id = parseInt($(this).closest("tr").find('td:eq(0)').text());
+
 
         opcion = 2 //borrar
 
@@ -288,7 +317,9 @@ $(document).ready(function () {
                     } else {
                         // La operación fue exitosa, puedes realizar otras acciones aquí
                         borrarCarpeta(id);
-                        location.reload();
+
+                        //los devolvemos al index
+                        window.location.href = "./index.php";
                     }
 
                 })
@@ -299,7 +330,52 @@ $(document).ready(function () {
 
     });
 
-    
+    //botón GENERAR REPORTE
+    $(document).on("click", ".btnGenerarReporte", function () {
+
+        var id;
+        var urlActual = window.location.href;
+        var nombreArchivo = urlActual.split('/').pop(); // Obtiene el último segmento de la URL
+        var nombreArchivo = nombreArchivo.split('?')[0]; // Remueve cualquier query string
+        
+        if (nombreArchivo == "detalles_usuario.php") {
+
+            id = parseInt(urlActual.split('?').pop().split('=').pop());
+        } else {
+            fila = $(this).closest("tr");
+            id = parseInt(fila.find('td:eq(0)').text());
+
+        }
+
+        pedirDatosPersona(id)
+            .then(data => {
+                //datos optenidos
+                console.log(data);
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    //datos personales
+
+                    crearPDF(data.data, data.data.personas[0].Nombre, "DatosCompletos");
+                }
+            });
+
+    });
+
+    //boton detalles
+    $(document).on("click", ".btnDetalles", function () {
+        fila = $(this).closest("tr");
+        id = parseInt(fila.find('td:eq(0)').text());
+
+        //redireccionamos a la pagina de detalles dando la id de la persona con get
+        window.location.href = "./detalles_usuario.php?id=" + id;
+
+
+    });
+
     //funcion para subir archivo al servidor
     function subirArchivo(id, tipoDocumento, nombre, idFileInput) {
         const archivoInput = document.getElementById(idFileInput);
@@ -323,7 +399,7 @@ $(document).ready(function () {
                 console.log('Respuesta del servidor:', data);
                 resultados = true;
                 console.log(data.ruta);
-                subirRutaDocumento(id, tipoDocumento, data.ruta);
+                subirRutaDocumento(data.id, tipoDocumento, data.ruta);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -399,9 +475,10 @@ $(document).ready(function () {
     }
 
     //funcion para subir la ruta de guardado del documento
-    function subirRutaDocumento(id, tipoDocumento, ruta) {
+    function subirRutaDocumento(idEmpleado, tipoDocumento, ruta) {
         var dataObject = {};
-        dataObject['id'] = id;
+
+        dataObject['id'] = idEmpleado;
         dataObject['tipoDocumento'] = tipoDocumento;
         dataObject['ruta'] = ruta;
         dataObject['opcion'] = 6; //subir ruta
@@ -722,45 +799,21 @@ $(document).ready(function () {
 
     }
 
-    //funcion para añadir eventos a las filas
-    function addEvents() {
-        var rows = document.getElementById('tablaPersonas').rows;
-        for (var i = 0; i < rows.length; i++) {
-            rows[i].onclick = function () {
-                return function () {
-                    var idEmpleado = this.cells[0].innerHTML;
-                    pedirDatosPersona(idEmpleado)
-                        .then(data => {
-                            //datos optenidos
-                            console.log(data);
-                            if (data.errores && data.errores.length > 0) {
-                                // Mostrar los errores en el contenedor
-                                console.log('Errores:', data.errores);
 
-                            } else {
-                                // La operación fue exitosa, puedes realizar otras acciones aquí
-                                //datos personales
-                                $("#nombre").val(data.data.personas[0].Nombre);
-                                
-                                crearPDF(data.data.personas[0].Id, data.data, data.data.personas[0].Nombre, "DatosCompletos");
-
-                            }
-                        });
-                    
-                };
-            }(rows[i]);
-        }
-    }
 
     //crear pdf en base a la plantilla html
-    function crearPDF(Id, datos, nombre, tipoDocumento) {
+    function crearPDF(datos, nombre, tipoDocumento, RutaImg) {
         var dataObject = {};
-        dataObject['id'] = Id;
+        console.log("datos:");
+        console.log(datos["personas"]["Id"]);
         dataObject['opcion'] = 3; //crear pdf
         dataObject['datos'] = datos;
         dataObject['nombre'] = nombre;
         dataObject['tipoDocumento'] = tipoDocumento;
         dataJSON = JSON.stringify(dataObject);
+        console.log(dataJSON);
+        //verificamos si se estan enviando los datos completos
+        console.log(dataJSON);
         fetch('../upload.php', {
             method: 'POST',
             body: dataJSON,
@@ -781,10 +834,14 @@ $(document).ready(function () {
 
                 } else {
                     // La operación fue exitosa, puedes realizar otras acciones aquí
-                    console.log(data);
-                    console.log(data.ruta);
-                    //subirRutaDocumento(Id, tipoDocumento, data.ruta);
-                    console.log(data);
+                    rutaArchivo = "../" + data.ruta;
+
+
+                    subirRutaDocumento(data.Id, tipoDocumento, rutaArchivo);
+                    if (confirm("¿Desea abrir el archivo?")) {
+                        window.open(rutaArchivo, '_blank');
+                    }
+
 
                 }
 
@@ -836,6 +893,7 @@ $(document).ready(function () {
                 console.error('Error:', error);
             });
     }
+
 
 
 
