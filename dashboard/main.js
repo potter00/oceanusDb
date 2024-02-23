@@ -24,6 +24,7 @@ $(document).ready(function () {
     });
 
     $("#btnNuevo").click(function () {
+        resetForm();
         $("#formPersonas").trigger("reset");
         $(".modal-header").css("background-color", "#1cc88a");
         $(".modal-header").css("color", "white");
@@ -346,22 +347,9 @@ $(document).ready(function () {
             id = parseInt(fila.find('td:eq(0)').text());
 
         }
-
-        pedirDatosPersona(id)
-            .then(data => {
-                //datos optenidos
-                console.log(data);
-                if (data.errores && data.errores.length > 0) {
-                    // Mostrar los errores en el contenedor
-                    console.log('Errores:', data.errores);
-
-                } else {
-                    // La operación fue exitosa, puedes realizar otras acciones aquí
-                    //datos personales
-
-                    crearPDF(data.data, data.data.personas[0].Nombre, "DatosCompletos");
-                }
-            });
+        //Abrimos una nueva pestaña a Reporte.php con un GET el cual es el id
+        window.open("./vistas/plantilla_datos_completos.php?id=" + id, '_blank');
+        
 
     });
 
@@ -378,7 +366,7 @@ $(document).ready(function () {
 
     //boton generar credencial
     $(document).on("click", ".btnGenerarCredencial", function () {
-        console.log("generar credencial");
+        
         var id;
         var urlActual = window.location.href;
         var nombreArchivo = urlActual.split('/').pop(); // Obtiene el último segmento de la URL
@@ -399,6 +387,8 @@ $(document).ready(function () {
         
 
     });
+    //boton cerrar modalCrud
+    
 
     //funcion para subir archivo al servidor
     function subirArchivo(id, tipoDocumento, nombre, idFileInput) {
@@ -917,6 +907,37 @@ $(document).ready(function () {
             });
     }
 
+    //funcion para resetear los campos del formulario
+    function resetForm() {
+        // La operación fue exitosa, puedes realizar otras acciones aquí
+                    //datos personales
+                    $("#nombre").val("");
+                    $("#fechaNacimiento").val("");
+                    $("#curp").val("");
+                    $("#rfc").val("");
+                    $("#numeroFijo").val("");
+                    $("#numeroCelular").val("");
+                    $("#direccion").val("");
+                    $("#numeroLicencia").val("");
+                    $("#numeroPasaporte").val("");
+                    $("#fechaIngreso").val("");
+
+                    //datos medicos
+                    $("#alergias").val("");
+                    $("#enfermedadesCronicas").val("");
+                    $("#lesiones").val("");
+                    $("#alergiasMedicamentos").val("");
+                    $("#numeroSeguro").val("");
+                    $("#numeroEmergencia").val("");
+                    $("#tipoSangre").val("");
+
+                    //datos academicos
+                    $("#cedula").val("");
+                    $("#carrera").val("");
+                    $("#expLaboral").val("");
+                    $("#certificaciones").val("");
+                    $("#gradoEstudios").val("");
+    }
 
 
 

@@ -49,7 +49,17 @@
         sections[currentSection].classList.add('active');
 
     }
-
+    function volverPrimeraSeccion() {
+        console.log("volverPrimeraSeccion");
+        sections[currentSection].classList.remove('active');
+        currentSection = 0;
+        sections[currentSection].classList.add('active');
+    }
+    document.getElementById('btnCerrarModalCrud').addEventListener('click', function () {
+        
+        console.log("cerrar modal");
+        volverPrimeraSeccion();
+    });
     document.getElementById('formPersonas2').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
         
