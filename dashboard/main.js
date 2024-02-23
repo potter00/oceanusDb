@@ -376,6 +376,30 @@ $(document).ready(function () {
 
     });
 
+    //boton generar credencial
+    $(document).on("click", ".btnGenerarCredencial", function () {
+        console.log("generar credencial");
+        var id;
+        var urlActual = window.location.href;
+        var nombreArchivo = urlActual.split('/').pop(); // Obtiene el último segmento de la URL
+        var nombreArchivo = nombreArchivo.split('?')[0]; // Remueve cualquier query string
+        
+        if (nombreArchivo == "detalles_usuario.php") {
+
+            id = parseInt(urlActual.split('?').pop().split('=').pop());
+        } else {
+            fila = $(this).closest("tr");
+            id = parseInt(fila.find('td:eq(0)').text());
+            
+
+        }
+        //abrimos una nueva pestaña a Credencial.php con un GET el cual es el id
+        window.open("./Credencial.php?id=" + id, '_blank');
+        
+        
+
+    });
+
     //funcion para subir archivo al servidor
     function subirArchivo(id, tipoDocumento, nombre, idFileInput) {
         const archivoInput = document.getElementById(idFileInput);
@@ -804,14 +828,13 @@ $(document).ready(function () {
     //crear pdf en base a la plantilla html
     function crearPDF(datos, nombre, tipoDocumento, RutaImg) {
         var dataObject = {};
-        console.log("datos:");
-        console.log(datos["personas"]["Id"]);
+        
         dataObject['opcion'] = 3; //crear pdf
         dataObject['datos'] = datos;
         dataObject['nombre'] = nombre;
         dataObject['tipoDocumento'] = tipoDocumento;
         dataJSON = JSON.stringify(dataObject);
-        console.log(dataJSON);
+        
         //verificamos si se estan enviando los datos completos
         console.log(dataJSON);
         fetch('../upload.php', {

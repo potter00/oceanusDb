@@ -92,7 +92,7 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
             <br>
             <div class='btn-group'>
                 <button class='btn btn-primary btnEditar'>Editar</button>
-                <button class='btn btn-primary '>Generar Credencial</button>
+                <button class='btn btn-primary btnGenerarCredencial'>Generar Credencial</button>
                 <button class="btn btn-primary btnGenerarReporte">Generar Reporte</button>
                 <button class='btn btn-danger btnBorrar'>Borrar</button>
             </div>

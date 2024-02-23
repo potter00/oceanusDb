@@ -3,7 +3,7 @@ require_once('TCPDF-main\tcpdf.php');
 require_once('.\dashboard\bd\funciones.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos_recibidos = json_decode(file_get_contents("php://input"), true);
-    
+
     if (isset($_POST['opcion'])) {
         $opcion = $_POST['opcion'];
     } else {
@@ -80,72 +80,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $carpetaBase = $configuracion['ruta_archivos'];
             $carpetaDestino = $carpetaBase . $id . '/';
             $rutaArchivo = $carpetaDestino . $id . '_' . $nombre . '_' . $tipoDocumento . '.pdf';
-            
-            $carpetaRelativa = "archivos/".$id ."/". $id . '_' . $nombre . '_' . $tipoDocumento . '.pdf';
+
+            $carpetaRelativa = "archivos/" . $id . "/" . $id . '_' . $nombre . '_' . $tipoDocumento . '.pdf';
             // Crear la carpeta si no existe
             if (!file_exists($carpetaDestino)) {
                 mkdir($carpetaDestino, 0777, true);
             }
             //error_log("datos_recibidos: " . json_encode($datos_recibidos));
             try {
-            // Crea una instancia de TCPDF
-            $pdf = new TCPDF();
+                // Crea una instancia de TCPDF
+                $pdf = new TCPDF();
 
-            // Agrega una página al PDF
-            $pdf->AddPage();
+                // Agrega una página al PDF
+                $pdf->AddPage();
 
-            // Plantilla HTML (puedes cargar desde un archivo o definirla aquí)
-            $html = file_get_contents('dashboard\vistas\plantilla_datos_completos.html');
-            
-            // Reemplaza los marcadores de posición con los datos reales
-            $html = str_replace('{{nombre}}', $datos_recibidos['datos']['personas'][0]['Nombre'], $html);
-            $html = str_replace('{{fechaNacimiento}}', $datos_recibidos['datos']['personas'][0]['FechaNacimiento'], $html);
-            $html = str_replace('{{curp}}', $datos_recibidos['datos']['personas'][0]['Curp'], $html);
-            $html = str_replace('{{rfc}}', $datos_recibidos['datos']['personas'][0]['Rfc'], $html);
-            $html = str_replace('{{numero}}', $datos_recibidos['datos']['personas'][0]['NumeroCelular'], $html);
-            $html = str_replace('{{direccion}}', $datos_recibidos['datos']['personas'][0]['Direccion'], $html);
-            $html = str_replace('{{licencia}}', $datos_recibidos['datos']['personas'][0]['NumeroLicencia'], $html);
-            $html = str_replace('{{pasaporte}}', $datos_recibidos['datos']['personas'][0]['NumeroPasaporte'], $html);
-            $html = str_replace('{{fechaIngreso}}', $datos_recibidos['datos']['personas'][0]['FechaIngreso'], $html);
-            //Datos médicos
-            $html = str_replace('{{alergias}}', $datos_recibidos['datos']['medicos'][0]['Alergias'], $html);
-            $html = str_replace('{{enfermedades}}', $datos_recibidos['datos']['medicos'][0]['EnfermedadesCronicas'], $html);
-            $html = str_replace('{{lesiones}}', $datos_recibidos['datos']['medicos'][0]['Lesiones'], $html);
-            $html = str_replace('{{alergiasMedicamentos}}', $datos_recibidos['datos']['medicos'][0]['AlergiasMedicamentos'], $html);
-            $html = str_replace('{{inss}}', $datos_recibidos['datos']['medicos'][0]['NumeroSeguro'], $html);
-            $html = str_replace('{{numeroEmergencia}}', $datos_recibidos['datos']['medicos'][0]['NumeroEmergencia'], $html);
-            $html = str_replace('{{tipoSangre}}', $datos_recibidos['datos']['medicos'][0]['TipoSangre'], $html);
-            
-            //datos academicos
-            $html = str_replace('{{cedula}}', $datos_recibidos['datos']['academicos'][0]['Cedula'], $html);
-            $html = str_replace('{{carrera}}', $datos_recibidos['datos']['academicos'][0]['Carrera'], $html);
-            $html = str_replace('{{expLaboral}}', $datos_recibidos['datos']['academicos'][0]['ExpLaboral'], $html);
-            $html = str_replace('{{certificaciones}}', $datos_recibidos['datos']['academicos'][0]['Certificaciones'], $html);
-            $html = str_replace('{{gradoEstudios}}', $datos_recibidos['datos']['academicos'][0]['GradoEstudios'], $html);
-            
-            $edad = calcularEdad($datos_recibidos['datos']['personas'][0]['FechaNacimiento']);
+                if ($datos_recibidos['tipoDocumento'] == 'Credencial') {
+                    //parte frontal
+                    $html = file_get_contents('.\dashboard\Credencial.html');
+                    $html = str_replace('{{Nombre}}', $datos_recibidos['datos']['personas'][0]['Nombre'], $html);
+                    $html = str_replace('{{Rfc}}', $datos_recibidos['datos']['personas'][0]['Rfc'], $html);
+                    $html = str_replace('{{Curp}}', $datos_recibidos['datos']['personas'][0]['Curp'], $html);
+                    $html = str_replace('{{NumeroSeguro}}', $datos_recibidos['datos']['medicos'][0]['NumeroSeguro'], $html);
+                    $html = str_replace('{{Celular}}', $datos_recibidos['datos']['personas'][0]['NumeroCelular'], $html);
+                    $html = str_replace('{{Carrera}}', $datos_recibidos['datos']['academicos'][0]['Carrera'], $html);
 
-            $html = str_replace('{{edad}}', $edad, $html);
+                    //parte trasera
+                    $html = str_replace('{{TipoSangre}}', $datos_recibidos['datos']['medicos'][0]['TipoSangre'], $html);
+                    $html = str_replace('{{AlergiasMedicamentos}}', $datos_recibidos['datos']['medicos'][0]['Alergias'], $html);
+                    $html = str_replace('{{EnfermedadesCronicas}}', $datos_recibidos['datos']['medicos'][0]['EnfermedadesCronicas'], $html);
+                    $html = str_replace('{{NumeroEmergencia}}', $datos_recibidos['datos']['medicos'][0]['NumeroEmergencia'], $html);
+                    $pdf->writeHTML($html, true, false, true, false, '');
+
+                    // Guarda o muestra el PDF
+
+                    $pdf->Output($rutaArchivo, 'F');
+
+                } else {
+                    # code...
 
 
-            // Agrega el contenido HTML al PDF
-            $pdf->writeHTML($html, true, false, true, false, '');
+                    // Plantilla HTML (puedes cargar desde un archivo o definirla aquí)
+                    $html = file_get_contents('dashboard\vistas\plantilla_datos_completos.html');
 
-            // Guarda o muestra el PDF
-            
-                $pdf->Output($rutaArchivo, 'F');
+                    // Reemplaza los marcadores de posición con los datos reales
+                    $html = str_replace('{{nombre}}', $datos_recibidos['datos']['personas'][0]['Nombre'], $html);
+                    $html = str_replace('{{fechaNacimiento}}', $datos_recibidos['datos']['personas'][0]['FechaNacimiento'], $html);
+                    $html = str_replace('{{curp}}', $datos_recibidos['datos']['personas'][0]['Curp'], $html);
+                    $html = str_replace('{{rfc}}', $datos_recibidos['datos']['personas'][0]['Rfc'], $html);
+                    $html = str_replace('{{numero}}', $datos_recibidos['datos']['personas'][0]['NumeroCelular'], $html);
+                    $html = str_replace('{{direccion}}', $datos_recibidos['datos']['personas'][0]['Direccion'], $html);
+                    $html = str_replace('{{licencia}}', $datos_recibidos['datos']['personas'][0]['NumeroLicencia'], $html);
+                    $html = str_replace('{{pasaporte}}', $datos_recibidos['datos']['personas'][0]['NumeroPasaporte'], $html);
+                    $html = str_replace('{{fechaIngreso}}', $datos_recibidos['datos']['personas'][0]['FechaIngreso'], $html);
+                    //Datos médicos
+                    $html = str_replace('{{alergias}}', $datos_recibidos['datos']['medicos'][0]['Alergias'], $html);
+                    $html = str_replace('{{enfermedades}}', $datos_recibidos['datos']['medicos'][0]['EnfermedadesCronicas'], $html);
+                    $html = str_replace('{{lesiones}}', $datos_recibidos['datos']['medicos'][0]['Lesiones'], $html);
+                    $html = str_replace('{{alergiasMedicamentos}}', $datos_recibidos['datos']['medicos'][0]['AlergiasMedicamentos'], $html);
+                    $html = str_replace('{{inss}}', $datos_recibidos['datos']['medicos'][0]['NumeroSeguro'], $html);
+                    $html = str_replace('{{numeroEmergencia}}', $datos_recibidos['datos']['medicos'][0]['NumeroEmergencia'], $html);
+                    $html = str_replace('{{tipoSangre}}', $datos_recibidos['datos']['medicos'][0]['TipoSangre'], $html);
+
+                    //datos academicos
+                    $html = str_replace('{{cedula}}', $datos_recibidos['datos']['academicos'][0]['Cedula'], $html);
+                    $html = str_replace('{{carrera}}', $datos_recibidos['datos']['academicos'][0]['Carrera'], $html);
+                    $html = str_replace('{{expLaboral}}', $datos_recibidos['datos']['academicos'][0]['ExpLaboral'], $html);
+                    $html = str_replace('{{certificaciones}}', $datos_recibidos['datos']['academicos'][0]['Certificaciones'], $html);
+                    $html = str_replace('{{gradoEstudios}}', $datos_recibidos['datos']['academicos'][0]['GradoEstudios'], $html);
+
+                    $edad = calcularEdad($datos_recibidos['datos']['personas'][0]['FechaNacimiento']);
+
+                    $html = str_replace('{{edad}}', $edad, $html);
+                    // Agrega el contenido HTML al PDF
+                    $pdf->writeHTML($html, true, false, true, false, '');
+
+                    // Guarda o muestra el PDF
+
+                    $pdf->Output($rutaArchivo, 'F');
+                }
+
+
             } catch (\Throwable $th) {
                 //throw $th;
                 error_log("Error al guardar el archivo: " . $th);
             }
-            
-            
-            
+
+
+
             header('Content-Type: application/json');
             $respuesta = array('success' => true, 'message' => 'Archivo guardado con éxito', 'ruta' => $carpetaRelativa, 'Id' => $id);
-            
+
             echo json_encode($respuesta);
-            
+
             break;
 
         default:
