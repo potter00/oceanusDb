@@ -260,8 +260,14 @@ $resultado->execute();
 $dataDocumentos = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
 
+if ($dataDocumentos == null) {
+    $dataDocumentos[0]['Foto'] = ".\dashboard\img\user.png";
+}
+
+
 $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
 $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
+
 
 
 
@@ -320,9 +326,9 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
                 <?php echo $dataMedicos[0]['EnfermedadesCronicas'] ?>
             </p>
             <p><strong>EN CASO DE EMERGENCIA LLAMAR A:</strong></p>
-            <p>"nombre emergencia"</p>
+            <p><?php echo $dataMedicos[0]['NombreEmergencia'] ?></p>
             <p><strong>NUMERO DE TELEFONO:</strong>
-                <?php echo $dataPersonas[0]['NumeroCelular'] ?>
+                <?php echo $dataMedicos[0]['NumeroEmergencia'] ?>
             </p>
             <p><strong></strong></p>
         </div>

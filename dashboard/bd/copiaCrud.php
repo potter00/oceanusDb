@@ -36,6 +36,8 @@ switch ($datos['opcion']) {
         $numeroSeguro = $datos['numeroSeguro'];
         $numeroEmergencia = $datos['numeroEmergencia'];
         $tipoSangre = $datos['tipoSangre'];
+        $nombreEmergencia = $datos['nombreEmergencia'];
+        $genero = $datos['genero'];
 
         //datos academicos
         $cedula = $datos['cedula'];
@@ -190,11 +192,17 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':numeroLicencia', $numeroLicencia);
                 $resultado->bindParam(':numeroPasaporte', $numeroPasaporte);
                 $resultado->bindParam(':fechaIngreso', $fechaIngreso);
+
                 $resultado->execute();
 
                 $message = 'Datos procesados con exito';
             } catch (PDOException $e) {
                 $message = 'Error al procesar los datos: ' . $e->getMessage();
+                if (isset($errores)) {
+                    $errores[] = $message;
+                } else {
+                    $errores = array($message);
+                }
             }
 
             //un vez los datos insertados buscamos el id del ultimo registro
@@ -206,13 +214,18 @@ switch ($datos['opcion']) {
 
             } catch (PDOException $e) {
                 $message = 'Error al ejecutar la consulta buscar por id: ' . $e->getMessage();
+                if (isset($errores)) {
+                    $errores[] = $message;
+                } else {
+                    $errores = array($message);
+                }
             }
             $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
             $ultimaId = $data[0]['ultima_id'];
 
 
             //insersion datos medicos
-            $consulta = "INSERT INTO datosmedicos (idEmpleado, Alergias, EnfermedadesCronicas, Lesiones, AlergiasMedicamentos, NumeroSeguro, NumeroEmergencia, TipoSangre) VALUES (:idEmpleado, :alergias, :enfermedadesCronicas, :lesiones, :alergiasMedicamentos, :numeroSeguro, :numeroEmergencia, :tipoSangre)";
+            $consulta = "INSERT INTO datosmedicos (idEmpleado, Alergias, EnfermedadesCronicas, Lesiones, AlergiasMedicamentos, NumeroSeguro, NumeroEmergencia, TipoSangre, NombreEmergencia, Genero) VALUES (:idEmpleado, :alergias, :enfermedadesCronicas, :lesiones, :alergiasMedicamentos, :numeroSeguro, :numeroEmergencia, :tipoSangre, :nombreEmergencia, :genero)";
             $resultado = $conexion->prepare($consulta);
             try {
                 //Ejecucion de la insercion con sus medidas de seguridad
@@ -224,11 +237,19 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':numeroSeguro', $numeroSeguro);
                 $resultado->bindParam(':numeroEmergencia', $numeroEmergencia);
                 $resultado->bindParam(':tipoSangre', $tipoSangre);
+                $resultado->bindParam(':nombreEmergencia', $nombreEmergencia);
+                $resultado->bindParam(':genero', $genero);
+
                 $resultado->execute();
 
                 $message = 'Datos procesados con exito';
             } catch (PDOException $e) {
-                $message = 'Error al procesar los datos: ' . $e->getMessage();
+                $message = 'Error al procesar los datos medicos: ' . $e->getMessage();
+                if (isset($errores)) {
+                    $errores[] = $message;
+                } else {
+                    $errores = array($message);
+                }
             }
 
             //insersion datos academicos
@@ -246,12 +267,17 @@ switch ($datos['opcion']) {
 
                 $message = 'Datos procesados con exito';
             } catch (PDOException $e) {
-                $message = 'Error al procesar los datos: ' . $e->getMessage();
+                if (isset($errores)) {
+                    $errores[] = $message;
+                } else {
+                    $errores = array($message);
+                }
+                $message = 'Error al procesar los datos academicos: ' . $e->getMessage();
 
             }
 
             //insertamos los datos de docimentacion
-            $consulta = "INSERT INTO documentacion (IdEmpleado, Credencial, Licencia, Pasaporte, CV, Curp, Inss, ConstanciaSat) VALUES (:idEmpleado, :credencial, :licencia, :pasaporte, :cv, :curp, :inss, :constanciaSat)";
+            $consulta = "INSERT INTO documentacion (IdEmpleado, Credencial, Licencia, Pasaporte, CV, Curp, Inss, ConstanciaSat, Foto) VALUES (:idEmpleado, :credencial, :licencia, :pasaporte, :cv, :curp, :inss, :constanciaSat, :foto)";
             $resultado = $conexion->prepare($consulta);
 
             try {
@@ -264,11 +290,17 @@ switch ($datos['opcion']) {
                 $resultado->bindValue(':curp', 'sin cambio');
                 $resultado->bindValue(':inss', 'sin cambio');
                 $resultado->bindValue(':constanciaSat', 'sin cambio');
+                $resultado->bindValue(':foto', 'sin cambio');
                 $resultado->execute();
 
                 $message = 'Datos procesados con exito';
             } catch (PDOException $e) {
-                $message = 'Error al procesar los datos: ' . $e->getMessage();
+                $message = 'Error al procesar los datos de documentacion: ' . $e->getMessage();
+                if (isset($errores)) {
+                    $errores[] = $message;
+                } else {
+                    $errores = array($message);
+                }
             }
 
             //fin de la insercion
@@ -418,7 +450,7 @@ switch ($datos['opcion']) {
 
 
 
-        $datos = array( 
+        $datos = array(
             'personas' => $dataPersonas,
             'medicos' => $dataMedicos,
             'academicos' => $dataAcademicos,
@@ -450,6 +482,9 @@ switch ($datos['opcion']) {
         $numeroSeguro = $datos['numeroSeguro'];
         $numeroEmergencia = $datos['numeroEmergencia'];
         $tipoSangre = $datos['tipoSangre'];
+        $nombreEmergencia = $datos['nombreEmergencia'];
+        $genero = $datos['genero'];
+        error_log("Datos medicos: " . print_r($datos, true));
 
         //datos academicos
         $cedula = $datos['cedula'];
@@ -605,15 +640,23 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':numeroPasaporte', $numeroPasaporte);
                 $resultado->bindParam(':fechaIngreso', $fechaIngreso);
                 $resultado->bindParam(':id', $id);
+                
+
                 $resultado->execute();
 
                 $message = 'Datos procesados con exito';
             } catch (PDOException $e) {
+
                 $message = 'Error al procesar los datos: ' . $e->getMessage();
+                if (isset($errores)) {
+                    $errores[] = $message;
+                } else {
+                    $errores = array($message);
+                }
             }
 
             //actualizacion datos medicos
-            $consulta = "UPDATE datosmedicos SET Alergias = :alergias, EnfermedadesCronicas = :enfermedadesCronicas, Lesiones = :lesiones, AlergiasMedicamentos = :alergiasMedicamentos, NumeroSeguro = :numeroSeguro, NumeroEmergencia = :numeroEmergencia, TipoSangre = :tipoSangre WHERE idEmpleado = :id";
+            $consulta = "UPDATE datosmedicos SET Alergias = :alergias, EnfermedadesCronicas = :enfermedadesCronicas, Lesiones = :lesiones, AlergiasMedicamentos = :alergiasMedicamentos, NumeroSeguro = :numeroSeguro, NumeroEmergencia = :numeroEmergencia, TipoSangre = :tipoSangre, nombreEmergencia = :nombreEmergencia, genero = :genero  WHERE idEmpleado = :id";
             $resultado = $conexion->prepare($consulta);
             try {
                 //Ejecucion de la actualizacion con sus medidas de seguridad
@@ -625,11 +668,18 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':numeroSeguro', $numeroSeguro);
                 $resultado->bindParam(':numeroEmergencia', $numeroEmergencia);
                 $resultado->bindParam(':tipoSangre', $tipoSangre);
+                $resultado->bindParam(':nombreEmergencia', $nombreEmergencia);
+                $resultado->bindParam(':genero', $genero);
                 $resultado->execute();
 
                 $message = 'Datos procesados con exito';
             } catch (PDOException $e) {
                 $message = 'Error al procesar los datos: ' . $e->getMessage();
+                if (isset($errores)) {
+                    $errores[] = $message;
+                } else {
+                    $errores = array($message);
+                }
             }
             //actualizacion datos academicos
             $consulta = "UPDATE formacademica SET Cedula = :cedula, Carrera = :carrera, ExpLaboral = :expLaboral, Certificaciones = :certificaciones, GradoEstudios = :gradoEstudios WHERE idEmpleado = :id";
@@ -647,6 +697,11 @@ switch ($datos['opcion']) {
                 $message = 'Datos procesados con exito';
             } catch (PDOException $e) {
                 $message = 'Error al procesar los datos: ' . $e->getMessage();
+                if (isset($errores)) {
+                    $errores[] = $message;
+                } else {
+                    $errores = array($message);
+                }
             }
 
 
@@ -694,7 +749,7 @@ switch ($datos['opcion']) {
             }
         }
         break;
-        
+
     case 7: //solicitar ruta documento
         # code...
         $id = $datos['id'];

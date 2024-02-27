@@ -34,9 +34,9 @@
             <h1>Datos Academicos</h1>
             <?php require_once "vistas/form_datos_academicos.php" ?>
         </div>
-        
-       
-        
+
+
+
     </div>
 </form>
 <script>
@@ -56,13 +56,13 @@
         sections[currentSection].classList.add('active');
     }
     document.getElementById('btnCerrarModalCrud').addEventListener('click', function () {
-        
-        console.log("cerrar modal");
+
+
         volverPrimeraSeccion();
     });
     document.getElementById('formPersonas2').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
-        
+
         // Obtener los datos del formulario
         var formData = new FormData(document.getElementById('formPersonas2'));
         // Crear un objeto vacío para almacenar los datos
@@ -75,20 +75,28 @@
 
             formDataObject[key] = value;
         });
+        var dropdown = document.getElementById("genero");
+
+        // Obtener el valor seleccionado
+        var generoSeleccionado = dropdown.options[dropdown.selectedIndex].value;
+
+        // Mostrar el valor seleccionado en la consola
+        console.log("Género seleccionado:", generoSeleccionado);
+        formDataObject['genero'] = generoSeleccionado;
         // Agregar la opción al objeto en este caso para insertar los datos
         formDataObject['opcion'] = opcion;
         // Agregar el id al objeto en caso de que se esté actualizando
         try {
-            formDataObject['id'] = id;
+            formDataObject['id'] = formData.get('id_usuario');
         } catch (error) {
             console.log("No se está actualizando");
         }
-        
+
 
         // Convertir el objeto a una cadena JSON
         var formDataJSON = JSON.stringify(formDataObject);
         //console.log('Datos en formato JSON:', formDataJSON);
-        
+
 
         // Realizar la solicitud POST con fetch
         fetch('bd/CopiaCrud.php', {

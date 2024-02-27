@@ -113,9 +113,17 @@ $resultado = $conexion->prepare($consulta);
 $resultado->execute();
 $dataDocumentos = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
+//si no hay imagen de usuario usamos una por defecto
+if ($dataDocumentos == null) {
+    $dataDocumentos[0]['Foto'] = "../img/user.png";
+}else{
+  $dataDocumentos[0]['Foto'] = "../../" . $dataDocumentos[0]['Foto'];
+}
+
 
 $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
-$rutaImagenUsuario = "..\\..\\" . $rutaImagenUsuario;
+
+
 
 $edad = calcularEdad($dataPersonas[0]['FechaNacimiento']);
 
@@ -132,7 +140,7 @@ $edad = calcularEdad($dataPersonas[0]['FechaNacimiento']);
             <p>Carrera: <?php echo $dataAcademicos[0]['Carrera']?></p>
             <p>Dirección: <?php echo $dataPersonas[0]['Direccion']?></p>
             <p>Teléfono: <?php echo $dataPersonas[0]['NumeroCelular']?></p>
-            <p>Correo electrónico: ""correo""</p>
+            <p>Genero: <?php echo $dataMedicos[0]['Genero']?></p>
         </div>
         <div class="main-content">
           <img src="../img/oceanus-logo.svg" alt="Logo" class="logo">
@@ -144,6 +152,7 @@ $edad = calcularEdad($dataPersonas[0]['FechaNacimiento']);
                     <li>Enfermedades: <?php echo $dataMedicos[0]['EnfermedadesCronicas']?></li>
                     <li>Lesiones: <?php echo $dataMedicos[0]['Lesiones']?></li>
                     <li>NSS: <?php echo $dataMedicos[0]['NumeroSeguro']?></li>
+                    <li>Nombre para llamar a emergencia: <?php echo $dataMedicos[0]['NombreEmergencia']?></li>
                     <li>Número de Emergencia: <?php echo $dataMedicos[0]['NumeroEmergencia']?></li>
                     <li>Tipo de Sangre: <?php echo $dataMedicos[0]['TipoSangre']?></li>
                 </ul>

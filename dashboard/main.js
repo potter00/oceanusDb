@@ -224,6 +224,7 @@ $(document).ready(function () {
                 } else {
                     // La operación fue exitosa, puedes realizar otras acciones aquí
                     //datos personales
+                    $("#id_usuario").val(data.data.personas[0].Id);
                     $("#nombre").val(data.data.personas[0].Nombre);
                     $("#fechaNacimiento").val(data.data.personas[0].FechaNacimiento);
                     $("#curp").val(data.data.personas[0].Curp);
@@ -243,7 +244,8 @@ $(document).ready(function () {
                     $("#numeroSeguro").val(data.data.medicos[0].NumeroSeguro);
                     $("#numeroEmergencia").val(data.data.medicos[0].NumeroEmergencia);
                     $("#tipoSangre").val(data.data.medicos[0].TipoSangre);
-
+                    $("#nombreEmergencia").val(data.data.medicos[0].NombreEmergencia);
+                    document.getElementById("genero").value = data.data.medicos[0].Genero;
                     //datos academicos
                     $("#cedula").val(data.data.academicos[0].Cedula);
                     $("#carrera").val(data.data.academicos[0].Carrera);
@@ -566,6 +568,9 @@ $(document).ready(function () {
                     boton.disabled = true;
                     //verificamos si todos los documentos estan subidos
 
+                    
+
+
                     //Credencial
                     if (estadoDocumento[0].Credencial == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
@@ -739,6 +744,7 @@ $(document).ready(function () {
     //descargar documento
     function descargarDocumento(rutaDocumento, nombreDocumento, empleado) {
         // Obtén la referencia a la fila que deseas cambiar
+        
         rutaDocumento = "../" + rutaDocumento;
         fetch(rutaDocumento)
             .then(response => {
@@ -755,7 +761,7 @@ $(document).ready(function () {
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
                 a.href = url;
-                NombreDocumento = empleado + "_" + nombreDocumento + '.pdf';
+                NombreDocumento = empleado.trim() + "_" + nombreDocumento + '.' + obtenerExtension(rutaDocumento);
                 // Asigna un nombre al archivo PDF descargable
                 a.download = NombreDocumento;
 
@@ -939,6 +945,11 @@ $(document).ready(function () {
                     $("#gradoEstudios").val("");
     }
 
+    //funcion para obtener extencion del archivo
+    function obtenerExtension(archivo) {
+        var extension = archivo.split('.').pop();
+        return extension;
+    }
 
 
 

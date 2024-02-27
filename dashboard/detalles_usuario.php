@@ -50,11 +50,21 @@ $resultado = $conexion->prepare($consulta);
 $resultado->execute();
 $dataAcademicos = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
+try {
+
+    $consulta = "SELECT * FROM documentacion WHERE idEmpleado = $id";
+    $resultado = $conexion->prepare($consulta);
+    $resultado->execute();
+    $dataDocumentos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+} catch (\Throwable $th) {
+    error_log($th);
+}
 //optenemos los datos de documentos
-$consulta = "SELECT * FROM documentacion WHERE idEmpleado = $id";
-$resultado = $conexion->prepare($consulta);
-$resultado->execute();
-$dataDocumentos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+//si no hay imagen de usuario usamos una por defecto
+if ($dataDocumentos == null) {
+    $dataDocumentos[0]['Foto'] = ".\dashboard\img\user.png";
+}
 
 
 $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
@@ -68,7 +78,8 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
 <body>
     <div class="container">
         <div class="image">
-            <img src="<?php echo $rutaImagenUsuario ?>" alt="Imagen de Usuario" width="100%" style="border-radius: 20px;">
+            <img src="<?php echo $rutaImagenUsuario ?>" alt="Imagen de Usuario" width="262.75px" height="240.55px"
+                style="border-radius: 20px;">
         </div>
         <div class="data-list">
             <h2>Datos del Usuario</h2>
@@ -157,11 +168,17 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
                 <li><strong>Numero de Seguro: </strong>
                     <?php echo $dataMedicos[0]['NumeroSeguro'] ?>
                 </li>
+                <li><strong>Nombre de la persona para llamada a emergencia: </strong>
+                    <?php echo $dataMedicos[0]['NombreEmergencia'] ?>
+                </li>
                 <li><strong>Numero Emergencia: </strong>
                     <?php echo $dataMedicos[0]['NumeroEmergencia'] ?>
                 </li>
                 <li><strong>Tipo de Sangre: </strong>
                     <?php echo $dataMedicos[0]['TipoSangre'] ?>
+                </li>
+                <li><strong>Genero: </strong>
+                    <?php echo $dataMedicos[0]['Genero'] ?>
                 </li>
             </ul>
             <br><br><br>
