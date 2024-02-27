@@ -114,7 +114,7 @@ $resultado->execute();
 $dataDocumentos = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
 //si no hay imagen de usuario usamos una por defecto
-if ($dataDocumentos == null) {
+if ($dataDocumentos[0]['Foto'] == 'sin cambio') {
     $dataDocumentos[0]['Foto'] = "../img/user.png";
 }else{
   $dataDocumentos[0]['Foto'] = "../../" . $dataDocumentos[0]['Foto'];

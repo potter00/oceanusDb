@@ -62,7 +62,7 @@ try {
 //optenemos los datos de documentos
 
 //si no hay imagen de usuario usamos una por defecto
-if ($dataDocumentos == null) {
+if ($dataDocumentos[0]['Foto'] == 'sin cambio') {
     $dataDocumentos[0]['Foto'] = ".\dashboard\img\user.png";
 }
 

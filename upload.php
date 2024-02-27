@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tipoDocumento = $datos_recibidos['tipoDocumento'];
 
             // Carpeta donde se guardarán los archivos (asegúrate de tener permisos de escritura)
-            $carpetaBase = $configuracion['ruta_archivos'];
+            $carpetaBase = "./archivos/";
             $carpetaDestino = $carpetaBase . $id . '/';
             $rutaArchivo = $carpetaDestino . $id . '_' . $nombre . '_' . $tipoDocumento . '.pdf';
 

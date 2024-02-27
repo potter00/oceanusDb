@@ -260,7 +260,7 @@ $resultado->execute();
 $dataDocumentos = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
 
-if ($dataDocumentos == null) {
+if ($dataDocumentos[0]['Foto'] == 'sin cambio') {
     $dataDocumentos[0]['Foto'] = ".\dashboard\img\user.png";
 }
 
@@ -278,7 +278,7 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
     <!-- Credencial Frontal -->
     <div class="frontal">
         <div class="logo">
-            <img src="/dashboard/img/oceanus-logo.svg" alt="Logo de la Empresa">
+            <img src="./img/oceanus-logo.svg" alt="Logo de la Empresa">
         </div>
         <div class="foto">
             <img src="<?php echo $rutaImagenUsuario ?>" alt="Foto del Empleado">
