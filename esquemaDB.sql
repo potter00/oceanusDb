@@ -22,12 +22,14 @@ CREATE TABLE IF NOT EXISTS `datosmedicos` (
   `EnfermedadesCronicas` varchar(150) DEFAULT 'N/A',
   `Lesiones` varchar(150) DEFAULT 'N/A',
   `AlergiasMedicamentos` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'N/A',
-  `NumeroSeguro` bigint unsigned NOT NULL,
-  `NumeroEmergencia` int unsigned NOT NULL DEFAULT '0',
+  `NumeroSeguro` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `NumeroEmergencia` varchar(50) NOT NULL DEFAULT '0',
   `TipoSangre` varchar(5) NOT NULL DEFAULT '0',
+  `NombreEmergencia` varchar(50) DEFAULT NULL,
+  `Genero` set('masculino','femenino','otro') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`IdDatosMedicos`),
   UNIQUE KEY `idEmpleado` (`idEmpleado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -42,9 +44,11 @@ CREATE TABLE IF NOT EXISTS `documentacion` (
   `Curp` varchar(150) NOT NULL,
   `Inss` varchar(150) NOT NULL,
   `ConstanciaSat` varchar(150) NOT NULL,
+  `Foto` varchar(150) NOT NULL,
+  `DatosCompletos` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`IdDocumentacion`),
   UNIQUE KEY `IdEmpleado` (`IdEmpleado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -72,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `formacademica` (
   `GradoEstudios` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdDatosAcademicos`) USING BTREE,
   UNIQUE KEY `IdEmpleado` (`IdEmpleado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -90,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `personas` (
   `NumeroPasaporte` varchar(9) COLLATE utf8mb3_spanish_ci DEFAULT '',
   `FechaIngreso` date DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 -- La exportación de datos fue deseleccionada.
 

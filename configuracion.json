@@ -1,12 +1,8 @@
-
 {
-    "database": {
-      "host": "127.0.0.2",
-      "username": "root",
-      "password": "",
-      "database_name": "crud_2019"
-    },
-    "ruta_archivos": "C:/laragon/www/loginBase/archivos/"
-    
+  "database": {
+    "host": "192.168.1.124",
+    "username": "Admin",
+    "password": "Osp2508!",
+    "database_name": "crud_2019"
   }
-  
+}
