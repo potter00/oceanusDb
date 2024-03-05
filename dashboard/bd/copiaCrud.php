@@ -1,5 +1,5 @@
 <?php
-include_once '../bd/conexion.php';
+include_once '../../../loginBase/bd/conexion.php';
 include_once 'funciones.php';
 $objeto = new Conexion();
 $conexion = $objeto->Conectar();

@@ -85,8 +85,8 @@
 //obtencion de id usuario
 $id = $_GET['id'];
 //pedimos datos del usuario conforme su id
-include_once '..\bd\conexion.php';
-include_once '..\bd\funciones.php';
+include_once '../../../loginBase/bd/conexion.php';
+include_once '../../dashboard/bd/funciones.php';
 $objeto = new Conexion();
 $conexion = $objeto->Conectar();
 

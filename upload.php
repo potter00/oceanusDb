@@ -1,6 +1,6 @@
 <?php
-require_once('TCPDF-main\tcpdf.php');
-require_once('.\dashboard\bd\funciones.php');
+
+require_once('../loginBase/dashboard/bd/funciones.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos_recibidos = json_decode(file_get_contents("php://input"), true);
 

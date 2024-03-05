@@ -46,7 +46,7 @@ $(document).ready(function () {
         dataObject['id'] = id;
         dataObject['opcion'] = 5; //solicitar documentos
         dataJSON = JSON.stringify(dataObject);
-        fetch('bd/CopiaCrud.php', {
+        fetch('../dashboard/bd/copiaCrud.php', {
             method: 'POST',
             body: dataJSON,
             headers: {
@@ -201,7 +201,7 @@ $(document).ready(function () {
         dataObject['id'] = id;
         dataObject['opcion'] = 3;
         dataJSON = JSON.stringify(dataObject);
-        fetch('bd/CopiaCrud.php', {
+        fetch('../dashboard/bd/copiaCrud.php', {
             method: 'POST',
             body: dataJSON,
             headers: {
@@ -299,7 +299,7 @@ $(document).ready(function () {
         dataObject['opcion'] = opcion;
         dataJSON = JSON.stringify(dataObject);
         if (respuesta) {
-            fetch('bd/CopiaCrud.php', {
+            fetch('../dashboard/bd/copiaCrud.php', {
                 method: 'POST',
                 body: dataJSON,
                 headers: {
@@ -499,7 +499,7 @@ $(document).ready(function () {
         dataObject['ruta'] = ruta;
         dataObject['opcion'] = 6; //subir ruta
         dataJSON = JSON.stringify(dataObject);
-        fetch('bd/CopiaCrud.php', {
+        fetch('../dashboard/bd/copiaCrud.php', {
             method: 'POST',
             body: dataJSON,
             headers: {
@@ -538,7 +538,7 @@ $(document).ready(function () {
         dataObject['opcion'] = 5; //solicitar documentos
         dataJSON = JSON.stringify(dataObject);
 
-        fetch('bd/CopiaCrud.php', {
+        fetch('../dashboard/bd/copiaCrud.php', {
             method: 'POST',
             body: dataJSON,
             headers: {
@@ -788,7 +788,7 @@ $(document).ready(function () {
         dataObject['tipoDocumento'] = tipoDocumento;
         dataObject['opcion'] = 7; //pedir ruta
         dataJSON = JSON.stringify(dataObject);
-        return fetch('bd/CopiaCrud.php', {
+        return fetch('../dashboard/bd/copiaCrud.php', {
             method: 'POST',
             body: dataJSON,
             headers: {
@@ -882,7 +882,7 @@ $(document).ready(function () {
         dataObject['id'] = id;
         dataObject['opcion'] = 3;
         dataJSON = JSON.stringify(dataObject);
-        return fetch('bd/CopiaCrud.php', {
+        return fetch('../dashboard/bd/copiaCrud.php', {
             method: 'POST',
             body: dataJSON,
             headers: {

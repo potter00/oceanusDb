@@ -3,11 +3,11 @@
 <!--INICIO del cont principal-->
 <div class="container">
     <h1>Contenido principal</h1>
-
+    
 
 
     <?php
-    include_once '.\bd\conexion.php';
+    include_once '../../loginBase/bd/conexion.php';
     $objeto = new Conexion();
     $conexion = $objeto->Conectar();
 
