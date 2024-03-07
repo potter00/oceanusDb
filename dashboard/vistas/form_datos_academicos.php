@@ -18,7 +18,8 @@
     <label for="gradoEstudios" class="col-form-label">GradoEstudios: <span class="required">*</span></label>
     <input type="text" class="form-control" id="gradoEstudios" name="gradoEstudios">
 </div>
+
 <div class="button-container">
     <button type="button" class="btn btn-light" onclick="mostrarSeccion(-1)">Anterior</button>
-    <button type="submit" id="btnGuardar" class="btn btn-dark">Guardar</button>
+    <button type="button" class="btn btn-light" onclick="mostrarSeccion(1)">Siguiente</button>
 </div>

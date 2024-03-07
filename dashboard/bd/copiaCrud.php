@@ -15,7 +15,7 @@ $datos = json_decode(file_get_contents("php://input"), true);
 switch ($datos['opcion']) {
     case 1: //alta
         //recopilamos los datos necesarios para la operacion
-
+        
         //Datos personales
         $nombre = $datos['nombre'];
         $fechaNacimiento = $datos['fechaNacimiento'];
@@ -177,7 +177,7 @@ switch ($datos['opcion']) {
 
 
             //preparacion para la insercion
-            $consulta = "INSERT INTO personas (nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso) VALUES (:nombre, :fechaNacimiento, :curp, :rfc, :numeroFijo, :numeroCelular, :direccion, :numeroLicencia, :numeroPasaporte, :fechaIngreso)";
+            $consulta = "INSERT INTO personas (nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, inicioContrato, finContrato) VALUES (:nombre, :fechaNacimiento, :curp, :rfc, :numeroFijo, :numeroCelular, :direccion, :numeroLicencia, :numeroPasaporte, :fechaIngreso, :estado, :tipoContrato, :inicioContrato, :finContrato)";
             $resultado = $conexion->prepare($consulta);
 
             try {
@@ -192,6 +192,11 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':numeroLicencia', $numeroLicencia);
                 $resultado->bindParam(':numeroPasaporte', $numeroPasaporte);
                 $resultado->bindParam(':fechaIngreso', $fechaIngreso);
+                $resultado->bindParam(':estado', $estadoEmpleado);
+                $resultado->bindParam(':tipoContrato', $tipoContrato);
+                $resultado->bindParam(':inicioContrato', $fechaInicioContrato);
+                $resultado->bindParam(':finContrato', $fechaFinContrato);
+                
 
                 $resultado->execute();
 
@@ -458,7 +463,7 @@ switch ($datos['opcion']) {
         );
         break;
     case 4: //actualizar
-        error_log("entro a actualizar");
+        
         //recopilamos los datos necesarios para la operacion
 
         //Datos personales
@@ -473,6 +478,10 @@ switch ($datos['opcion']) {
         $numeroLicencia = $datos['numeroLicencia'];
         $numeroPasaporte = $datos['numeroPasaporte'];
         $fechaIngreso = $datos['fechaIngreso'];
+        $tipoContrato = $datos['tipoContrato'];
+        $estadoEmpleado = $datos['estado'];
+        $fechaInicioContrato = $datos['fechaInicioContrato'];
+        $fechaFinContrato = $datos['fechaFinContrato'];
 
         //Datos medicos
         $alergias = $datos['alergias'];
@@ -624,7 +633,7 @@ switch ($datos['opcion']) {
         } else {
 
             //preparacion para la actualizacion
-            $consulta = "UPDATE personas SET nombre = :nombre, fechaNacimiento = :fechaNacimiento, curp = :curp, rfc = :rfc, numeroFijo = :numeroFijo, numeroCelular = :numeroCelular, direccion = :direccion, numeroLicencia = :numeroLicencia, numeroPasaporte = :numeroPasaporte, fechaIngreso = :fechaIngreso WHERE id = :id";
+            $consulta = "UPDATE personas SET nombre = :nombre, fechaNacimiento = :fechaNacimiento, curp = :curp, rfc = :rfc, numeroFijo = :numeroFijo, numeroCelular = :numeroCelular, direccion = :direccion, numeroLicencia = :numeroLicencia, numeroPasaporte = :numeroPasaporte, fechaIngreso = :fechaIngreso, estado = :estado, tipoContrato = :tipoContrato, inicioContrato = :inicioContrato, finContrato = :finContrato  WHERE id = :id";
             $resultado = $conexion->prepare($consulta);
 
             try {
@@ -640,6 +649,11 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':numeroPasaporte', $numeroPasaporte);
                 $resultado->bindParam(':fechaIngreso', $fechaIngreso);
                 $resultado->bindParam(':id', $id);
+                $resultado->bindParam(':estado', $estadoEmpleado);
+                $resultado->bindParam(':tipoContrato', $tipoContrato);
+                $resultado->bindParam(':inicioContrato', $fechaInicioContrato);
+                $resultado->bindParam(':finContrato', $fechaFinContrato);
+
                 
 
                 $resultado->execute();

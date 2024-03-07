@@ -35,7 +35,7 @@
 <div class="form-group">
     <label for="genero" class="col-form-label">Genero: <span class="required">*</span>
 
-        <select id="genero" name="genero">
+        <select id="genero" name="genero" class="form-control">
             <option value="masculino">Masculino</option>
             <option value="femenino">Femenino</option>
             <option value="otro">Otro</option>
@@ -44,6 +44,6 @@
 
 </div>
 <div class="button-container">
-    <button type="button" class="btn btn-light" onclick="mostrarSeccion(1)">Siguiente</button>
     <button type="button" class="btn btn-light" onclick="mostrarSeccion(-1)">Anterior</button>
+    <button type="button" class="btn btn-light" onclick="mostrarSeccion(1)">Siguiente</button>
 </div>

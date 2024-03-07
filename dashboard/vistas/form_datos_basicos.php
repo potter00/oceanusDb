@@ -7,8 +7,8 @@
     <input type="text" class="form-control" id="nombre" name="nombre">
 </div>
 <div class="form-group">
-    <label for="fechaNacimiento" class="col-form-label">Fecha nacimiento: (AAAA-MM-DD)<span class="required">*</span></label>
-    <input type="text" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
+    <label for="fechaNacimiento">fecha de nacimiento: </label>
+    <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control" required>
 </div>
 <div class="form-group">
     <label for="curp" class="col-form-label">Curp: <span class="required">*</span></label>
@@ -39,9 +39,10 @@
     <input type="text" class="form-control" id="numeroPasaporte" name="numeroPasaporte">
 </div>
 <div class="form-group">
-    <label for="fechaIngreso" class="col-form-label">Fecha de ingreso: (AAAA-MM-DD)<span class="required">*</span></label>
-    <input type="text" class="form-control" id="fechaIngreso" name="fechaIngreso">
+    <label for="fechaIngreso">fecha de Ingreso: </label>
+    <input type="date" id="fechaIngreso" name="fechaIngreso" class="form-control" required>
 </div>
 <div class="button-container">
+    <button disabled type="button" class="btn btn-light" onclick="mostrarSeccion(-1)">Anterior</button>
     <button type="button" class="btn btn-light" onclick="mostrarSeccion(1)">Siguiente</button>
 </div>

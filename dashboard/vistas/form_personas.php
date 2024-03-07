@@ -34,6 +34,11 @@
             <h1>Datos Academicos</h1>
             <?php require_once "vistas/form_datos_academicos.php" ?>
         </div>
+        <!-- Sección 4 -->
+        <div class="section" id="seccion4">
+            <h1>Datos De Contratacion</h1>
+            <?php require_once "vistas/form_datos_contrato.php" ?>
+        </div>
 
 
 

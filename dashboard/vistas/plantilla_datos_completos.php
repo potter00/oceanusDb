@@ -126,7 +126,10 @@ $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
 
 
 $edad = calcularEdad($dataPersonas[0]['FechaNacimiento']);
-
+//si el contrato es indefinido no hay fecha de fin
+if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
+    $dataPersonas[0]['FinContrato'] = 'Indefinido';
+}
 
 
 
@@ -141,6 +144,8 @@ $edad = calcularEdad($dataPersonas[0]['FechaNacimiento']);
             <p>Dirección: <?php echo $dataPersonas[0]['Direccion']?></p>
             <p>Teléfono: <?php echo $dataPersonas[0]['NumeroCelular']?></p>
             <p>Genero: <?php echo $dataMedicos[0]['Genero']?></p>
+            <p>Inicio Contrato: <?php echo $dataPersonas[0]['InicioContrato']   ?></p>
+            <p>Fin Contrato: <?php echo $dataPersonas[0]['FinContrato']   ?></p>
         </div>
         <div class="main-content">
           <img src="../img/oceanus-logo.svg" alt="Logo" class="logo">

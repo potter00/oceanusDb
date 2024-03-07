@@ -263,7 +263,9 @@ $dataDocumentos = $resultado->fetchAll(PDO::FETCH_ASSOC);
 if ($dataDocumentos[0]['Foto'] == 'sin cambio') {
     $dataDocumentos[0]['Foto'] = ".\dashboard\img\user.png";
 }
-
+if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
+    $dataPersonas[0]['FinContrato'] = 'Indefinido';
+}
 
 $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
 $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
@@ -308,6 +310,14 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
             <p><strong>Celular:</strong>
                 <?php echo $dataPersonas[0]['NumeroCelular'] ?>
             </p>
+            <?php 
+            if ($dataPersonas[0]['TipoContrato'] != 'indefinido') {
+                echo '<p><strong>Vigencia: </strong>'.$dataPersonas[0]['InicioContrato'].' - '.$dataPersonas[0]['FinContrato'].'</p>';
+            }
+            
+
+            ?>
+            
         </div>
         
     </div>

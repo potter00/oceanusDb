@@ -235,7 +235,14 @@ $(document).ready(function () {
                     $("#numeroLicencia").val(data.data.personas[0].NumeroLicencia);
                     $("#numeroPasaporte").val(data.data.personas[0].NumeroPasaporte);
                     $("#fechaIngreso").val(data.data.personas[0].FechaIngreso);
-
+                    document.getElementById("tipoContrato").value = data.data.personas[0].TipoContrato;
+                    document.getElementById("estado").value = data.data.personas[0].Estado;
+                    $("#fechaInicioContrato").val(data.data.personas[0].InicioContrato);
+                    $("#fechaFinContrato").val(data.data.personas[0].FinContrato);
+                    
+                    console.log(data.data.personas[0].FechaInicioContrato);
+                    console.log(data.data.personas[0].FechaFinContrato);
+                    
                     //datos medicos
                     $("#alergias").val(data.data.medicos[0].Alergias);
                     $("#enfermedadesCronicas").val(data.data.medicos[0].EnfermedadesCronicas);

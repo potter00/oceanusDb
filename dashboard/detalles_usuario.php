@@ -65,7 +65,10 @@ try {
 if ($dataDocumentos[0]['Foto'] == 'sin cambio') {
     $dataDocumentos[0]['Foto'] = ".\dashboard\img\user.png";
 }
-
+//si el contrato es indefinido no hay fecha de fin
+if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
+    $dataPersonas[0]['FinContrato'] = 'Indefinido';
+}
 
 $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
 $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
@@ -98,6 +101,12 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
                 </li>
                 <li><strong>Grado Academico: </strong>
                     <?php echo $dataAcademicos[0]['GradoEstudios'] ?>
+                </li>
+                <li><strong>Inicio Contrato: </strong>
+                    <?php echo $dataPersonas[0]['InicioContrato'] ?>
+                </li>
+                <li><strong>Fin Contrato: </strong>
+                    <?php echo $dataPersonas[0]['FinContrato'] ?>
                 </li>
             </ul>
             <br>
