@@ -43,7 +43,7 @@
                 </tr>
                 <tr data-id="licencia">
                     <td>Licencia</td>
-                    <td>Sin cambio</td>
+                    <td>sin cambio</td>
                     <td>
                         <div class='text-center'>
                             <input class="fileInputDocumentos" type="file" id="fileInputLicencia" style="width: 200px;">
@@ -54,7 +54,7 @@
                 </tr>
                 <tr data-id="pasaporte">
                     <td>Pasaporte</td>
-                    <td>Sin cambio</td>
+                    <td>sin cambio</td>
                     <td>
                         <div class='text-center'>
                             <input class="fileInputDocumentos" type="file" id="fileInputPasaporte"
@@ -66,7 +66,7 @@
                 </tr>
                 <tr data-id="cv">
                     <td>CV</td>
-                    <td>Sin cambio</td>
+                    <td>sin cambio</td>
                     <td>
                         <div class='text-center'>
                             <input class="fileInputDocumentos" type="file" id="fileInputCV" style="width: 200px;">
@@ -76,7 +76,7 @@
                 </tr>
                 <tr data-id="curp">
                     <td>Curp</td>
-                    <td>Sin cambio</td>
+                    <td>sin cambio</td>
                     <td>
                         <div class='text-center'>
                             <input class="fileInputDocumentos" type="file" id="fileInputCurp" style="width: 200px;">
@@ -87,7 +87,7 @@
                 </tr>
                 <tr data-id="nss">
                     <td>NSS</td>
-                    <td>Sin cambio</td>
+                    <td>sin cambio</td>
                     <td>
                         <div class='text-center'>
                             <input class="fileInputDocumentos" type="file" id="fileInputInss" style="width: 200px;">
@@ -98,7 +98,7 @@
                 </tr>
                 <tr data-id="sat">
                     <td>Constancia SAT</td>
-                    <td>Sin cambio</td>
+                    <td>sin cambio</td>
                     <td>
                         <div class='text-center'>
                             <input class="fileInputDocumentos" type="file" id="fileInputConstanciaSat"
@@ -110,11 +110,77 @@
                 </tr>
                 <tr data-id="foto">
                     <td>Foto</td>
-                    <td>Sin cambio</td>
+                    <td>sin cambio</td>
                     <td>
                         <div class='text-center'>
                             <input class="fileInputDocumentos" type="file" id="fileInputFoto" style="width: 200px;">
                             <button id="btnDescargarFoto"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-id="Acta">
+                    <td>Acta</td>
+                    <td>sin cambio</td>
+                    <td>
+                        <div class='text-center'>
+                            <input class="fileInputDocumentos" type="file" id="fileInputActaNacimiento" style="width: 200px;">
+                            <button id="btnDescargarActa"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-id="EstadoBanco">
+                    <td>Estado cuenta banco</td>
+                    <td>sin cambio</td>
+                    <td>
+                        <div class='text-center'>
+                            <input class="fileInputDocumentos" type="file" id="fileInputEstadoCuentaBanco" style="width: 200px;">
+                            <button id="btnDescargarEstadoBanco"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-id="AltaSeguro">
+                    <td>Alta Seguro</td>
+                    <td>sin cambio</td>
+                    <td>
+                        <div class='text-center'>
+                            <input class="fileInputDocumentos" type="file" id="fileInputAltaSeguroSocial" style="width: 200px;">
+                            <button id="btnDescargarAltaSeguro"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-id="Cedula">
+                    <td>Cedula</td>
+                    <td>sin cambio</td>
+                    <td>
+                        <div class='text-center'>
+                            <input class="fileInputDocumentos" type="file" id="fileInputCedulaProfecional" style="width: 200px;">
+                            <button id="btnDescargarCedula"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-id="Contrato">
+                    <td>Contrato</td>
+                    <td>sin cambio</td>
+                    <td>
+                        <div class='text-center'>
+                            <input class="fileInputDocumentos" type="file" id="fileInputCopiaContrato" style="width: 200px;">
+                            <button id="btnDescargarContrato"
+                                class='btn btn-primary btnDescargarDocumento'>Descargar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr data-id="ComprobanteDomicilio">
+                    <td>Comprobante domicilio</td>
+                    <td>sin cambio</td>
+                    <td>
+                        <div class='text-center'>
+                            <input class="fileInputDocumentos" type="file" id="fileInputComprobanteDomicilio" style="width: 200px;">
+                            <button id="btnDescargarComprobanteDomicilio"
                                 class='btn btn-primary btnDescargarDocumento'>Descargar</button>
                         </div>
                     </td>

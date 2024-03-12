@@ -143,6 +143,7 @@ if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
             <p>Carrera: <?php echo $dataAcademicos[0]['Carrera']?></p>
             <p>Dirección: <?php echo $dataPersonas[0]['Direccion']?></p>
             <p>Teléfono: <?php echo $dataPersonas[0]['NumeroCelular']?></p>
+            <p>Correo: <?php echo $dataPersonas[0]['Correo']?></p>
             <p>Genero: <?php echo $dataMedicos[0]['Genero']?></p>
             <p>Inicio Contrato: <?php echo $dataPersonas[0]['InicioContrato']   ?></p>
             <p>Fin Contrato: <?php echo $dataPersonas[0]['FinContrato']   ?></p>
@@ -185,6 +186,15 @@ if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
                     <li>Experiencia Laboral: <?php echo $dataAcademicos[0]['ExpLaboral']?></li>
                     <li>Certificaciones: <?php echo $dataAcademicos[0]['Certificaciones']?></li>
                     <li>Grado de Estudios: <?php echo $dataAcademicos[0]['GradoEstudios']?></li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2 class="datos">Datos Contratacion</h2>
+                <ul>
+                    <li>Estado: <?php echo $dataPersonas[0]['Estado']?></li>
+                    <li>Tipo de Contrato: <?php echo $dataPersonas[0]['TipoContrato']?></li>
+                    <li>Inicio Contrato: <?php echo $dataPersonas[0]['InicioContrato']  ?></li>
+                    <li>Fin Contrato: <?php echo $dataPersonas[0]['FinContrato']  ?></li>
                 </ul>
             </div>
         </div>

@@ -27,6 +27,10 @@
     <input type="text" class="form-control" id="numeroCelular" name="numeroCelular">
 </div>
 <div class="form-group">
+    <label for="correo" class="col-form-label">Correo electronico: <span class="required">*</span></label>
+    <input type="text" class="form-control" id="correo" name="correo">
+</div>
+<div class="form-group">
     <label for="direccion" class="col-form-label">Direccion: <span class="required">*</span></label>
     <input type="text" class="form-control" id="direccion" name="direccion">
 </div>

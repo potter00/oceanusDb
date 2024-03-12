@@ -27,6 +27,12 @@ switch ($datos['opcion']) {
         $numeroLicencia = $datos['numeroLicencia'];
         $numeroPasaporte = $datos['numeroPasaporte'];
         $fechaIngreso = $datos['fechaIngreso'];
+        $tipoContrato = $datos['tipoContrato'];
+        $estadoEmpleado = $datos['estado'];
+        $fechaInicioContrato = $datos['fechaInicioContrato'];
+        $fechaFinContrato = $datos['fechaFinContrato'];
+        $correo = $datos['correo'];
+
 
         //Datos medicos
         $alergias = $datos['alergias'];
@@ -177,7 +183,7 @@ switch ($datos['opcion']) {
 
 
             //preparacion para la insercion
-            $consulta = "INSERT INTO personas (nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, inicioContrato, finContrato) VALUES (:nombre, :fechaNacimiento, :curp, :rfc, :numeroFijo, :numeroCelular, :direccion, :numeroLicencia, :numeroPasaporte, :fechaIngreso, :estado, :tipoContrato, :inicioContrato, :finContrato)";
+            $consulta = "INSERT INTO personas (nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, inicioContrato, finContrato, correo) VALUES (:nombre, :fechaNacimiento, :curp, :rfc, :numeroFijo, :numeroCelular, :direccion, :numeroLicencia, :numeroPasaporte, :fechaIngreso, :estado, :tipoContrato, :inicioContrato, :finContrato, :correo)";
             $resultado = $conexion->prepare($consulta);
 
             try {
@@ -196,6 +202,7 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':tipoContrato', $tipoContrato);
                 $resultado->bindParam(':inicioContrato', $fechaInicioContrato);
                 $resultado->bindParam(':finContrato', $fechaFinContrato);
+                $resultado->bindParam(':correo', $correo);
                 
 
                 $resultado->execute();
@@ -482,6 +489,7 @@ switch ($datos['opcion']) {
         $estadoEmpleado = $datos['estado'];
         $fechaInicioContrato = $datos['fechaInicioContrato'];
         $fechaFinContrato = $datos['fechaFinContrato'];
+        $correo = $datos['correo'];
 
         //Datos medicos
         $alergias = $datos['alergias'];
@@ -633,7 +641,7 @@ switch ($datos['opcion']) {
         } else {
 
             //preparacion para la actualizacion
-            $consulta = "UPDATE personas SET nombre = :nombre, fechaNacimiento = :fechaNacimiento, curp = :curp, rfc = :rfc, numeroFijo = :numeroFijo, numeroCelular = :numeroCelular, direccion = :direccion, numeroLicencia = :numeroLicencia, numeroPasaporte = :numeroPasaporte, fechaIngreso = :fechaIngreso, estado = :estado, tipoContrato = :tipoContrato, inicioContrato = :inicioContrato, finContrato = :finContrato  WHERE id = :id";
+            $consulta = "UPDATE personas SET nombre = :nombre, fechaNacimiento = :fechaNacimiento, curp = :curp, rfc = :rfc, numeroFijo = :numeroFijo, numeroCelular = :numeroCelular, direccion = :direccion, numeroLicencia = :numeroLicencia, numeroPasaporte = :numeroPasaporte, fechaIngreso = :fechaIngreso, estado = :estado, tipoContrato = :tipoContrato, inicioContrato = :inicioContrato, finContrato = :finContrato, correo = :correo WHERE id = :id";
             $resultado = $conexion->prepare($consulta);
 
             try {
@@ -653,6 +661,7 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':tipoContrato', $tipoContrato);
                 $resultado->bindParam(':inicioContrato', $fechaInicioContrato);
                 $resultado->bindParam(':finContrato', $fechaFinContrato);
+                $resultado->bindParam(':correo', $correo);
 
                 
 

@@ -96,6 +96,9 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
                 <li><strong>Teléfono: </strong>
                     <?php echo $dataPersonas[0]['NumeroCelular'] ?>
                 </li>
+                <li><strong>Correo: </strong>
+                    <?php echo $dataPersonas[0]['Correo'] ?>
+                </li>
                 <li><strong>Carrera: </strong>
                     <?php echo $dataAcademicos[0]['Carrera'] ?>
                 </li>

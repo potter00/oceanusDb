@@ -45,7 +45,12 @@ CREATE TABLE IF NOT EXISTS `documentacion` (
   `Inss` varchar(150) NOT NULL,
   `ConstanciaSat` varchar(150) NOT NULL,
   `Foto` varchar(150) NOT NULL,
-  `DatosCompletos` varchar(150) DEFAULT NULL,
+  `ActaNacimiento` varchar(150) DEFAULT NULL,
+  `EstadoCuentaBanco` varchar(150) DEFAULT NULL,
+  `AltaSeguroSocial` varchar(150) DEFAULT NULL,
+  `CedulaProfecional` varchar(150) DEFAULT NULL,
+  `CopiaContrato` varchar(150) DEFAULT NULL,
+  `ComprobanteDomicilio` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'sin cambio',
   PRIMARY KEY (`IdDocumentacion`),
   UNIQUE KEY `IdEmpleado` (`IdEmpleado`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -93,6 +98,11 @@ CREATE TABLE IF NOT EXISTS `personas` (
   `NumeroLicencia` varchar(15) COLLATE utf8mb3_spanish_ci DEFAULT '',
   `NumeroPasaporte` varchar(9) COLLATE utf8mb3_spanish_ci DEFAULT '',
   `FechaIngreso` date DEFAULT NULL,
+  `Estado` set('activo','inactivo') COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `TipoContrato` set('indefinido','temporal','obra') CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `InicioContrato` date DEFAULT NULL,
+  `FinContrato` date DEFAULT NULL,
+  `Correo` varchar(50) COLLATE utf8mb3_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 

@@ -81,20 +81,27 @@ $(document).ready(function () {
 
     });
 
-
+    //inicializacion de la pagina
+    //inicializamos la tabla
     actualizarTablaPersonas();
     tablaPersonas.buttons().container().appendTo('#tablaPersonas_wrapper .col-md-6:eq(0)');
     
     tablaPersonas.column(2).visible(false);
-    tablaPersonas.column(3).visible(false);
-    tablaPersonas.column(6).visible(false);
+    tablaPersonas.column(4).visible(false);
+    tablaPersonas.column(5).visible(false);
+    
     tablaPersonas.column(7).visible(false);
     tablaPersonas.column(8).visible(false);
     tablaPersonas.column(9).visible(false);
     tablaPersonas.column(10).visible(false);
-    tablaPersonas.column(12).visible(false);
+    tablaPersonas.column(11).visible(false);
+    
     tablaPersonas.column(13).visible(false);
     tablaPersonas.column(14).visible(false);
+    tablaPersonas.column(15).visible(false);
+
+    //variables globales
+    var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat", "Foto","ActaNacimiento","EstadoCuentaBanco","AltaSeguroSocial","CedulaProfecional","CopiaContrato","ComprobanteDomicilio"];
     $("#btnNuevo").click(function () {
         resetForm();
         $("#formPersonas").trigger("reset");
@@ -213,7 +220,26 @@ $(document).ready(function () {
         if (tipoDocumento == "Constancia SAT") {
             tipoDocumento = "ConstanciaSat";
         }
-
+        if (tipoDocumento == "Acta") {
+            tipoDocumento = "ActaNacimiento";
+        }
+        if (tipoDocumento == "Estado cuenta banco") {
+            tipoDocumento = "EstadoCuentaBanco";
+            
+        }
+        if (tipoDocumento == "Alta Seguro") {
+            tipoDocumento = "AltaSeguroSocial";
+        }
+        if (tipoDocumento == "Cedula") {
+            tipoDocumento = "CedulaProfecional";
+        }
+        if (tipoDocumento == "Contrato") {
+            tipoDocumento = "CopiaContrato";
+        }
+        if (tipoDocumento == "Comprobante domicilio") {
+            tipoDocumento = "ComprobanteDomicilio";
+            
+        }
         pedirRutaDocumento(id, tipoDocumento)
             .then(data => {
 
@@ -234,7 +260,7 @@ $(document).ready(function () {
     $(document).on("click", ".btnSubirDocumento", function () {
         //tomamos la lista de los documentos que se an seleccionado
         var estadoDocumento = obtenerArrayDeColumna('tablaDocumentos', 1);
-        var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat", "Foto"];
+        
         //verificamos si se a seleccionado un archivo
         for (var i = 0; i < estadoDocumento.length; i++) {
             inputId = "fileInput" + documentos[i];
@@ -312,6 +338,7 @@ $(document).ready(function () {
                     document.getElementById("estado").value = data.data.personas[0].Estado;
                     $("#fechaInicioContrato").val(data.data.personas[0].InicioContrato);
                     $("#fechaFinContrato").val(data.data.personas[0].FinContrato);
+                    $("#correo").val(data.data.personas[0].Correo);
 
                     console.log(data.data.personas[0].FechaInicioContrato);
                     console.log(data.data.personas[0].FechaFinContrato);
@@ -785,6 +812,103 @@ $(document).ready(function () {
                         boton = document.getElementById('btnDescargarFoto');
                         boton.disabled = false;
                     }
+                    //Acta
+                    if (estadoDocumento[0].ActaNacimiento == "sin cambio") {
+                        // Obtén la referencia a la fila que deseas cambiar
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="Acta"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarActa');
+                        boton.disabled = true;
+                    }
+                    else {
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="Acta"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarActa');
+                        boton.disabled = false;
+                    }
+                    //EstadoBanco
+                    if (estadoDocumento[0].EstadoCuentaBanco == "sin cambio") {
+                        // Obtén la referencia a la fila que deseas cambiar
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="EstadoBanco"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarEstadoBanco');
+                        boton.disabled = true;
+                    }
+                    else {
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="EstadoBanco"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarEstadoBanco');
+                        boton.disabled = false;
+                    }
+                    
+                    //AltaSeguro
+                    if (estadoDocumento[0].AltaSeguroSocial == "sin cambio") {
+                        // Obtén la referencia a la fila que deseas cambiar
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="AltaSeguro"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarAltaSeguro');
+                        boton.disabled = true;
+                    }
+                    else {
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="AltaSeguro"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarAltaSeguro');
+                        boton.disabled = false;
+                    }
+                    //Cedula
+                    if (estadoDocumento[0].CedulaProfecional == "sin cambio") {
+                        // Obtén la referencia a la fila que deseas cambiar
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="Cedula"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarCedula');
+                        boton.disabled = true;
+                    }
+                    else {
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="Cedula"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarCedula');
+                        boton.disabled = false;
+                    }
+                    //Contrato
+                    if (estadoDocumento[0].CopiaContrato == "sin cambio") {
+                        // Obtén la referencia a la fila que deseas cambiar
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="Contrato"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarContrato');
+                        boton.disabled = true;
+                    }
+                    else {
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="Contrato"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarContrato');
+                        boton.disabled = false;
+                    }
+                    //ComprobanteDomicilio
+                    if (estadoDocumento[0].ComprobanteDomicilio == "sin cambio") {
+                        // Obtén la referencia a la fila que deseas cambiar
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="ComprobanteDomicilio"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'sin subir';
+                        boton = document.getElementById('btnDescargarComprobanteDomicilio');
+                        boton.disabled = true;
+                    }
+                    else {
+                        fila = document.getElementById(idtabla).querySelector('tbody tr[data-id="ComprobanteDomicilio"]');
+                        celda = fila.cells[1];
+                        celda.textContent = 'subido';
+                        boton = document.getElementById('btnDescargarComprobanteDomicilio');
+                        boton.disabled = false;
+                    }
 
                 }
 
@@ -1045,13 +1169,14 @@ $(document).ready(function () {
         $("#numeroLicencia").val("");
         $("#numeroPasaporte").val("");
         $("#fechaIngreso").val("");
-
+        $("#correo").val("");
         //datos medicos
         $("#alergias").val("");
         $("#enfermedadesCronicas").val("");
         $("#lesiones").val("");
         $("#alergiasMedicamentos").val("");
         $("#numeroSeguro").val("");
+        $("#nombreEmergencia").val("");
         $("#numeroEmergencia").val("");
         $("#tipoSangre").val("");
 
@@ -1072,7 +1197,7 @@ $(document).ready(function () {
 
 
     //añadir fila a la tabla de personas
-    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
+    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc, numeroFijo,correo , numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
 
         var botones = "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btnEditar'>Editar</button><button class='btn btn-danger btnBorrar'>Borrar</button><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnSubirArchivo' href='#'>Subir Archivo</a><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a><a class='dropdown-item btnGenerarReporte' href='#'>Generar Reporte</a><a class='dropdown-item btnGenerarCredencial' href='#'>Generar Credencial</a><a class='dropdown-item btnDetalles' href='#'>Detalles</a></div></div></div>";
 
@@ -1082,7 +1207,7 @@ $(document).ready(function () {
         } else {
             estado = "<div class = 'badge badge-danger' > " + estado + "</div>";
         }
-        tablaPersonas.row.add([id, nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato]).draw();
+        tablaPersonas.row.add([id, nombre, fechaNacimiento, curp, rfc, numeroFijo, correo,  numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato]).draw();
 
     }
 
@@ -1100,13 +1225,13 @@ $(document).ready(function () {
                 for (let i = 0; i < data.data.length; i++) {
                     const element = data.data[i];
                     var checkbox = document.getElementById("todoCheck1");
-
+                    console.log(element.Correo)
                     if (checkbox.checked == true) {
 
-                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.Correo , element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
                     } else {
                         if (element.Estado == "activo") {
-                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo , element.Correo , element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
                         }
 
                     }
@@ -1117,11 +1242,12 @@ $(document).ready(function () {
 
     //funcion para vaciar fileInput
     function resetFileInputs() {
-        var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat", "Foto"];
+        
 
         for (var i = 0; i < documentos.length; i++) {
             inputId = "fileInput" + documentos[i];
             document.getElementById(inputId).value = "";
+
         }
 
     }

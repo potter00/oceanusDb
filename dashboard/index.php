@@ -60,6 +60,7 @@
                                 <th>Curp</th>
                                 <th>RFC</th>
                                 <th>Numero Fijo</th>
+                                <th>Correo</th>
                                 <th>Numero Celular</th>
                                 <th>Direccion</th>
                                 <th>Numero de licencia</th>
