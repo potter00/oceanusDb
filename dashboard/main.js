@@ -1,5 +1,34 @@
 $(document).ready(function () {
-    tablaPersonas = $("#tablaPersonas").DataTable({
+    //actualizamos la tabla
+
+    var tablaPersonas = $("#tablaPersonas").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": true,
+        "buttons": [
+            {
+                extend: 'copy',
+                className: 'btn btn-primary',
+                text: 'Copiar'
+            },
+            {
+                extend: 'excel',
+                className: 'btn btn-primary',
+                text: 'Exportar a Excel'
+            },
+            {
+                extend: 'pdf',
+                className: 'btn btn-primary',
+                text: 'Pdf'
+            },
+            {
+                extend: 'print',
+                className: 'btn btn-primary',
+                text: 'imprimir'
+            },
+            {
+                extend: 'colvis',
+                className: 'btn btn-primary',
+                text: 'Filtrar columnas'
+            }],
         "columnDefs": [{
             "targets": -1,
             "data": null,
@@ -20,9 +49,52 @@ $(document).ready(function () {
                 "sPrevious": "Anterior"
             },
             "sProcessing": "Procesando...",
+            "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad",
+                "collection": "Colección",
+                "colvisRestore": "Restaurar visibilidad",
+                "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+                "copySuccess": {
+                    "1": "Copiada 1 fila al portapapeles",
+                    "_": "Copiadas %ds fila al portapapeles"
+                },
+                "copyTitle": "Copiar al portapapeles",
+                "csv": "CSV",
+                "excel": "Excel",
+                "pageLength": {
+                    "-1": "Mostrar todas las filas",
+                    "_": "Mostrar %d filas"
+                },
+                "pdf": "PDF",
+                "print": "Imprimir",
+                "renameState": "Cambiar nombre",
+                "updateState": "Actualizar",
+                "createState": "Crear Estado",
+                "removeAllStates": "Remover Estados",
+                "removeState": "Remover",
+                "savedStates": "Estados Guardados",
+                "stateRestore": "Estado %d"
+            }
         }
+
+
     });
 
+
+    actualizarTablaPersonas();
+    tablaPersonas.buttons().container().appendTo('#tablaPersonas_wrapper .col-md-6:eq(0)');
+    
+    tablaPersonas.column(2).visible(false);
+    tablaPersonas.column(3).visible(false);
+    tablaPersonas.column(6).visible(false);
+    tablaPersonas.column(7).visible(false);
+    tablaPersonas.column(8).visible(false);
+    tablaPersonas.column(9).visible(false);
+    tablaPersonas.column(10).visible(false);
+    tablaPersonas.column(12).visible(false);
+    tablaPersonas.column(13).visible(false);
+    tablaPersonas.column(14).visible(false);
     $("#btnNuevo").click(function () {
         resetForm();
         $("#formPersonas").trigger("reset");
@@ -96,6 +168,7 @@ $(document).ready(function () {
         $(".modal-title").text("Gestionar Documentos");
         mostrarFileInputs();
         ocultarBotones();
+        resetFileInputs();
         $("#modalSubir").modal("show");
 
     });
@@ -239,10 +312,10 @@ $(document).ready(function () {
                     document.getElementById("estado").value = data.data.personas[0].Estado;
                     $("#fechaInicioContrato").val(data.data.personas[0].InicioContrato);
                     $("#fechaFinContrato").val(data.data.personas[0].FinContrato);
-                    
+
                     console.log(data.data.personas[0].FechaInicioContrato);
                     console.log(data.data.personas[0].FechaFinContrato);
-                    
+
                     //datos medicos
                     $("#alergias").val(data.data.medicos[0].Alergias);
                     $("#enfermedadesCronicas").val(data.data.medicos[0].EnfermedadesCronicas);
@@ -282,7 +355,7 @@ $(document).ready(function () {
         var urlActual = window.location.href;
         var nombreArchivo = urlActual.split('/').pop(); // Obtiene el último segmento de la URL
         var nombreArchivo = nombreArchivo.split('?')[0]; // Remueve cualquier query string
-        
+
         if (nombreArchivo == "detalles_usuario.php") {
             console.log("estamos en detalles");
             id = parseInt(urlActual.split('?').pop().split('=').pop());
@@ -347,7 +420,7 @@ $(document).ready(function () {
         var urlActual = window.location.href;
         var nombreArchivo = urlActual.split('/').pop(); // Obtiene el último segmento de la URL
         var nombreArchivo = nombreArchivo.split('?')[0]; // Remueve cualquier query string
-        
+
         if (nombreArchivo == "detalles_usuario.php") {
 
             id = parseInt(urlActual.split('?').pop().split('=').pop());
@@ -358,7 +431,7 @@ $(document).ready(function () {
         }
         //Abrimos una nueva pestaña a Reporte.php con un GET el cual es el id
         window.open("./vistas/plantilla_datos_completos.php?id=" + id, '_blank');
-        
+
 
     });
 
@@ -375,29 +448,33 @@ $(document).ready(function () {
 
     //boton generar credencial
     $(document).on("click", ".btnGenerarCredencial", function () {
-        
+
         var id;
         var urlActual = window.location.href;
         var nombreArchivo = urlActual.split('/').pop(); // Obtiene el último segmento de la URL
         var nombreArchivo = nombreArchivo.split('?')[0]; // Remueve cualquier query string
-        
+
         if (nombreArchivo == "detalles_usuario.php") {
 
             id = parseInt(urlActual.split('?').pop().split('=').pop());
         } else {
             fila = $(this).closest("tr");
             id = parseInt(fila.find('td:eq(0)').text());
-            
+
 
         }
         //abrimos una nueva pestaña a Credencial.php con un GET el cual es el id
         window.open("./Credencial.php?id=" + id, '_blank');
-        
-        
+
+
 
     });
-    //boton cerrar modalCrud
-    
+
+    //boton actualizar tabla
+    $(document).on("click", "#btnActualizar", function () {
+        actualizarTablaPersonas();
+
+    });
 
     //funcion para subir archivo al servidor
     function subirArchivo(id, tipoDocumento, nombre, idFileInput) {
@@ -575,7 +652,7 @@ $(document).ready(function () {
                     boton.disabled = true;
                     //verificamos si todos los documentos estan subidos
 
-                    
+
 
 
                     //Credencial
@@ -751,7 +828,7 @@ $(document).ready(function () {
     //descargar documento
     function descargarDocumento(rutaDocumento, nombreDocumento, empleado) {
         // Obtén la referencia a la fila que deseas cambiar
-        
+
         rutaDocumento = "../" + rutaDocumento;
         fetch(rutaDocumento)
             .then(response => {
@@ -831,13 +908,13 @@ $(document).ready(function () {
     //crear pdf en base a la plantilla html
     function crearPDF(datos, nombre, tipoDocumento, RutaImg) {
         var dataObject = {};
-        
+
         dataObject['opcion'] = 3; //crear pdf
         dataObject['datos'] = datos;
         dataObject['nombre'] = nombre;
         dataObject['tipoDocumento'] = tipoDocumento;
         dataJSON = JSON.stringify(dataObject);
-        
+
         //verificamos si se estan enviando los datos completos
         console.log(dataJSON);
         fetch('../upload.php', {
@@ -920,36 +997,70 @@ $(document).ready(function () {
             });
     }
 
+    //pedir datos de todas las personas
+    function pedirDatosPersonas() {
+        var dataObject = {};
+        dataObject['opcion'] = 8; //pedir datos de todas las personas
+        dataJSON = JSON.stringify(dataObject);
+        return fetch('../dashboard/bd/copiaCrud.php', {
+            method: 'POST',
+            body: dataJSON,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    return data;
+
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
     //funcion para resetear los campos del formulario
     function resetForm() {
         // La operación fue exitosa, puedes realizar otras acciones aquí
-                    //datos personales
-                    $("#nombre").val("");
-                    $("#fechaNacimiento").val("");
-                    $("#curp").val("");
-                    $("#rfc").val("");
-                    $("#numeroFijo").val("");
-                    $("#numeroCelular").val("");
-                    $("#direccion").val("");
-                    $("#numeroLicencia").val("");
-                    $("#numeroPasaporte").val("");
-                    $("#fechaIngreso").val("");
+        //datos personales
+        $("#nombre").val("");
+        $("#fechaNacimiento").val("");
+        $("#curp").val("");
+        $("#rfc").val("");
+        $("#numeroFijo").val("");
+        $("#numeroCelular").val("");
+        $("#direccion").val("");
+        $("#numeroLicencia").val("");
+        $("#numeroPasaporte").val("");
+        $("#fechaIngreso").val("");
 
-                    //datos medicos
-                    $("#alergias").val("");
-                    $("#enfermedadesCronicas").val("");
-                    $("#lesiones").val("");
-                    $("#alergiasMedicamentos").val("");
-                    $("#numeroSeguro").val("");
-                    $("#numeroEmergencia").val("");
-                    $("#tipoSangre").val("");
+        //datos medicos
+        $("#alergias").val("");
+        $("#enfermedadesCronicas").val("");
+        $("#lesiones").val("");
+        $("#alergiasMedicamentos").val("");
+        $("#numeroSeguro").val("");
+        $("#numeroEmergencia").val("");
+        $("#tipoSangre").val("");
 
-                    //datos academicos
-                    $("#cedula").val("");
-                    $("#carrera").val("");
-                    $("#expLaboral").val("");
-                    $("#certificaciones").val("");
-                    $("#gradoEstudios").val("");
+        //datos academicos
+        $("#cedula").val("");
+        $("#carrera").val("");
+        $("#expLaboral").val("");
+        $("#certificaciones").val("");
+        $("#gradoEstudios").val("");
     }
 
     //funcion para obtener extencion del archivo
@@ -957,6 +1068,64 @@ $(document).ready(function () {
         var extension = archivo.split('.').pop();
         return extension;
     }
+
+
+
+    //añadir fila a la tabla de personas
+    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
+
+        var botones = "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btnEditar'>Editar</button><button class='btn btn-danger btnBorrar'>Borrar</button><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnSubirArchivo' href='#'>Subir Archivo</a><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a><a class='dropdown-item btnGenerarReporte' href='#'>Generar Reporte</a><a class='dropdown-item btnGenerarCredencial' href='#'>Generar Credencial</a><a class='dropdown-item btnDetalles' href='#'>Detalles</a></div></div></div>";
+
+
+        if (estado == "activo") {
+            estado = "<div class='badge badge-success'>" + estado + "</div>";
+        } else {
+            estado = "<div class = 'badge badge-danger' > " + estado + "</div>";
+        }
+        tablaPersonas.row.add([id, nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato]).draw();
+
+    }
+
+    //actualizar tabla de personas
+    function actualizarTablaPersonas() {
+        //Buscamos la tabla de personas
+
+        // Eliminamos todas las filas de la tabla
+        tablaPersonas.clear().draw();
+        //solicitamos los datos de las personas
+        pedirDatosPersonas()
+            .then(data => {
+                //datos optenidos
+                console.log(data);
+                for (let i = 0; i < data.data.length; i++) {
+                    const element = data.data[i];
+                    var checkbox = document.getElementById("todoCheck1");
+
+                    if (checkbox.checked == true) {
+
+                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                    } else {
+                        if (element.Estado == "activo") {
+                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                        }
+
+                    }
+                }
+            });
+        tablaPersonas.draw();
+    }
+
+    //funcion para vaciar fileInput
+    function resetFileInputs() {
+        var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat", "Foto"];
+
+        for (var i = 0; i < documentos.length; i++) {
+            inputId = "fileInput" + documentos[i];
+            document.getElementById(inputId).value = "";
+        }
+
+    }
+
 
 
 

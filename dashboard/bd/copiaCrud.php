@@ -784,7 +784,23 @@ switch ($datos['opcion']) {
             }
         }
         break;
-
+        case 8: //solicitar todos los datos de tabla personas
+        # code...
+        try {
+            $consulta = "SELECT * FROM personas";
+            $resultado = $conexion->prepare($consulta);
+            $resultado->execute();
+            $datos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $message = 'Datos obtenidos con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al ejecutar la consulta buscar por id: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        break;
     default:
         $message = 'Opcion no valida';
         break;
@@ -795,14 +811,14 @@ header('Content-Type: application/json');
 //si algo salio mal, se manda el error y los datos
 if (isset($errores)) {
     $response = array(
-        'success' => true,
+        'success' => false,
         'message' => $message,
         'data' => $datos,
         'errores' => $errores // Puedes incluir datos adicionales si es necesario
     );
 } else {
     $response = array(
-        'success' => false,
+        'success' => true,
         'message' => $message,
         'data' => $datos
     );

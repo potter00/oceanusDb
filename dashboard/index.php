@@ -3,7 +3,7 @@
 <!--INICIO del cont principal-->
 <div class="container">
     <h1>Contenido principal</h1>
-    
+
 
 
     <?php
@@ -22,6 +22,25 @@
         <div class="row">
             <div class="col-lg-12">
                 <button id="btnNuevo" type="button" class="btn btn-success" data-toggle="modal">Nuevo</button>
+                <button id="btnActualizar" type="button" class="btn btn-primary" data-toggle="modal">Actualizar Tabla</button>
+                <div class="float-right">
+                    <div>
+                        <!-- drag handle -->
+                        <span class="handle">
+                            <i class="fas fa-ellipsis-v"></i>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </span>
+                        <!-- checkbox -->
+                        <div class="icheck-primary d-inline ml-2">
+                            <input type="checkbox" value="" name="todo1" id="todoCheck1">
+                            <label for="todoCheck1"></label>
+                        </div>
+                        <!-- todo text -->
+                        <span class="text">Mostrar inactivos </span>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -36,34 +55,27 @@
                         <thead class="text-center">
                             <tr>
                                 <th>Id</th>
-                                <th>Nombre</th>
-                                <th>Celular</th>
-                                <th>fecha nacimiento</th>
+                                <th width = 50%>Nombre</th>
+                                <th>Fecha Nacimiento</th>
+                                <th>Curp</th>
+                                <th>RFC</th>
+                                <th>Numero Fijo</th>
+                                <th>Numero Celular</th>
+                                <th>Direccion</th>
+                                <th>Numero de licencia</th>
+                                <th>Numero Pasaporte</th>
+                                <th>Fecha Ingreso</th>
+                                <th>Estado</th>
+                                <th>Tipo de contrato</th>
+                                <th>Inicio Contrato</th>
+                                <th>Fin Contrato</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            foreach ($data as $dat) {
-                                ?>
-                                <tr>
-                                    <td class="idEmpleado">
-                                        <?php echo $dat['id'] ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $dat['nombre'] ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $dat['numeroCelular'] ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $dat['fechaNacimiento'] ?>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <?php
-                            }
-                            ?>
+
+                            
+
 
                         </tbody>
                     </table>
@@ -79,8 +91,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"></h5>
-                    <button id="btnCerrarModalCrud" type="button" class="close" data-dismiss="modal" aria-label="Close" ><span
-                            aria-hidden="true" >&times;</span>
+                    <button id="btnCerrarModalCrud" type="button" class="close" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <!--Start form "personas"-->
