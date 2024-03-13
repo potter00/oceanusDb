@@ -313,6 +313,8 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
             <?php 
             if ($dataPersonas[0]['TipoContrato'] != 'indefinido') {
                 echo '<p><strong>Vigencia: </strong>'.$dataPersonas[0]['InicioContrato'].' - '.$dataPersonas[0]['FinContrato'].'</p>';
+            }else {
+                echo '<p><strong>Vigencia: </strong>'.$dataPersonas[0]['InicioContrato'].' - Indefinido</p>';
             }
             
 
