@@ -29,11 +29,6 @@ $(document).ready(function () {
                 className: 'btn btn-primary',
                 text: 'Filtrar columnas'
             }],
-        "columnDefs": [{
-            "targets": -1,
-            "data": null,
-            "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btnEditar'>Editar</button><button class='btn btn-danger btnBorrar'>Borrar</button><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnSubirArchivo' href='#'>Subir Archivo</a><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a><a class='dropdown-item btnGenerarReporte' href='#'>Generar Reporte</a><a class='dropdown-item btnGenerarCredencial' href='#'>Generar Credencial</a><a class='dropdown-item btnDetalles' href='#'>Detalles</a></div></div></div>"
-        }],
 
         "language": {
             "lengthMenu": "Mostrar _MENU_ registros",
@@ -85,23 +80,23 @@ $(document).ready(function () {
     //inicializamos la tabla
     actualizarTablaPersonas();
     tablaPersonas.buttons().container().appendTo('#tablaPersonas_wrapper .col-md-6:eq(0)');
-    
+
     tablaPersonas.column(2).visible(false);
     tablaPersonas.column(4).visible(false);
     tablaPersonas.column(5).visible(false);
-    
+
     tablaPersonas.column(7).visible(false);
     tablaPersonas.column(8).visible(false);
     tablaPersonas.column(9).visible(false);
     tablaPersonas.column(10).visible(false);
     tablaPersonas.column(11).visible(false);
-    
+
     tablaPersonas.column(13).visible(false);
     tablaPersonas.column(14).visible(false);
     tablaPersonas.column(15).visible(false);
 
     //variables globales
-    var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat", "Foto","ActaNacimiento","EstadoCuentaBanco","AltaSeguroSocial","CedulaProfecional","CopiaContrato","ComprobanteDomicilio"];
+    var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat", "Foto", "ActaNacimiento", "EstadoCuentaBanco", "AltaSeguroSocial", "CedulaProfecional", "CopiaContrato", "ComprobanteDomicilio"];
     $("#btnNuevo").click(function () {
         resetForm();
         $("#formPersonas").trigger("reset");
@@ -225,7 +220,7 @@ $(document).ready(function () {
         }
         if (tipoDocumento == "Estado cuenta banco") {
             tipoDocumento = "EstadoCuentaBanco";
-            
+
         }
         if (tipoDocumento == "Alta Seguro") {
             tipoDocumento = "AltaSeguroSocial";
@@ -238,7 +233,7 @@ $(document).ready(function () {
         }
         if (tipoDocumento == "Comprobante domicilio") {
             tipoDocumento = "ComprobanteDomicilio";
-            
+
         }
         pedirRutaDocumento(id, tipoDocumento)
             .then(data => {
@@ -260,7 +255,7 @@ $(document).ready(function () {
     $(document).on("click", ".btnSubirDocumento", function () {
         //tomamos la lista de los documentos que se an seleccionado
         var estadoDocumento = obtenerArrayDeColumna('tablaDocumentos', 1);
-        
+
         //verificamos si se a seleccionado un archivo
         for (var i = 0; i < estadoDocumento.length; i++) {
             inputId = "fileInput" + documentos[i];
@@ -844,7 +839,7 @@ $(document).ready(function () {
                         boton = document.getElementById('btnDescargarEstadoBanco');
                         boton.disabled = false;
                     }
-                    
+
                     //AltaSeguro
                     if (estadoDocumento[0].AltaSeguroSocial == "sin cambio") {
                         // Obtén la referencia a la fila que deseas cambiar
@@ -1197,9 +1192,18 @@ $(document).ready(function () {
 
 
     //añadir fila a la tabla de personas
-    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc, numeroFijo,correo , numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
+    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc, numeroFijo, correo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
 
-        var botones = "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btnEditar'>Editar</button><button class='btn btn-danger btnBorrar'>Borrar</button><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnSubirArchivo' href='#'>Subir Archivo</a><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a><a class='dropdown-item btnGenerarReporte' href='#'>Generar Reporte</a><a class='dropdown-item btnGenerarCredencial' href='#'>Generar Credencial</a><a class='dropdown-item btnDetalles' href='#'>Detalles</a></div></div></div>";
+        rolUsuario = obtenerRolUsuario();
+        rolUsuario = rolUsuario.trim();
+        
+        if (rolUsuario == "Administrador") {
+
+            var botones = "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btnEditar'>Editar</button><button class='btn btn-danger btnBorrar'>Borrar</button><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnSubirArchivo' href='#'>Subir Archivo</a><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a><a class='dropdown-item btnGenerarReporte' href='#'>Generar Reporte</a><a class='dropdown-item btnGenerarCredencial' href='#'>Generar Credencial</a><a class='dropdown-item btnDetalles' href='#'>Detalles</a></div></div></div>";
+        } else {
+            var botones = "<div class='text-center'><div class='btn-group'><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a><a class='dropdown-item btnGenerarReporte' href='#'>Generar Reporte</a><a class='dropdown-item btnGenerarCredencial' href='#'>Generar Credencial</a><a class='dropdown-item btnDetalles' href='#'>Detalles</a></div></div></div>";
+        }
+
 
 
         if (estado == "activo") {
@@ -1207,7 +1211,7 @@ $(document).ready(function () {
         } else {
             estado = "<div class = 'badge badge-danger' > " + estado + "</div>";
         }
-        tablaPersonas.row.add([id, nombre, fechaNacimiento, curp, rfc, numeroFijo, correo,  numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato]).draw();
+        tablaPersonas.row.add([id, nombre, fechaNacimiento, curp, rfc, numeroFijo, correo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato, botones]).draw();
 
     }
 
@@ -1228,10 +1232,10 @@ $(document).ready(function () {
                     console.log(element.Correo)
                     if (checkbox.checked == true) {
 
-                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.Correo , element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
                     } else {
                         if (element.Estado == "activo") {
-                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo , element.Correo , element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
                         }
 
                     }
@@ -1242,7 +1246,7 @@ $(document).ready(function () {
 
     //funcion para vaciar fileInput
     function resetFileInputs() {
-        
+
 
         for (var i = 0; i < documentos.length; i++) {
             inputId = "fileInput" + documentos[i];
@@ -1252,7 +1256,12 @@ $(document).ready(function () {
 
     }
 
-
+    //funcion para obtener datos de la session
+    function obtenerRolUsuario() {
+        var valor = document.getElementById('rolUsuario').textContent;
+        return valor;
+        
+    }
 
 
 

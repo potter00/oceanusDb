@@ -20,11 +20,10 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="">
                 <button id="btnNuevo" type="button" class="btn btn-success" data-toggle="modal">Nuevo</button>
                 <button id="btnActualizar" type="button" class="btn btn-primary" data-toggle="modal">Actualizar Tabla</button>
-                <div class="float-right">
-                    <div>
+                <div>
                         <!-- drag handle -->
                         <span class="handle">
                             <i class="fas fa-ellipsis-v"></i>
@@ -38,7 +37,7 @@
                         <!-- todo text -->
                         <span class="text">Mostrar inactivos </span>
                     </div>
-                </div>
+               
 
 
             </div>

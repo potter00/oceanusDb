@@ -120,7 +120,7 @@
                     </td>
                 </tr>
                 <tr data-id="Acta">
-                    <td>Acta</td>
+                    <td>Acta de Nacimiento</td>
                     <td>sin cambio</td>
                     <td>
                         <div class='text-center'>
