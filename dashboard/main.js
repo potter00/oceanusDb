@@ -335,8 +335,7 @@ $(document).ready(function () {
                     $("#fechaFinContrato").val(data.data.personas[0].FinContrato);
                     $("#correo").val(data.data.personas[0].Correo);
 
-                    console.log(data.data.personas[0].FechaInicioContrato);
-                    console.log(data.data.personas[0].FechaFinContrato);
+                    
 
                     //datos medicos
                     $("#alergias").val(data.data.medicos[0].Alergias);
@@ -348,6 +347,7 @@ $(document).ready(function () {
                     $("#tipoSangre").val(data.data.medicos[0].TipoSangre);
                     $("#nombreEmergencia").val(data.data.medicos[0].NombreEmergencia);
                     document.getElementById("genero").value = data.data.medicos[0].Genero;
+                    $("#relacionEmergencia").val(data.data.medicos[0].RelacionEmergencia);
                     //datos academicos
                     $("#cedula").val(data.data.academicos[0].Cedula);
                     $("#carrera").val(data.data.academicos[0].Carrera);

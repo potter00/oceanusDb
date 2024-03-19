@@ -183,6 +183,9 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
                 <li><strong>Nombre de la persona para llamada a emergencia: </strong>
                     <?php echo $dataMedicos[0]['NombreEmergencia'] ?>
                 </li>
+                <li><strong>Relacion: </strong>
+                    <?php echo $dataMedicos[0]['RelacionEmergencia'] ?>
+                </li>
                 <li><strong>Numero Emergencia: </strong>
                     <?php echo $dataMedicos[0]['NumeroEmergencia'] ?>
                 </li>

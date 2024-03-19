@@ -25,6 +25,11 @@
     <input type="text" class="form-control" id="nombreEmergencia" name="nombreEmergencia">
 </div>
 <div class="form-group">
+    <label for="relacionEmergencia" class="col-form-label">Relacion con la persona: <span
+            class="required">*</span></label>
+    <input type="text" class="form-control" id="relacionEmergencia" name="relacionEmergencia">
+</div>
+<div class="form-group">
     <label for="numeroEmergencia" class="col-form-label">Numero Emergencia: <span class="required">*</span></label>
     <input type="text" class="form-control" id="numeroEmergencia" name="numeroEmergencia">
 </div>

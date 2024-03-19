@@ -159,6 +159,7 @@ if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
                     <li>Lesiones: <?php echo $dataMedicos[0]['Lesiones']?></li>
                     <li>NSS: <?php echo $dataMedicos[0]['NumeroSeguro']?></li>
                     <li>Nombre para llamar a emergencia: <?php echo $dataMedicos[0]['NombreEmergencia']?></li>
+                    <li>Relacion: <?php echo $dataMedicos[0]['RelacionEmergencia'] ?>  </li> 
                     <li>Número de Emergencia: <?php echo $dataMedicos[0]['NumeroEmergencia']?></li>
                     <li>Tipo de Sangre: <?php echo $dataMedicos[0]['TipoSangre']?></li>
                 </ul>

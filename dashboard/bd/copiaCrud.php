@@ -44,6 +44,7 @@ switch ($datos['opcion']) {
         $tipoSangre = $datos['tipoSangre'];
         $nombreEmergencia = $datos['nombreEmergencia'];
         $genero = $datos['genero'];
+        $relacionEmergencia = $datos['relacionEmergencia'];
 
         //datos academicos
         $cedula = $datos['cedula'];
@@ -237,7 +238,7 @@ switch ($datos['opcion']) {
 
 
             //insersion datos medicos
-            $consulta = "INSERT INTO datosmedicos (idEmpleado, Alergias, EnfermedadesCronicas, Lesiones, AlergiasMedicamentos, NumeroSeguro, NumeroEmergencia, TipoSangre, NombreEmergencia, Genero) VALUES (:idEmpleado, :alergias, :enfermedadesCronicas, :lesiones, :alergiasMedicamentos, :numeroSeguro, :numeroEmergencia, :tipoSangre, :nombreEmergencia, :genero)";
+            $consulta = "INSERT INTO datosmedicos (idEmpleado, Alergias, EnfermedadesCronicas, Lesiones, AlergiasMedicamentos, NumeroSeguro, NumeroEmergencia, TipoSangre, NombreEmergencia, Genero, RelacionEmergencia) VALUES (:idEmpleado, :alergias, :enfermedadesCronicas, :lesiones, :alergiasMedicamentos, :numeroSeguro, :numeroEmergencia, :tipoSangre, :nombreEmergencia, :genero, :relacionEmergencia)";
             $resultado = $conexion->prepare($consulta);
             try {
                 //Ejecucion de la insercion con sus medidas de seguridad
@@ -251,6 +252,7 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':tipoSangre', $tipoSangre);
                 $resultado->bindParam(':nombreEmergencia', $nombreEmergencia);
                 $resultado->bindParam(':genero', $genero);
+                $resultado->bindParam(':relacionEmergencia', $relacionEmergencia);
 
                 $resultado->execute();
 
@@ -501,7 +503,7 @@ switch ($datos['opcion']) {
         $tipoSangre = $datos['tipoSangre'];
         $nombreEmergencia = $datos['nombreEmergencia'];
         $genero = $datos['genero'];
-        error_log("Datos medicos: " . print_r($datos, true));
+        $relacionEmergencia = $datos['relacionEmergencia'];
 
         //datos academicos
         $cedula = $datos['cedula'];
@@ -679,7 +681,7 @@ switch ($datos['opcion']) {
             }
 
             //actualizacion datos medicos
-            $consulta = "UPDATE datosmedicos SET Alergias = :alergias, EnfermedadesCronicas = :enfermedadesCronicas, Lesiones = :lesiones, AlergiasMedicamentos = :alergiasMedicamentos, NumeroSeguro = :numeroSeguro, NumeroEmergencia = :numeroEmergencia, TipoSangre = :tipoSangre, nombreEmergencia = :nombreEmergencia, genero = :genero  WHERE idEmpleado = :id";
+            $consulta = "UPDATE datosmedicos SET Alergias = :alergias, EnfermedadesCronicas = :enfermedadesCronicas, Lesiones = :lesiones, AlergiasMedicamentos = :alergiasMedicamentos, NumeroSeguro = :numeroSeguro, NumeroEmergencia = :numeroEmergencia, TipoSangre = :tipoSangre, nombreEmergencia = :nombreEmergencia, genero = :genero , relacionEmergencia = :relacionEmergencia  WHERE idEmpleado = :id";
             $resultado = $conexion->prepare($consulta);
             try {
                 //Ejecucion de la actualizacion con sus medidas de seguridad
@@ -693,6 +695,7 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':tipoSangre', $tipoSangre);
                 $resultado->bindParam(':nombreEmergencia', $nombreEmergencia);
                 $resultado->bindParam(':genero', $genero);
+                $resultado->bindParam(':relacionEmergencia', $relacionEmergencia);
                 $resultado->execute();
 
                 $message = 'Datos procesados con exito';

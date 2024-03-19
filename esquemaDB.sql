@@ -21,15 +21,16 @@ CREATE TABLE IF NOT EXISTS `datosmedicos` (
   `Alergias` varchar(150) DEFAULT 'N/A',
   `EnfermedadesCronicas` varchar(150) DEFAULT 'N/A',
   `Lesiones` varchar(150) DEFAULT 'N/A',
-  `AlergiasMedicamentos` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'N/A',
-  `NumeroSeguro` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `AlergiasMedicamentos` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'N/A',
+  `NumeroSeguro` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
   `NumeroEmergencia` varchar(50) NOT NULL DEFAULT '0',
   `TipoSangre` varchar(5) NOT NULL DEFAULT '0',
   `NombreEmergencia` varchar(50) DEFAULT NULL,
-  `Genero` set('masculino','femenino','otro') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Genero` set('masculino','femenino','otro') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `RelacionEmergencia` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`IdDatosMedicos`),
   UNIQUE KEY `idEmpleado` (`idEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -44,16 +45,16 @@ CREATE TABLE IF NOT EXISTS `documentacion` (
   `Curp` varchar(150) NOT NULL,
   `Inss` varchar(150) NOT NULL,
   `ConstanciaSat` varchar(150) NOT NULL,
-  `Foto` varchar(150) NOT NULL,
-  `ActaNacimiento` varchar(150) DEFAULT NULL,
-  `EstadoCuentaBanco` varchar(150) DEFAULT NULL,
-  `AltaSeguroSocial` varchar(150) DEFAULT NULL,
-  `CedulaProfecional` varchar(150) DEFAULT NULL,
-  `CopiaContrato` varchar(150) DEFAULT NULL,
-  `ComprobanteDomicilio` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'sin cambio',
+  `Foto` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ActaNacimiento` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'sin cambio',
+  `EstadoCuentaBanco` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'sin cambio',
+  `AltaSeguroSocial` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'sin cambio',
+  `CedulaProfecional` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'sin cambio',
+  `CopiaContrato` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'sin cambio',
+  `ComprobanteDomicilio` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'sin cambio',
   PRIMARY KEY (`IdDocumentacion`),
   UNIQUE KEY `IdEmpleado` (`IdEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -66,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `familiares` (
   `FechaNacimiento` date NOT NULL,
   PRIMARY KEY (`IdFamiliar`),
   UNIQUE KEY `idEmpleado` (`IdEmpleado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -81,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `formacademica` (
   `GradoEstudios` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdDatosAcademicos`) USING BTREE,
   UNIQUE KEY `IdEmpleado` (`IdEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -112,10 +113,11 @@ CREATE TABLE IF NOT EXISTS `personas` (
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` int NOT NULL AUTO_INCREMENT,
   `usuario` varchar(25) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
-  `password` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `password` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL DEFAULT '856fc81623da2150ba2210ba1b51d241',
+  `type` set('admin','user') COLLATE utf8mb3_spanish_ci DEFAULT 'user',
   PRIMARY KEY (`id`),
   UNIQUE KEY `usuario` (`usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 -- La exportación de datos fue deseleccionada.
 
