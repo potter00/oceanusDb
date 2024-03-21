@@ -81,8 +81,8 @@ $(document).ready(function () {
     actualizarTablaPersonas();
     tablaPersonas.buttons().container().appendTo('#tablaPersonas_wrapper .col-md-6:eq(0)');
 
-    tablaPersonas.column(2).visible(false);
-    tablaPersonas.column(4).visible(false);
+    tablaPersonas.column(6).visible(false);
+    tablaPersonas.column(12).visible(false);
     tablaPersonas.column(5).visible(false);
 
     tablaPersonas.column(7).visible(false);
@@ -92,8 +92,10 @@ $(document).ready(function () {
     tablaPersonas.column(11).visible(false);
 
     tablaPersonas.column(13).visible(false);
-    tablaPersonas.column(14).visible(false);
+    //tablaPersonas.column(14).visible(false);
     tablaPersonas.column(15).visible(false);
+    tablaPersonas.column(16).visible(false);
+    tablaPersonas.column(17).visible(false);
 
     //variables globales
     var documentos = ["Credencial", "Licencia", "Pasaporte", "CV", "Curp", "Inss", "ConstanciaSat", "Foto", "ActaNacimiento", "EstadoCuentaBanco", "AltaSeguroSocial", "CedulaProfecional", "CopiaContrato", "ComprobanteDomicilio"];
@@ -334,8 +336,10 @@ $(document).ready(function () {
                     $("#fechaInicioContrato").val(data.data.personas[0].InicioContrato);
                     $("#fechaFinContrato").val(data.data.personas[0].FinContrato);
                     $("#correo").val(data.data.personas[0].Correo);
+                    document.getElementById("estadoCivil").value = data.data.personas[0].estadoCivil;
+                    $("#ine").val(data.data.personas[0].INE);
 
-                    
+
 
                     //datos medicos
                     $("#alergias").val(data.data.medicos[0].Alergias);
@@ -496,6 +500,171 @@ $(document).ready(function () {
     $(document).on("click", "#btnActualizar", function () {
         actualizarTablaPersonas();
 
+    });
+
+    //Boton subir Excel
+    $(document).on("click", "#btnSubirExcel", function () {
+        const archivoInput = document.getElementById("fileInputExcel");
+        const archivo = archivoInput.files[0];
+        var lector = new FileReader();
+
+        console.log("cargando archivo");
+        lector.onload = function (e) {
+            var contenido = e.target.result;
+            var libro = XLSX.read(contenido, { type: 'binary' });
+            var hojaNombre = libro.SheetNames[0];
+            var hoja = libro.Sheets[hojaNombre];
+            var datos = XLSX.utils.sheet_to_json(hoja);
+            
+
+            //subimos los datos a la base de datos
+            for (let i = 0; i < datos.length; i++) {
+                //verificamos que todos los campos estan llenos y existen, en caso de que no se añade un valor por defecto
+                var dataJson = {};
+                if (datos[i]['Nombre del trabajador'] == undefined) {
+                    dataJson['nombre'] = "Sin Nombre";
+
+
+                }else{
+                    dataJson['nombre'] = datos[i]['Nombre del trabajador'];
+                }
+
+                dataJson['fechaNacimiento'] = "1000-01-01";
+
+                if (datos[i]['CURP'] == undefined) {
+                    dataJson['curp'] = "000000000000000000";
+                    
+                }else{
+                    dataJson['curp'] = datos[i]['CURP'];
+                }
+
+                if (datos[i]['RFC'] == undefined) {
+                    dataJson['rfc'] = "0000000000000";
+                    
+                }else{
+                    dataJson['rfc'] = datos[i]['RFC'];
+                }
+
+                if (datos[i]['INE'] == undefined) {
+                    dataJson['ine'] = "0000000000";
+                    
+                }else{
+                    dataJson['ine'] = datos[i]['INE'];
+                }
+
+                if (datos[i]['estado civil'] == undefined) {
+                    dataJson['estadoCivil'] = "soltero";
+                    
+                }else{
+                    dataJson['estadoCivil'] = datos[i]['estado civil'];
+                }
+
+
+
+                dataJson['NumeroFijo'] = "0000000000";
+
+                if (datos[i]['telefono'] == undefined) {
+                    dataJson['numeroCelular'] = "0000000000";
+                    
+                }else{
+                    dataJson['numeroCelular'] = datos[i]['telefono'];
+                }
+
+                if (datos[i]['DOMICILIO'] == undefined) {
+                    dataJson['direccion'] = "Sin Direccion";
+                    
+                }else{
+                    dataJson['direccion'] = datos[i]['DOMICILIO'];
+                }
+                
+                dataJson['NumeroLicencia'] = "000000000000000";
+
+
+                if (datos[i]['numero de pasaporte'] == undefined) {
+                    dataJson['numeroPasaporte'] = "000000000";
+                    
+                }else{
+                    dataJson['numeroPasaporte'] = datos[i]['numero de pasaporte'];
+                }
+
+                dataJson['fechaIngreso'] = "1000-01-01";
+
+                dataJson['estado'] = "activo";
+                dataJson['tipoContrato'] = "temporal";
+                dataJson['inicioContrato'] = "1000-01-01";
+                dataJson['finContrato'] = "1000-01-01";
+                
+
+                if (datos[i]['correo'] == undefined) {
+                    dataJson['correo'] = "Sin Correo";
+                    
+                }else{
+                    dataJson['correo'] = datos[i]['correo'];
+                }
+
+
+
+
+                //datos medicos
+                dataJson['alergias'] = "Sin Alergias";
+                dataJson['enfermedadesCronicas'] = "Sin enfermedades cronicas";
+                dataJson['lesiones'] = "Sin lesiones";
+                dataJson['alergiasMedicamentos'] = "Sin alergias a medicamentos";
+
+                if (datos[i]['NUMERO DE SEGURO SOCIAL'] == undefined) {
+                    dataJson['numeroSeguro'] = "000000000000";
+                    
+                }else{ 
+                    dataJson['numeroSeguro'] = datos[i]['NUMERO DE SEGURO SOCIAL'];
+                }
+
+                dataJson['numeroEmergencia'] = "0000000000";
+                dataJson['tipoSangre'] = "NA";
+                dataJson['nombreEmergencia'] = "Sin Nombre";
+                dataJson['genero'] = "otro";
+                dataJson['relacionEmergencia'] = "Sin Relacion";
+
+                //datos academicos
+                dataJson['cedula'] = "0000000";
+                dataJson['carrera'] = "Sin Carrera";
+                dataJson['expLaboral'] = "Sin Experiencia Laboral";
+                dataJson['certificaciones'] = "Sin Certificaciones";
+                dataJson['gradoEstudios'] = "Sin Grado de Estudios";
+
+                console.log(dataJson);
+                darDeAltaPersona(dataJson);
+
+
+            }
+
+            actualizarTablaPersonas();
+        };
+
+        lector.readAsBinaryString(archivo);
+
+
+
+
+
+    });
+
+
+
+    document.getElementById('fileInputExcel').addEventListener('change', function (e) {
+        var archivo = e.target.files[0];
+        var lector = new FileReader();
+        console.log("cargando archivo");
+        lector.onload = function (e) {
+            var contenido = e.target.result;
+            var libro = XLSX.read(contenido, { type: 'binary' });
+            var hojaNombre = libro.SheetNames[0];
+            var hoja = libro.Sheets[hojaNombre];
+            var datos = XLSX.utils.sheet_to_json(hoja);
+
+            console.log(datos); // Aquí tienes tus datos como un array de objetos
+        };
+
+        lector.readAsBinaryString(archivo);
     });
 
     //funcion para subir archivo al servidor
@@ -1192,11 +1361,11 @@ $(document).ready(function () {
 
 
     //añadir fila a la tabla de personas
-    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc, numeroFijo, correo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
+    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc,INE, estadoCivil,  numeroFijo, correo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
 
         rolUsuario = obtenerRolUsuario();
         rolUsuario = rolUsuario.trim();
-        
+
         if (rolUsuario == "Administrador") {
 
             var botones = "<div class='text-center'><div class='btn-group'><button class='btn btn-primary btnEditar'>Editar</button><button class='btn btn-danger btnBorrar'>Borrar</button><button class='btn btn-secondary btnOpciones' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Opciones</button><div class='dropdown-menu' aria-labelledby='opcionesDropdown'><a class='dropdown-item btnSubirArchivo' href='#'>Subir Archivo</a><a class='dropdown-item btnDescargarArchivo' href='#'>Descargar Archivo</a><a class='dropdown-item btnGenerarReporte' href='#'>Generar Reporte</a><a class='dropdown-item btnGenerarCredencial' href='#'>Generar Credencial</a><a class='dropdown-item btnDetalles' href='#'>Detalles</a></div></div></div>";
@@ -1211,7 +1380,7 @@ $(document).ready(function () {
         } else {
             estado = "<div class = 'badge badge-danger' > " + estado + "</div>";
         }
-        tablaPersonas.row.add([id, nombre, fechaNacimiento, curp, rfc, numeroFijo, correo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato, botones]).draw();
+        tablaPersonas.row.add([id, nombre, fechaNacimiento, curp, rfc, INE, estadoCivil, numeroFijo, correo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato, botones]).draw();
 
     }
 
@@ -1232,10 +1401,10 @@ $(document).ready(function () {
                     console.log(element.Correo)
                     if (checkbox.checked == true) {
 
-                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.INE, element.estadoCivil,  element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
                     } else {
                         if (element.Estado == "activo") {
-                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.INE, element.estadoCivil , element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
                         }
 
                     }
@@ -1260,8 +1429,49 @@ $(document).ready(function () {
     function obtenerRolUsuario() {
         var valor = document.getElementById('rolUsuario').textContent;
         return valor;
-        
+
     }
+
+    //funcion para dar de alta a una persona
+    function darDeAltaPersona(dataObject) {
+       
+        
+        dataObject['opcion'] = 1; //dar de alta
+        dataJSON = JSON.stringify(dataObject);
+        fetch('../dashboard/bd/copiaCrud.php', {
+            method: 'POST',
+            body: dataJSON,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    
+
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    
+
+
 
 
 

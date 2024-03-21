@@ -81,13 +81,14 @@
             formDataObject[key] = value;
         });
         var dropdown = document.getElementById("genero");
+        var dropdown2 = document.getElementById("estadoCivil");
 
         // Obtener el valor seleccionado
         var generoSeleccionado = dropdown.options[dropdown.selectedIndex].value;
-
-        // Mostrar el valor seleccionado en la consola
-        console.log("Género seleccionado:", generoSeleccionado);
+        var estadoCivilSeleccionado = dropdown2.options[dropdown2.selectedIndex].value;
+       
         formDataObject['genero'] = generoSeleccionado;
+        formDataObject['estadoCivil'] = estadoCivilSeleccionado;
         // Agregar la opción al objeto en este caso para insertar los datos
         formDataObject['opcion'] = opcion;
         // Agregar el id al objeto en caso de que se esté actualizando

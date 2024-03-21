@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `datosmedicos` (
   `RelacionEmergencia` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`IdDatosMedicos`),
   UNIQUE KEY `idEmpleado` (`idEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `documentacion` (
   `ComprobanteDomicilio` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'sin cambio',
   PRIMARY KEY (`IdDocumentacion`),
   UNIQUE KEY `IdEmpleado` (`IdEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -82,14 +82,14 @@ CREATE TABLE IF NOT EXISTS `formacademica` (
   `GradoEstudios` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`IdDatosAcademicos`) USING BTREE,
   UNIQUE KEY `IdEmpleado` (`IdEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla crud_2019.personas
 CREATE TABLE IF NOT EXISTS `personas` (
   `Id` int NOT NULL AUTO_INCREMENT,
-  `Nombre` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `Nombre` varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
   `FechaNacimiento` date NOT NULL,
   `Curp` varchar(18) COLLATE utf8mb3_spanish_ci NOT NULL DEFAULT '',
   `Rfc` varchar(13) COLLATE utf8mb3_spanish_ci NOT NULL DEFAULT '',
@@ -104,8 +104,10 @@ CREATE TABLE IF NOT EXISTS `personas` (
   `InicioContrato` date DEFAULT NULL,
   `FinContrato` date DEFAULT NULL,
   `Correo` varchar(50) COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `INE` varchar(20) COLLATE utf8mb3_spanish_ci DEFAULT NULL,
+  `estadoCivil` set('soltero','casado') COLLATE utf8mb3_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 -- La exportación de datos fue deseleccionada.
 

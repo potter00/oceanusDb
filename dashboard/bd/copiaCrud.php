@@ -32,6 +32,8 @@ switch ($datos['opcion']) {
         $fechaInicioContrato = $datos['fechaInicioContrato'];
         $fechaFinContrato = $datos['fechaFinContrato'];
         $correo = $datos['correo'];
+        $INE = $datos['ine'];
+        $estadoCivil = $datos['estadoCivil'];
 
 
         //Datos medicos
@@ -39,7 +41,7 @@ switch ($datos['opcion']) {
         $enfermedadesCronicas = $datos['enfermedadesCronicas'];
         $lesiones = $datos['lesiones'];
         $alergiasMedicamentos = $datos['alergiasMedicamentos'];
-        $numeroSeguro = $datos['numeroSeguro'];
+        $numeroSeguro = eliminarCaracter($datos['numeroSeguro'], '-');
         $numeroEmergencia = $datos['numeroEmergencia'];
         $tipoSangre = $datos['tipoSangre'];
         $nombreEmergencia = $datos['nombreEmergencia'];
@@ -55,15 +57,7 @@ switch ($datos['opcion']) {
         //verificamos que los datos sean validos --inicio
 
 
-        //Verificamos que el nombre sea valido
-        if (!preg_match("/^[a-zA-Z-' ]*$/", $nombre) || strlen($nombre) < 3 || strlen($nombre) > 50) {
-            $message = 'El nombre no es valido';
-            if (isset($errores)) {
-                $errores[] = $message;
-            } else {
-                $errores = array($message);
-            }
-        }
+        
         //Verificamos que la fecha de nacimiento sea valida
         if (!verificarFormatoFecha($fechaNacimiento, 'Y-m-d')) {
             $message = 'La fecha de nacimiento no es valida';
@@ -184,7 +178,7 @@ switch ($datos['opcion']) {
 
 
             //preparacion para la insercion
-            $consulta = "INSERT INTO personas (nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, inicioContrato, finContrato, correo) VALUES (:nombre, :fechaNacimiento, :curp, :rfc, :numeroFijo, :numeroCelular, :direccion, :numeroLicencia, :numeroPasaporte, :fechaIngreso, :estado, :tipoContrato, :inicioContrato, :finContrato, :correo)";
+            $consulta = "INSERT INTO personas (nombre, fechaNacimiento, curp, rfc, numeroFijo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, inicioContrato, finContrato, correo, INE, estadoCivil) VALUES (:nombre, :fechaNacimiento, :curp, :rfc, :numeroFijo, :numeroCelular, :direccion, :numeroLicencia, :numeroPasaporte, :fechaIngreso, :estado, :tipoContrato, :inicioContrato, :finContrato, :correo, :INE, :estadoCivil)";
             $resultado = $conexion->prepare($consulta);
 
             try {
@@ -204,6 +198,8 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':inicioContrato', $fechaInicioContrato);
                 $resultado->bindParam(':finContrato', $fechaFinContrato);
                 $resultado->bindParam(':correo', $correo);
+                $resultado->bindParam(':INE', $INE);
+                $resultado->bindParam(':estadoCivil', $estadoCivil);
                 
 
                 $resultado->execute();
@@ -492,6 +488,8 @@ switch ($datos['opcion']) {
         $fechaInicioContrato = $datos['fechaInicioContrato'];
         $fechaFinContrato = $datos['fechaFinContrato'];
         $correo = $datos['correo'];
+        $INE = $datos['ine'];
+        $estadoCivil = $datos['estadoCivil'];
 
         //Datos medicos
         $alergias = $datos['alergias'];
@@ -643,7 +641,7 @@ switch ($datos['opcion']) {
         } else {
 
             //preparacion para la actualizacion
-            $consulta = "UPDATE personas SET nombre = :nombre, fechaNacimiento = :fechaNacimiento, curp = :curp, rfc = :rfc, numeroFijo = :numeroFijo, numeroCelular = :numeroCelular, direccion = :direccion, numeroLicencia = :numeroLicencia, numeroPasaporte = :numeroPasaporte, fechaIngreso = :fechaIngreso, estado = :estado, tipoContrato = :tipoContrato, inicioContrato = :inicioContrato, finContrato = :finContrato, correo = :correo WHERE id = :id";
+            $consulta = "UPDATE personas SET nombre = :nombre, fechaNacimiento = :fechaNacimiento, curp = :curp, rfc = :rfc, numeroFijo = :numeroFijo, numeroCelular = :numeroCelular, direccion = :direccion, numeroLicencia = :numeroLicencia, numeroPasaporte = :numeroPasaporte, fechaIngreso = :fechaIngreso, estado = :estado, tipoContrato = :tipoContrato, inicioContrato = :inicioContrato, finContrato = :finContrato, correo = :correo, INE = :INE, estadoCivil= :estadoCivil WHERE id = :id";
             $resultado = $conexion->prepare($consulta);
 
             try {
@@ -664,6 +662,10 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':inicioContrato', $fechaInicioContrato);
                 $resultado->bindParam(':finContrato', $fechaFinContrato);
                 $resultado->bindParam(':correo', $correo);
+                $resultado->bindParam(':INE', $INE);
+                $resultado->bindParam(':estadoCivil', $estadoCivil);
+
+
 
                 
 

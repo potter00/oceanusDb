@@ -21,23 +21,30 @@
     <div class="container">
         <div class="row">
             <div class="">
+
+                <button id="btnActualizar" type="button" class="btn btn-primary" data-toggle="modal">Actualizar
+                    Tabla</button>
+                <?php if ($_SESSION["s_rol"] == "admin") { ?>
+                    
                 <button id="btnNuevo" type="button" class="btn btn-success" data-toggle="modal">Nuevo</button>
-                <button id="btnActualizar" type="button" class="btn btn-primary" data-toggle="modal">Actualizar Tabla</button>
+                <button id="btnSubirExcel" type="button" class="btn btn-primary" data-toggle="modal">SubirExcel</button>
+                <input class="fileInputExcel" type="file" id="fileInputExcel">
+                <?php } ?>
                 <div>
-                        <!-- drag handle -->
-                        <span class="handle">
-                            <i class="fas fa-ellipsis-v"></i>
-                            <i class="fas fa-ellipsis-v"></i>
-                        </span>
-                        <!-- checkbox -->
-                        <div class="icheck-primary d-inline ml-2">
-                            <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                            <label for="todoCheck1"></label>
-                        </div>
-                        <!-- todo text -->
-                        <span class="text">Mostrar inactivos </span>
+                    <!-- drag handle -->
+                    <span class="handle">
+                        <i class="fas fa-ellipsis-v"></i>
+                        <i class="fas fa-ellipsis-v"></i>
+                    </span>
+                    <!-- checkbox -->
+                    <div class="icheck-primary d-inline ml-2">
+                        <input type="checkbox" value="" name="todo1" id="todoCheck1">
+                        <label for="todoCheck1"></label>
                     </div>
-               
+                    <!-- todo text -->
+                    <span class="text">Mostrar inactivos </span>
+                </div>
+
 
 
             </div>
@@ -54,10 +61,12 @@
                         <thead class="text-center">
                             <tr>
                                 <th>Id</th>
-                                <th width = 50%>Nombre</th>
+                                <th width=50%>Nombre</th>
                                 <th>Fecha Nacimiento</th>
                                 <th>Curp</th>
                                 <th>RFC</th>
+                                <th>INE</th>
+                                <th>Estado Civil</th>
                                 <th>Numero Fijo</th>
                                 <th>Correo</th>
                                 <th>Numero Celular</th>
@@ -74,7 +83,7 @@
                         </thead>
                         <tbody>
 
-                            
+
 
 
                         </tbody>

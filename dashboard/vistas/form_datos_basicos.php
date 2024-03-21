@@ -19,6 +19,21 @@
     <input type="text" class="form-control" id="rfc" name="rfc">
 </div>
 <div class="form-group">
+    <label for="ine" class="col-form-label">Numero de INE: <span class="required">*</span></label>
+    <input type="text" class="form-control" id="ine" name="ine">
+</div>
+<div class="form-group">
+    <label for="estadoCivil" class="col-form-label">Estado Civil: <span class="required">*</span>
+
+        <select id="estadoCivil" name="estadoCivil" class="form-control">
+            <option value="soltero">Soltero</option>
+            <option value="casado">Casado</option>
+            
+        </select>
+    </label>
+
+</div>
+<div class="form-group">
     <label for="numeroFijo" class="col-form-label">Numero de casa:</label>
     <input type="text" class="form-control" id="numeroFijo" name="numeroFijo">
 </div>
