@@ -77,7 +77,7 @@
 <script src="js/sb-admin-2.min.js"></script>
 
 <!-- Código propio JS -->
-<script type="text/javascript" src="./main.js"></script>
+<script type="text/javascript" src="./maindb.js"></script>
 
 
 

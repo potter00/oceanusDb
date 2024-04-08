@@ -63,6 +63,11 @@ if ($_SESSION["s_usuario"] === null) {
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="indexdb.php">
+        <i class="fas fa-fw fa-database"></i>
+          <span>Base de Datos</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
