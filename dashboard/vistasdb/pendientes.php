@@ -8,19 +8,19 @@
         <table class="table table-sm table-striped table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th>Campo 1</th>
-                    <th>Campo 2</th>
-                    <th>Campo 3</th>
-                    <th>Campo 4</th>
+                    <th>id</th>
+                    <th>Titulo</th>
+                    <th>Fecha</th>
+                    <th>Pioridad</th>
                 </tr>
             </thead>
             <tbody>
                 <?php for ($i = 1; $i <= 25; $i++) { ?>
                     <tr>
-                        <td>Dato 1</td>
-                        <td>Dato 2</td>
-                        <td>Dato 3</td>
-                        <td>Dato 4</td>
+                        <td style="width:15px"><?php echo $i ?></td>
+                        <td>titulo <?php echo $i ?></td>
+                        <td style="width:150px">0000-00-00</td>
+                        <td style="width:15px" >Alta</td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -41,15 +41,18 @@
                 </div>
             </div>
             <div class="card-body" style="line-height: .8;">
-                
-                <p><strong>Descripcion: </strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc at tincidunt ultricies, velit nunc tincidunt nunc, id lacinia nunc nunc eu nunc. Sed euismod, mauris id aliquet ultrices, nunc nunc tincidunt nunc, id lacinia nunc nunc eu nunc. Sed euismod, mauris id aliquet ultrices.</p>
+
+                <p><strong>Descripcion: </strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
+                    nunc at tincidunt ultricies, velit nunc tincidunt nunc, id lacinia nunc nunc eu nunc. Sed euismod,
+                    mauris id aliquet ultrices, nunc nunc tincidunt nunc, id lacinia nunc nunc eu nunc. Sed euismod,
+                    mauris id aliquet ultrices.</p>
                 <p><strong>Fecha: </strong>00-00-0000</p>
                 <p><strong>Tiempo Restante: </strong>4 dias 8 horas</p>
                 <p><strong>Estado: </strong>Sin atender</p>
                 <p><strong>Referencia aqui: </strong></p>
-                
 
-                
+
+
 
 
 

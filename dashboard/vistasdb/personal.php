@@ -8,19 +8,19 @@
         <table class="table table-sm table-striped table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th>Campo 1</th>
-                    <th>Campo 2</th>
-                    <th>Campo 3</th>
-                    <th>Campo 4</th>
+                    <th>id</th>
+                    <th>Nombre</th>
+                    <th>Empresa</th>
+
                 </tr>
             </thead>
             <tbody>
                 <?php for ($i = 1; $i <= 25; $i++) { ?>
                     <tr>
-                        <td>Dato 1</td>
-                        <td>Dato 2</td>
-                        <td>Dato 3</td>
-                        <td>Dato 4</td>
+                        <td style="width:15px"><?php echo $i ?></td>
+                        <td>PABLOOOO</td>
+                        <td style="width:100px">Empresa</td>
+
                     </tr>
                 <?php } ?>
             </tbody>
@@ -35,21 +35,56 @@
                     <h6 class="card-subtitle">Subtítulo</h6>
                 </div>
                 <div style="float: right;">
-                    <i class="fas fa-edit"></i> <!-- Icono de editar -->
-                    <i class="fas fa-download"></i> <!-- Icono de descarga -->
+                    <?php
+                    if (!isset($_GET['edit'])) {
+
+                        echo '<a class="fas fa-edit" href="indexdb.php?table=personal&edit=true"></a> <!-- Icono de editar -->';
+
+                    } else {
+                        echo '<a class="fas fa-edit" href="indexdb.php?table=personal"></a> <!-- Icono de editar -->';
+                    }
+
+                    if (!isset($_GET['edit'])) {
+
+                        echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+
+                    } else {
+                        echo '<i class="fas fa-upload"></i> <!-- Icono de descarga -->';
+                    }
+
+                    ?>
+
                     <i class="fas fa-cog"></i> <!-- Icono de configuración -->
                 </div>
             </div>
             <div class="card-body" style="line-height: .8;">
-                <h5><strong>Informacion de SubContratado </strong><i class="fas fa-download"></i></h5>
-                <p><strong>Nombre Completo Subcontratao Aqui </strong></p>
-                <p><strong>RFC: </strong>1549612asd5f1as</p>
-                <p><strong>INSS: </strong>156465432165</p>
-                <p><strong>INE: </strong>18215165168</p>
-                <p><strong>CURP: </strong>4654651ASD645sadA</p>
-                <p><strong>Estado: </strong>Activo</p>
 
-                
+                <?php
+                if (!isset($_GET['edit'])) {
+                    ?>
+
+                    <h5><strong>Informacion de SubContratado </strong><i class="fas fa-download"></i></h5>
+                    <p><strong>Nombre Completo Subcontratao Aqui </strong></p>
+                    <p><strong>RFC: </strong>1549612asd5f1as</p>
+                    <p><strong>INSS: </strong>156465432165</p>
+                    <p><strong>INE: </strong>18215165168</p>
+                    <p><strong>CURP: </strong>4654651ASD645sadA</p>
+                    <p><strong>Estado: </strong>Activo</p>
+
+                    <?php
+                } else {
+                    ?>
+                    <h5><strong>Informacion de SubContratado </strong><i class="fas fa-upload"></i></h5>
+                    <p><strong><input type="text"> </strong></p>
+                    <p><strong>RFC: </strong><input type="text"></p>
+                    <p><strong>INSS: </strong><input type="text"></p>
+                    <p><strong>INE: </strong><input type="text"></p>
+                    <p><strong>CURP: </strong><input type="text"></p>
+                    <p><strong>Estado: </strong><input type="text"></p>
+                    <?php
+                }
+                ?>
+
 
 
 

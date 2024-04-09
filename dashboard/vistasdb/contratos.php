@@ -8,19 +8,19 @@
         <table class="table table-sm table-striped table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th>Campo 1</th>
-                    <th>Campo 2</th>
-                    <th>Campo 3</th>
-                    <th>Campo 4</th>
+                    <th>id</th>
+                    <th>Titulo</th>
+                    <th>Contratante</th>
+                    <th>Fecha Inicio</th>
                 </tr>
             </thead>
             <tbody>
                 <?php for ($i = 1; $i <= 25; $i++) { ?>
                     <tr>
-                        <td>Dato 1</td>
-                        <td>Dato 2</td>
-                        <td>Dato 3</td>
-                        <td>Dato 4</td>
+                        <td style="width:15px"><?php echo $i ?></td>
+                        <td>titulo <?php echo $i ?></td>
+                        <td>contratante <?php echo $i ?></td>
+                        <td style="width:150px">0000-00-00</td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -43,15 +43,56 @@
                     <h6 class="card-subtitle">Subtítulo</h6>
                 </div>
                 <div style="float: right;">
-                    <i class="fas fa-edit"></i> <!-- Icono de editar -->
-                    <i class="fas fa-download"></i> <!-- Icono de descarga -->
+                    <?php
+                    if (!isset($_GET['edit'])) {
+                        
+                    
+                        if (isset($_GET['seccion']) ) {
+
+                            if ($_GET['seccion'] == 'detalles') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=true"></a> <!-- Icono de editar -->';
+                            } elseif ($_GET['seccion'] == 'personal') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=personal&edit=true"></a> <!-- Icono de editar -->';
+                            } elseif ($_GET['seccion'] == 'subcontratos') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=subcontratos&edit=true"></a> <!-- Icono de editar -->';
+
+                            }
+
+                        } else {
+                            echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=true"></a> <!-- Icono de editar -->';
+                        }
+                    }else {
+                        if (isset($_GET['seccion'])) {
+
+                            if ($_GET['seccion'] == 'detalles') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles"></a> <!-- Icono de editar -->';
+                            } elseif ($_GET['seccion'] == 'personal') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=personal"></a> <!-- Icono de editar -->';
+                            } elseif ($_GET['seccion'] == 'subcontratos') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=subcontratos"></a> <!-- Icono de editar -->';
+
+                            }
+
+                        } else {
+                            echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=false"></a> <!-- Icono de editar -->';
+                        }
+                    }
+                    ?>
+                    <?php 
+                    if (isset($_GET['edit'])) {
+                        echo '<i class="fas fa-upload"></i>';
+                    }else {
+                        echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+                    }
+                    ?>
+                    
                     <i class="fas fa-cog"></i> <!-- Icono de configuración -->
                 </div>
             </div>
             <div class="card-body" style="line-height: .8;">
                 <?php
 
-                if (isset ($_GET['seccion'])) {
+                if (isset($_GET['seccion'])) {
                     error_log($_GET['seccion']);
                     if ($_GET['seccion'] == 'detalles') {
                         require_once 'Contratos\detalles.php';
