@@ -1,3 +1,22 @@
+
+
+<?php
+    include_once '../../loginBase/bd/conexion.php';
+    $objeto = new Conexion();
+    $conexion = $objeto->Conectar();
+
+    $query = "SELECT * FROM empresa";
+    $resultado = $conexion->prepare($query);
+    $resultado->execute();
+    $empresas = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+
+
+    ?>
+
 <div class="container">
     <div>
         <?php include 'botonesNav.php'; ?>
@@ -9,21 +28,28 @@
             <thead>
                 <tr>
                     <th>id</th>
-                    <th>Nombre</th>
+                    <th>Razon Social</th>
                     <th>RFC</th>
-                    <th>Fecha Inicio</th>
+                    <th>Representante</th>
                 </tr>
             </thead>
             <tbody>
-                <?php for ($i = 1; $i <= 25; $i++) { ?>
+                <?php foreach ($empresas as $empresa) { 
+                    $idEmpresa = $empresa['idEmpresa'] - 1;
+                    
+                    $direccion = "indexdb.php?table=empresas&idEmpresa=" . $idEmpresa;
+                    $razonSocial = $empresa['razonSocial']
+                    
+                    ?>
                     <tr>
-                        <td style="width:15px"><?php echo $i ?></td>
-                        <td>Empresa <?php echo $i ?></td>
-                        <td>afmnksgdmn456df1sa65</td>
-                        <td>Contacto<?php echo $i ?>@gmail.com</td>
+                        <td style="width:15px"><?php echo $empresa['idEmpresa'] ?></td>
+                        <td><?php echo '<a  href="' . $direccion . '">'. $razonSocial . '</a> '; ?></td>
+                        <td><?php echo $empresa['rfc'] ?></td>
+                        <td><?php echo $empresa['representanteLegal'] ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
+            
         </table>
     </div>
     <div style="float: right; width: 35%; margin-left: 20px;">
@@ -38,10 +64,17 @@
                     <?php
                     if (!isset($_GET['edit'])) {
 
-                        echo '<a class="fas fa-edit" href="indexdb.php?table=empresas&edit=true"></a> <!-- Icono de editar -->';
+                        $direcion = "indexdb.php?table=empresas&edit=true&idEmpresa=" . $_GET['idEmpresa'];
+                        echo '<a class="fas fa-edit" href="' . $direcion . '"></a> <!-- Icono de editar -->';
+
+                        
 
                     } else {
-                        echo '<a class="fas fa-edit" href="indexdb.php?table=empresas"></a> <!-- Icono de editar -->';
+
+                        $direccion = "indexdb.php?table=empresas&idEmpresa=" . $_GET['idEmpresa'];
+                        echo '<a class="fas fa-edit" href="' . $direccion . '"></a> <!-- Icono de editar -->';
+                        
+
                     }
 
                     if (!isset($_GET['edit'])) {
@@ -58,25 +91,32 @@
             </div>
             <div class="card-body" style="line-height: .8;">
                 <?php
+                
+                
+
+
+
                 if (!isset($_GET['edit'])) {
                     ?>
                     <h5><strong>Informacion de la empresa </strong><i class="fas fa-download"></i></h5>
-                    <p><strong>Razon Social aqui </strong></p>
-                    <p><strong>RFC: </strong>1549612asd5f1as</p>
-                    <p><strong>Tipo de Regimen: </strong>Regimen aqui</p>
-                    <p><strong>Representante Legal: </strong>Nombre aqui</p>
-                    <p><strong>Correo: </strong>aqui_correo@gmail.com</p>
-                    <p><strong>Telefono: </strong>6221508692</p>
+                    <p><strong> <?php echo $empresas[$_GET['idEmpresa']]['razonSocial']?></strong></p>
+                    <p><strong>RFC: </strong><?php echo $empresas[$_GET['idEmpresa']]['rfc']?></p>
+                    <p><strong>Tipo de Regimen: </strong><?php echo $empresas[$_GET['idEmpresa']]['tipoRegimen']?></p>
+                    <p><strong>Representante Legal: </strong><?php echo $empresas[$_GET['idEmpresa']]['representanteLegal']?></p>
+                    <p><strong>Correo: </strong><?php echo $empresas[$_GET['idEmpresa']]['correo']?></p>
+                    <p><strong>Telefono: </strong><?php echo $empresas[$_GET['idEmpresa']]['telefono']?></p>
 
                 <?php } else { ?>
                     <h5><strong>Informacion de la empresa </strong><i class="fas fa-upload"></i></h5>
-                    <p><strong>Razon Social </strong><input type="text"></p>
-                    <p><strong>RFC: </strong><input type="text"></p>
-                    <p><strong>Tipo de Regimen: </strong><input type="text"></p>
-                    <p><strong>Representante Legal: </strong><input type="text"></p>
-                    <p><strong>Correo: </strong><input type="text"></p>
-                    <p><strong>Telefono: </strong><input type="text"></p>
+                    <p><strong>Razon Social </strong><input type="text" value="<?php echo $empresas[$_GET['idEmpresa']]['razonSocial'] ?>"></p>
+                    <p><strong>RFC: </strong><input type="text" value="<?php echo $empresas[$_GET['idEmpresa']]['rfc'] ?>"></p>
+                    <p><strong>Tipo de Regimen: </strong><input type="text" value="<?php echo $empresas[$_GET['idEmpresa']]['tipoRegimen'] ?>"></p>
+                    <p><strong>Representante Legal: </strong><input type="text" value="<?php echo $empresas[$_GET['idEmpresa']]['representanteLegal'] ?>"></p>
+                    <p><strong>Correo: </strong><input type="text" value="<?php echo $empresas[$_GET['idEmpresa']]['correo'] ?>"></p>
+                    <p><strong>Telefono: </strong><input type="text" value="<?php echo $empresas[$_GET['idEmpresa']]['telefono'] ?>"></p>
+                    <p><button type="submit" class="btn btn-primary">Guardar</button></p>
                 <?php } ?>
+                
 
 
 

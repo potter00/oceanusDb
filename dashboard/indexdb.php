@@ -1,4 +1,4 @@
-<?php require_once "vistas/parte_superior.php" ?>
+<?php require_once "vistasdb/parte_superior.php" ?>
 <!--INICIO del cont principal-->
 
 
