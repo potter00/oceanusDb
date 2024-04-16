@@ -14,19 +14,19 @@ $datos = json_decode(file_get_contents("php://input"), true);
 
 switch ($datos['opcion']) {
     case 'añadirEmpresa':
-        $razonSocial = $datos['razonSocial'];
-        $rfc = $datos['rfc'];
-        $tipoRegimen = $datos['tipoRegimen'];
-        $representanteLegal = $datos['representanteLegal'];
-        $correo = $datos['correo'];
-        $telefono = $datos['telefono'];
-        $logo = $datos['logo'];
+        $razonSocial = "sin definir";
+        $rfc = "sin definir";
+        $tipoRegimen = "sin definir";
+        $representanteLegal = "sin definir";
+        $correo = "sin definir";
+        $telefono = "sin definir";
+        $logo = "sin definir";
 
         try {
             //code...
 
             //preparacion para la insercion
-            $consulta = "INSERT INTO empresas (razonSocial, rfc, tipoRegimen, representanteLegal, correo, telefono, logo) VALUES (:razonSocial, :rfc, :tipoRegimen, :representanteLegal, :correo, :telefono, :logo)";
+            $consulta = "INSERT INTO empresa (razonSocial, rfc, tipoRegimen, representanteLegal, correo, telefono, logo) VALUES (:razonSocial, :rfc, :tipoRegimen, :representanteLegal, :correo, :telefono, :logo)";
             $resultado = $conexion->prepare($consulta);
             $resultado->execute(
                 array(
@@ -40,7 +40,8 @@ switch ($datos['opcion']) {
                 )
             );
 
-
+            $id = $conexion->lastInsertId();
+            $datos['id'] = $id;
             $message = "Empresa añadida correctamente";
         } catch (\Throwable $th) {
             $message = 'Error al procesar los datos: ' . $th->getMessage();
@@ -62,30 +63,31 @@ switch ($datos['opcion']) {
         $correo = $datos['correo'];
         $telefono = $datos['telefono'];
         $logo = $datos['logo'];
+        error_log("Datos recibidos en copiaCrud.php (despues): " . print_r($datos, true));
 
         try {
             //code...
 
             //preparacion para la insercion
-            $consulta = "UPDATE empresas SET razonSocial = :razonSocial, rfc = :rfc, tipoRegimen = :tipoRegimen, representanteLegal = :representanteLegal, correo = :correo, telefono = :telefono, logo = :logo WHERE id = :id";
+            $consulta = "UPDATE empresa SET razonSocial = :razonSocial, rfc = :rfc, tipoRegimen = :tipoRegimen, representanteLegal = :representanteLegal, correo = :correo, telefono = :telefono, logo = :logo WHERE idEmpresa = :id";
             $resultado = $conexion->prepare($consulta);
-            $resultado->execute(
-                array(
-                    ":id" => $id,
-                    ":razonSocial" => $razonSocial,
-                    ":rfc" => $rfc,
-                    ":tipoRegimen" => $tipoRegimen,
-                    ":representanteLegal" => $representanteLegal,
-                    ":correo" => $correo,
-                    ":telefono" => $telefono,
-                    ":logo" => $logo
-                )
-            );
+            
+            $resultado->bindParam(':razonSocial', $razonSocial, PDO::PARAM_STR);
+            $resultado->bindParam(':rfc', $rfc, PDO::PARAM_STR);
+            $resultado->bindParam(':tipoRegimen', $tipoRegimen, PDO::PARAM_STR);
+            $resultado->bindParam(':representanteLegal', $representanteLegal, PDO::PARAM_STR);
+            $resultado->bindParam(':correo', $correo, PDO::PARAM_STR);
+            $resultado->bindParam(':telefono', $telefono, PDO::PARAM_STR);
+            $resultado->bindParam(':logo', $logo, PDO::PARAM_STR);
+            $resultado->bindParam(':id', $id, PDO::PARAM_INT);
+            
+            $resultado->execute();
+
 
 
             $message = "Empresa editada correctamente";
-        } catch (\Throwable $th) {
-            $message = 'Error al procesar los datos: ' . $th->getMessage();
+        } catch (PDOException $e) {
+            $message = 'Error al procesar los datos: ' . $e->getMessage();
             if (isset($errores)) {
                 $errores[] = $message;
             } else {

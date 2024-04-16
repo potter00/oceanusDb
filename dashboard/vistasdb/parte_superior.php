@@ -23,7 +23,7 @@ if (isset($_GET['table'])) {
       $resultado = $conexion->prepare($query);
       $resultado->execute();
       $empresas = $resultado->fetchAll(PDO::FETCH_ASSOC);
-      $idEmpresa = $empresas[0]['idEmpresa'] - 1;
+      $idEmpresa = $empresas[0]['idEmpresa'];
       
       //redireccionamos a la misma pagina pero con $idEmpresa
       header("Location: indexdb.php?table=empresas&idEmpresa=$idEmpresa");
