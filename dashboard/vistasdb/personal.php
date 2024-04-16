@@ -1,25 +1,65 @@
+<?php
+include_once '../../loginBase/bd/conexion.php';
+$objeto = new Conexion();
+$conexion = $objeto->Conectar();
+
+$query = "SELECT * FROM subcontratados";
+$resultado = $conexion->prepare($query);
+$resultado->execute();
+$subcontratados = $resultado->fetchAll(PDO::FETCH_ASSOC);
+foreach ($subcontratados as $subcontratado) {
+    if ($subcontratado['idSubContratado'] == $_GET['idSubContratado']) {
+        $subContratadoSeleccionado = $subcontratado;
+    }
+}
+
+
+
+?>
+
+
+
+
+
+
 <div class="container">
     <div>
         <?php include 'botonesNav.php'; ?>
     </div>
 
     <div style="float: left; width: 60%;">
-        <h1>subContratados</h1>
-        <table class="table table-sm table-striped table-bordered table-condensed">
+        <h1 style="float: left; width: 60%;">subContratados</h1>
+        <button style="margin-top: 10px;" type="button" class="btn btn-primary" id="btnSubContratadoNuevo"><i
+                class="fas fa-plus"></i> Agregar nuevo elemento</button>
+        <hr>
+        <table id="tablaSubContratados" class="table table-sm table-striped table-bordered table-condensed">
             <thead>
                 <tr>
                     <th>id</th>
                     <th>Nombre</th>
-                    <th>Empresa</th>
+                    <th>Rfc</th>
+                    <th>Inss</th>
+                    <th>Ine</th>
+                    <th>Curp</th>
+                    <th>Estado</th>
 
                 </tr>
             </thead>
             <tbody>
-                <?php for ($i = 1; $i <= 25; $i++) { ?>
+                <?php foreach ($subcontratados as $subcontratado) {
+                    $idSubContratado = $subcontratado['idSubContratado'];
+                    $direccion = "indexdb.php?table=personal&idSubContratado=" . $idSubContratado;
+                    $nombreSubcontratado = $subcontratado['nombre'];
+
+                    ?>
                     <tr>
-                        <td style="width:15px"><?php echo $i ?></td>
-                        <td>PABLOOOO</td>
-                        <td style="width:100px">Empresa</td>
+                        <td style="width:15px"><?php echo $subcontratado['idSubContratado'] ?></td>
+                        <td><?php echo '<a  href="' . $direccion . '">' . $nombreSubcontratado . '</a> ' ?></td>
+                        <td><?php echo $subcontratado['rfc'] ?></td>
+                        <td><?php echo $subcontratado['inss'] ?></td>
+                        <td><?php echo $subcontratado['ine'] ?></td>
+                        <td><?php echo $subcontratado['curp'] ?></td>
+                        <td><?php echo $subcontratado['estado'] ?></td>
 
                     </tr>
                 <?php } ?>
@@ -38,10 +78,10 @@
                     <?php
                     if (!isset($_GET['edit'])) {
 
-                        echo '<a class="fas fa-edit" href="indexdb.php?table=personal&edit=true"></a> <!-- Icono de editar -->';
+                        echo '<a class="fas fa-edit" href="indexdb.php?table=personal&edit=true&idSubContratado=' . $_GET['idSubContratado'] . '"></a> <!-- Icono de editar -->';
 
                     } else {
-                        echo '<a class="fas fa-edit" href="indexdb.php?table=personal"></a> <!-- Icono de editar -->';
+                        echo '<a class="fas fa-edit" href="indexdb.php?table=personal&idSubContratado=' . $_GET['idSubContratado'] . '"></a> <!-- Icono de editar -->';
                     }
 
                     if (!isset($_GET['edit'])) {
@@ -54,35 +94,65 @@
 
                     ?>
 
-                    <i class="fas fa-cog"></i> <!-- Icono de configuración -->
+                    <div style="float: right;">
+
+
+                        <div class="dropdown" style="margin-top: 4px; margin-left: 4px;">
+                            <i class="fas fa-cog dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"></i>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a id="btnEliminarPersonal" class="dropdown-item" href="#"><i class="fas fa-trash"></i> Eliminar</a>
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-body" style="line-height: .8;">
 
                 <?php
                 if (!isset($_GET['edit'])) {
+
+
+
+
                     ?>
 
                     <h5><strong>Informacion de SubContratado </strong><i class="fas fa-download"></i></h5>
-                    <p><strong>Nombre Completo Subcontratao Aqui </strong></p>
-                    <p><strong>RFC: </strong>1549612asd5f1as</p>
-                    <p><strong>INSS: </strong>156465432165</p>
-                    <p><strong>INE: </strong>18215165168</p>
-                    <p><strong>CURP: </strong>4654651ASD645sadA</p>
-                    <p><strong>Estado: </strong>Activo</p>
+                    <p><strong><?php echo $subContratadoSeleccionado['nombre'] ?> </strong></p>
+                    <p><strong>RFC: </strong><?php echo $subContratadoSeleccionado['rfc'] ?></p>
+                    <p><strong>INSS: </strong><?php echo $subContratadoSeleccionado['inss'] ?></p>
+                    <p><strong>INE: </strong><?php echo $subContratadoSeleccionado['ine'] ?></p>
+                    <p><strong>CURP: </strong><?php echo $subContratadoSeleccionado['curp'] ?></p>
+                    <p><strong>Estado: </strong><?php echo $subContratadoSeleccionado['estado'] ?></p>
 
                     <?php
                 } else {
                     ?>
                     <h5><strong>Informacion de SubContratado </strong><i class="fas fa-upload"></i></h5>
-                    <p><strong><input type="text"> </strong></p>
-                    <p><strong>RFC: </strong><input type="text"></p>
-                    <p><strong>INSS: </strong><input type="text"></p>
-                    <p><strong>INE: </strong><input type="text"></p>
-                    <p><strong>CURP: </strong><input type="text"></p>
-                    <p><strong>Estado: </strong><input type="text"></p>
+                    <p><strong>Nombre:<input type="text" id="personalNombre"
+                                value="<?php echo $subContratadoSeleccionado['nombre'] ?>"> </strong></p>
+                    <p><strong>RFC: </strong><input type="text" id="personalRFC"
+                            value="<?php echo $subContratadoSeleccionado['rfc'] ?>"></p>
+                    <p><strong>INSS: </strong><input type="text" id="personalInss"
+                            value="<?php echo $subContratadoSeleccionado['inss'] ?>"></p>
+                    <p><strong>INE: </strong><input type="text" id="personalIne"
+                            value="<?php echo $subContratadoSeleccionado['ine'] ?>"></p>
+                    <p><strong>CURP: </strong><input type="text" id="personalCurp"
+                            value="<?php echo $subContratadoSeleccionado['curp'] ?>"></p>
+                    <p><strong>Estado: </strong>
+                        <select name="estado" id="personalEstado">
+                            <option value="activo" <?php if ($subContratadoSeleccionado['estado'] == 'activo')
+                                echo 'selected'; ?>>Activo</option>
+                            <option value="inactivo" <?php if ($subContratadoSeleccionado['estado'] == 'inactivo')
+                                echo 'selected'; ?>>Inactivo</option>
+                        </select>
+                    </p>
+                    <button type="submit" id="btnActualizarPersonal" class="btn btn-primary">Guardar</button>
                     <?php
                 }
+
+                $conexion = null;
                 ?>
 
 

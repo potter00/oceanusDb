@@ -11,7 +11,26 @@ if (isset($_GET['table'])) {
   if ($table == 'contratos') {
     error_log("Contratos");
   } elseif ($table == 'personal') {
-    error_log("Personal");
+    error_log("Personal de Contrato");
+
+    if (!isset($_GET['idSubContratado'])) {
+      include_once '../../loginBase/bd/conexion.php';
+      $objeto = new Conexion();
+      $conexion = $objeto->Conectar();
+      try{
+      $query = "SELECT * FROM subcontratados";
+      $resultado = $conexion->prepare($query);
+      $resultado->execute();
+      $subcontratados = $resultado->fetchAll(PDO::FETCH_ASSOC);
+      $idSubContratado = $subcontratados[0]['idSubContratado'];
+      error_log($idSubContratado);
+      $conexion = null;
+      //redireccionamos a la misma pagina pero con $idEmpresa
+      header("Location: indexdb.php?table=personal&idSubContratado=$idSubContratado");
+    } catch (Exception $e) {
+      error_log($e);
+    }
+    }
 
   } elseif ($table == 'empresas') {
     if (!isset($_GET['idEmpresa'])) {
@@ -26,6 +45,7 @@ if (isset($_GET['table'])) {
       $idEmpresa = $empresas[0]['idEmpresa'];
       
       //redireccionamos a la misma pagina pero con $idEmpresa
+      $conexion = null;
       header("Location: indexdb.php?table=empresas&idEmpresa=$idEmpresa");
 
     }

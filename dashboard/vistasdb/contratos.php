@@ -1,3 +1,24 @@
+
+
+<?php
+include_once '../../loginBase/bd/conexion.php';
+$objeto = new Conexion();
+$conexion = $objeto->Conectar();
+
+$query = "SELECT * FROM subcontratados";
+$resultado = $conexion->prepare($query);
+$resultado->execute();
+$contratos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+foreach ($contratos as $contrato) {
+    if ($contrato['idContrato'] == $_GET['idContrato']) {
+        $subContratadoSeleccionado = $subcontratado;
+    }
+}
+
+
+
+?>
+
 <div class="container">
     <div>
         <?php include 'botonesNav.php'; ?>
