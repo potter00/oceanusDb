@@ -4,9 +4,8 @@ if (!isset($_GET['edit'])) {
 ?>
 
 <h5><strong>Informacion General </strong><i class="fas fa-download"></i></h5>
-<p><Strong>Nombre Completo del Contrato: </Strong> proyecto integrador para el uso comun de areas
-    ecologicas y.... </p>
-<p><Strong>contratante: </Strong> Nombre Contratante</p>
+<p><Strong>Nombre Completo del Contrato: </Strong><?php echo $contratoSeleccionado['nombreContrato'] ?></p>
+<p><Strong>contratante: </Strong> <?php echo obtenerNombreEmpresa($contratoSeleccionado['idContratante'],$conexion) ?></p>
 <p><Strong>contratado: </Strong> Nombre Contratado</p>
 <p><Strong>Tipo de contrato: </Strong> Origen </p>
 <p><Strong>Fecha de inicio: </Strong> 01/01/2021</p>

@@ -7,9 +7,28 @@ if ($_SESSION["s_usuario"] === null) {
 if (isset($_GET['table'])) {
 
   $table = $_GET['table'];
-  error_log($table);
+  
   if ($table == 'contratos') {
-    error_log("Contratos");
+    
+    if (!isset($_GET['idContrato'])) {
+      include_once '../../loginBase/bd/conexion.php';
+      $objeto = new Conexion();
+      $conexion = $objeto->Conectar();
+      try{
+      $query = "SELECT * FROM contrato";
+      $resultado = $conexion->prepare($query);
+      $resultado->execute();
+      $contratos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+      $idContrato = $contratos[0]['idContrato'];
+      
+      $conexion = null;
+      //redireccionamos a la misma pagina pero con $idEmpresa
+      header("Location: indexdb.php?table=contratos&idContrato=$idContrato");
+    } catch (Exception $e) {
+      error_log($e);
+    }
+    }
+    
   } elseif ($table == 'personal') {
     error_log("Personal de Contrato");
 

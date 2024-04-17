@@ -137,6 +137,77 @@ $(document).ready(function () {
 
     //fin de la tabla subcontratados
 
+    //inicializar la tabla de tablaContratos
+    var tablaContratos = $("#tablaContratos").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": true,
+        "buttons": [
+
+            {
+                extend: 'excel',
+                className: 'btn btn-primary',
+                text: 'Exportar a Excel'
+            },
+            {
+                extend: 'colvis',
+                className: 'btn btn-primary',
+                text: 'Filtrar columnas'
+            }],
+
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sSearch": "Buscar:",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "sProcessing": "Procesando...",
+            "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad",
+                "collection": "Colección",
+                "colvisRestore": "Restaurar visibilidad",
+                "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+                "copySuccess": {
+                    "1": "Copiada 1 fila al portapapeles",
+                    "_": "Copiadas %ds fila al portapapeles"
+                },
+                "copyTitle": "Copiar al portapapeles",
+                "csv": "CSV",
+                "excel": "Excel",
+                "pageLength": {
+                    "-1": "Mostrar todas las filas",
+                    "_": "Mostrar %d filas"
+                },
+                "pdf": "PDF",
+                "print": "Imprimir",
+                "renameState": "Cambiar nombre",
+                "updateState": "Actualizar",
+                "createState": "Crear Estado",
+                "removeAllStates": "Remover Estados",
+                "removeState": "Remover",
+                "savedStates": "Estados Guardados",
+                "stateRestore": "Estado %d"
+            }
+        }
+
+
+    });
+    tablaContratos.buttons().container().appendTo('#tablaContratos_wrapper .col-md-6:eq(0)');
+    
+    tablaContratos.column(2).visible(false);
+    tablaContratos.column(6).visible(false);
+    tablaContratos.column(7).visible(false);
+    tablaContratos.column(8).visible(false);
+    tablaContratos.column(9).visible(false);
+    tablaContratos.column(10).visible(false);
+    tablaContratos.column(11).visible(false);
+    //fin de la tabla tablaContratos
 
 
     $("#btnGuardarEmpresa").click(function () {
@@ -297,7 +368,7 @@ $(document).ready(function () {
             .catch(error => {
 
                 // Handle the error
-                
+
             });
     }
 

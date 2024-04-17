@@ -1,6 +1,6 @@
 <?php
 
-require_once('../loginBase/dashboard/bd/funciones.php');
+require_once ('../loginBase/dashboard/bd/funciones.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos_recibidos = json_decode(file_get_contents("php://input"), true);
 
@@ -29,28 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombreArchivo = basename($_FILES['archivo']['name']);
 
             $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION); // Obtiene la extensión del archivo
-            if ($extension == 'pdf' || $extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'webp') {
-                # code...
-                $nombre = trim($nombre);
-                // Construir la ruta completa para guardar el archivo
-                $rutaArchivo = $carpetaDestino . $id . '_' . $nombre . '_' . $tipoDocumento . '.' . $extension;
-                error_log("extensión: " . $extension);
-                error_log("rutaArchivo: " . $rutaArchivo);
-                // Mover el archivo al destino
-                if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaArchivo)) {
-                    $respuesta = array('success' => true, 'message' => 'Archivo subido con éxito', 'ruta' => $rutaArchivo, 'id' => $id);
-                } else {
-                    $respuesta = array('success' => false, 'message' => 'Error al subir el archivo');
-                }
 
-                // Devolver la respuesta como JSON
-                header('Content-Type: application/json');
-                echo json_encode($respuesta);
+            # code...
+            $nombre = trim($nombre);
+            // Construir la ruta completa para guardar el archivo
+            $rutaArchivo = $carpetaDestino . $id . '_' . $nombre . '_' . $tipoDocumento . '.' . $extension;
+            error_log("extensión: " . $extension);
+            error_log("rutaArchivo: " . $rutaArchivo);
+            // Mover el archivo al destino
+            if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaArchivo)) {
+                $respuesta = array('success' => true, 'message' => 'Archivo subido con éxito', 'ruta' => $rutaArchivo, 'id' => $id);
             } else {
-                $respuesta = array('success' => false, 'message' => 'Error al subir el archivo, extensión no permitida');
-                header('Content-Type: application/json');
-                echo json_encode($respuesta);
+                $respuesta = array('success' => false, 'message' => 'Error al subir el archivo');
             }
+
+            // Devolver la respuesta como JSON
+            header('Content-Type: application/json');
+            echo json_encode($respuesta);
+
             break;
         case 2: //eliminacion de carpeta
 

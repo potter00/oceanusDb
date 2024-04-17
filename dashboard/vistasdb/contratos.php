@@ -2,16 +2,17 @@
 
 <?php
 include_once '../../loginBase/bd/conexion.php';
+include_once '../dashboard/bd/funcionesdb.php';
 $objeto = new Conexion();
 $conexion = $objeto->Conectar();
 
-$query = "SELECT * FROM subcontratados";
+$query = "SELECT * FROM contrato";
 $resultado = $conexion->prepare($query);
 $resultado->execute();
 $contratos = $resultado->fetchAll(PDO::FETCH_ASSOC);
 foreach ($contratos as $contrato) {
     if ($contrato['idContrato'] == $_GET['idContrato']) {
-        $subContratadoSeleccionado = $subcontratado;
+        $contratoSeleccionado = $contrato;
     }
 }
 
@@ -26,22 +27,37 @@ foreach ($contratos as $contrato) {
 
     <div style="float: left; width: 60%;">
         <h1>Contratos</h1>
-        <table class="table table-sm table-striped table-bordered table-condensed">
+        <table id="tablaContratos" class="table table-sm table-striped table-bordered table-condensed">
             <thead>
                 <tr>
                     <th>id</th>
                     <th>Titulo</th>
+                    <th>Nombre Del Contrato</th>
                     <th>Contratante</th>
-                    <th>Fecha Inicio</th>
+                    <th>Contratado</th>
+                    <th>Tipo de Contrato</th>
+                    <th>Numero de contrato</th>
+                    <th>Inicio Contrato</th>
+                    <th>Fin Contrato</th>
+                    <th>Monto Contrato</th>
+                    <th>Anticipo Contrato</th>
+                    
                 </tr>
             </thead>
             <tbody>
-                <?php for ($i = 1; $i <= 25; $i++) { ?>
+                <?php foreach ($contratos as $contrato) { ?>
                     <tr>
-                        <td style="width:15px"><?php echo $i ?></td>
-                        <td>titulo <?php echo $i ?></td>
-                        <td>contratante <?php echo $i ?></td>
-                        <td style="width:150px">0000-00-00</td>
+                        <td><?php echo $contrato['idContrato'] ?></td>
+                        <td><?php echo $contrato['titulo'] ?></td>
+                        <td><?php echo $contrato['nombreContrato'] ?></td>
+                        <td><?php echo obtenerNombreEmpresa($contrato['idContrato'],$conexion) ?></td>
+                        <td><?php echo obtenerNombreEmpresa($contrato['idContratado'],$conexion) ?></td>
+                        <td><?php echo $contrato['subContrato'] ?></td>
+                        <td><?php echo $contrato['numeroContrato'] ?></td>
+                        <td><?php echo $contrato['inicioContrato'] ?></td>
+                        <td><?php echo $contrato['finContrato'] ?></td>
+                        <td><?php echo $contrato['montoContrato'] ?></td>
+                        <td><?php echo $contrato['anticipoContrato'] ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -127,7 +143,7 @@ foreach ($contratos as $contrato) {
                     require_once 'Contratos\detalles.php';
                 }
 
-
+                $conexion = null;
                 ?>
 
 
