@@ -25,10 +25,13 @@
                 <button id="btnActualizar" type="button" class="btn btn-primary" data-toggle="modal">Actualizar
                     Tabla</button>
                 <?php if ($_SESSION["s_rol"] == "admin") { ?>
-                    
-                <button id="btnNuevo" type="button" class="btn btn-success" data-toggle="modal">Nuevo</button>
-                <button id="btnSubirExcel" type="button" class="btn btn-primary" data-toggle="modal">SubirExcel</button>
-                <input class="fileInputExcel" type="file" id="fileInputExcel">
+
+                    <button id="btnNuevo" type="button" class="btn btn-success" data-toggle="modal">Nuevo</button>
+                    <button id="btnSubirExcel" type="button" class="btn btn-primary" data-toggle="modal">SubirExcel</button>
+                    <div id="loader" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Procesando datos...
+                    </div>
+                    <input class="fileInputExcel" type="file" id="fileInputExcel">
                 <?php } ?>
                 <div>
                     <!-- drag handle -->

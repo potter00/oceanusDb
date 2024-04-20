@@ -65,7 +65,12 @@ $(document).ready(function () {
     tablaEmpresas.buttons().container().appendTo('#tablaEmpresas_wrapper .col-md-6:eq(0)');
     tablaEmpresas.column(2).visible(false);
     tablaEmpresas.column(3).visible(false);
-    tablaEmpresas.column(6).visible(false);
+    tablaEmpresas.column(5).visible(false);
+    tablaEmpresas.column(7).visible(false);
+    tablaEmpresas.column(8).visible(false);
+    tablaEmpresas.column(9).visible(false);
+    tablaEmpresas.column(10).visible(false);
+    tablaEmpresas.column(11).visible(false);
     //fin de la tabla Empresas
 
 
@@ -201,12 +206,13 @@ $(document).ready(function () {
     tablaContratos.buttons().container().appendTo('#tablaContratos_wrapper .col-md-6:eq(0)');
     
     tablaContratos.column(2).visible(false);
+    tablaContratos.column(4).visible(false);
     tablaContratos.column(6).visible(false);
     tablaContratos.column(7).visible(false);
     tablaContratos.column(8).visible(false);
     tablaContratos.column(9).visible(false);
     tablaContratos.column(10).visible(false);
-    tablaContratos.column(11).visible(false);
+    //tablaContratos.column(11).visible(false);
     //fin de la tabla tablaContratos
 
 
@@ -214,11 +220,16 @@ $(document).ready(function () {
         var razonSocial = $("#empresaRazonSocial").val();
         var rfc = $("#empresaRFC").val();
         var tipoRegimen = $("#empresaTipoRegimen").val();
-        var representante = $("#empresaRepresentante").val();
+        var representante = $("#empresaRepresentantes").val();
         var corre = $("#empresaCorreo").val();
         var telefono = $("#empresaTelefono").val();
         var idEmpresa = getQueryParam('idEmpresa');
         var logo = $("#empresaLogo").val();
+        var contacto = $("#empresaNombreContacto").val();
+        var correoFacturacion = $("#empresaCorreoFacturacion").val();
+        var numeroCuenta = $("#empresaNumeroCuenta").val();
+        var banco = $("#empresaBanco").val();
+        var fechaVencimientoConstancia = $("#empresaFechaVencimientoConstancia").val();
 
 
 
@@ -231,6 +242,11 @@ $(document).ready(function () {
             correo: corre,
             telefono: telefono,
             logo: logo,
+            contacto: contacto,
+            correoFacturacion: correoFacturacion,
+            numeroCuenta: numeroCuenta,
+            banco: banco,
+            fechaVencimientoConstancia: fechaVencimientoConstancia,
             opcion: 'editarEmpresa'
         };
 
@@ -419,6 +435,7 @@ $(document).ready(function () {
             })
             .catch(error => {
                 // Handle the error
+                console.log('error', error);
             });
     }
 

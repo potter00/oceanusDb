@@ -1,7 +1,5 @@
 <div class="container">
-    <div>
-        <?php include 'botonesNav.php'; ?>
-    </div>
+    
 
     <div style="float: left; width: 60%;">
         <h1>Pendientes</h1>

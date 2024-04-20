@@ -23,12 +23,10 @@ foreach ($subcontratados as $subcontratado) {
 
 
 <div class="container">
-    <div>
-        <?php include 'botonesNav.php'; ?>
-    </div>
+    
 
     <div style="float: left; width: 60%;">
-        <h1 style="float: left; width: 60%;">subContratados</h1>
+        <h1 style="float: left; width: 60%;">Personal De Terceros</h1>
         <button style="margin-top: 10px;" type="button" class="btn btn-primary" id="btnSubContratadoNuevo"><i
                 class="fas fa-plus"></i> Agregar nuevo elemento</button>
         <hr>

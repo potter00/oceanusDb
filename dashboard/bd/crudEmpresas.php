@@ -55,6 +55,14 @@ switch ($datos['opcion']) {
         # code...
         break;
     case 'editarEmpresa':
+        /*
+contacto: contacto,
+            correoFacturacion: correoFacturacion,
+            numeroCuenta: numeroCuenta,
+            banco: banco,
+            fechaVencimientoConstancia: fechaVencimientoConstancia,
+
+        */
         $id = $datos['id'];
         $razonSocial = $datos['razonSocial'];
         $rfc = $datos['rfc'];
@@ -63,13 +71,18 @@ switch ($datos['opcion']) {
         $correo = $datos['correo'];
         $telefono = $datos['telefono'];
         $logo = $datos['logo'];
-        error_log("Datos recibidos en copiaCrud.php (despues): " . print_r($datos, true));
+        $contacto = $datos['contacto'];
+        $correoFacturacion = $datos['correoFacturacion'];
+        $numeroCuenta = $datos['numeroCuenta'];
+        $banco = $datos['banco'];
+        $fechaVencimientoConstancia = $datos['fechaVencimientoConstancia'];
 
+        
         try {
             //code...
 
             //preparacion para la insercion
-            $consulta = "UPDATE empresa SET razonSocial = :razonSocial, rfc = :rfc, tipoRegimen = :tipoRegimen, representanteLegal = :representanteLegal, correo = :correo, telefono = :telefono, logo = :logo WHERE idEmpresa = :id";
+            $consulta = "UPDATE empresa SET razonSocial = :razonSocial, rfc = :rfc, tipoRegimen = :tipoRegimen, representanteLegal = :representanteLegal, correo = :correo, telefono = :telefono, logo = :logo, nombreContacto = :nombreContacto, correoFacturacion = :correoFacturacion, numeroCuenta = :numeroCuenta, banco = :banco, fechaVencimientoConstancia = :fechaVencimientoConstancia  WHERE idEmpresa = :id";
             $resultado = $conexion->prepare($consulta);
             
             $resultado->bindParam(':razonSocial', $razonSocial, PDO::PARAM_STR);
@@ -80,6 +93,12 @@ switch ($datos['opcion']) {
             $resultado->bindParam(':telefono', $telefono, PDO::PARAM_STR);
             $resultado->bindParam(':logo', $logo, PDO::PARAM_STR);
             $resultado->bindParam(':id', $id, PDO::PARAM_INT);
+            $resultado->bindParam(':nombreContacto', $contacto, PDO::PARAM_STR);
+            $resultado->bindParam(':correoFacturacion', $correoFacturacion, PDO::PARAM_STR);
+            $resultado->bindParam(':numeroCuenta', $numeroCuenta, PDO::PARAM_STR);
+            $resultado->bindParam(':banco', $banco, PDO::PARAM_STR);
+            $resultado->bindParam(':fechaVencimientoConstancia', $fechaVencimientoConstancia, PDO::PARAM_STR);
+
             
             $resultado->execute();
 

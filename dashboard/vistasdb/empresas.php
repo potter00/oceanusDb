@@ -1,5 +1,6 @@
 <?php
 include_once '../../loginBase/bd/conexion.php';
+include_once '../../loginBase/dashboard/bd/funcionesdb.php';
 $objeto = new Conexion();
 $conexion = $objeto->Conectar();
 
@@ -21,9 +22,7 @@ foreach ($empresas as $empresa) {
 ?>
 
 <div class="container">
-    <div>
-        <?php include 'botonesNav.php'; ?>
-    </div>
+
 
     <div style="float: left; width: 60%;">
         <h1 id="labelEmpresas" style="float: left; width: 60%">Empresas</h1>
@@ -39,12 +38,16 @@ foreach ($empresas as $empresa) {
                 <tr>
                     <th>id</th>
                     <th>Razon Social</th>
+                    <th>RepresentanteLegal</th>
                     <th>RFC</th>
                     <th>Tipo de Regimen</th>
-                    <th>Representante</th>
+                    <th>Contacto</th>
                     <th>Correo</th>
                     <th>Telefono</th>
-
+                    <th>Correo Facturacion</th>
+                    <th>Numero de cuenta</th>
+                    <th>Banco</th>
+                    <th>Fecha Vencimiento Constansia</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,11 +61,16 @@ foreach ($empresas as $empresa) {
                     <tr>
                         <td style="width:15px"><?php echo $empresa['idEmpresa'] ?></td>
                         <td><?php echo '<a  href="' . $direccion . '">' . $razonSocial . '</a> '; ?></td>
+                        <td><?php echo $empresa['representanteLegal'] ?></td>
                         <td><?php echo $empresa['rfc'] ?></td>
                         <td><?php echo $empresa['tipoRegimen'] ?></td>
-                        <td><?php echo $empresa['representanteLegal'] ?></td>
+                        <td><?php echo $empresa['nombreContacto'] ?></td>
                         <td><?php echo $empresa['correo'] ?></td>
                         <td><?php echo $empresa['telefono'] ?></td>
+                        <td><?php echo $empresa['numeroCuenta'] ?></td>
+                        <td><?php echo $empresa['banco'] ?></td>
+                        <td><?php echo $empresa['fechaVencimientoConstancia'] ?></td>
+                        <td></td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -116,7 +124,7 @@ foreach ($empresas as $empresa) {
             </div>
             <div class="card-body" style="line-height: .8;">
                 <?php
-
+               
 
 
 
@@ -124,33 +132,54 @@ foreach ($empresas as $empresa) {
                 if (!isset($_GET['edit'])) {
                     ?>
                     <h5><strong>Informacion de la empresa </strong><i class="fas fa-download"></i></h5>
+                    <br>
                     <p><strong> <?php echo $empresaResultante['razonSocial'] ?></strong></p>
+                    <p><strong>Representante Legal: </strong><?php echo $empresaResultante['representanteLegal'] ?></p>
+                    <hr>
+                    <h5><strong>Datos de Facturacion</strong></h5>
+                    <br>
                     <p><strong>RFC: </strong><?php echo $empresaResultante['rfc'] ?></p>
                     <p><strong>Tipo de Regimen: </strong><?php echo $empresaResultante['tipoRegimen'] ?></p>
-                    <p><strong>Representante Legal: </strong><?php echo $empresaResultante['representanteLegal'] ?></p>
+                    <p><strong>Numero De Cuenta/Clave: </strong><?php echo $empresaResultante['numeroCuenta'] ?></p>
+                    <p><strong>Banco: </strong><?php echo $empresaResultante['banco'] ?></p>
+                    <p><strong>Correo Facturacion: </strong><?php echo $empresaResultante['correoFacturacion'] ?></p>
+                    <p><strong>Fecha Vencimiento Constancia: </strong><?php echo $empresaResultante['fechaVencimientoConstancia'] ?></p>
+                    <p><Strong>Tiempo hasta el vencimiento: </Strong><?php echo ObtenerTiempoRestante($empresaResultante['fechaVencimientoConstancia'])  ?> dias</p>
+
+                    <hr>
+                    <h5><strong>Contacto</strong></h5>
+                    <br>
+                    <p><strong>Contacto: </strong><?php echo $empresaResultante['nombreContacto'] ?></p>
                     <p><strong>Correo: </strong><?php echo $empresaResultante['correo'] ?></p>
                     <p><strong>Telefono: </strong><?php echo $empresaResultante['telefono'] ?></p>
 
                 <?php } else { ?>
-                    <h5><strong>Informacion de la empresa </strong><i class="fas fa-upload"></i></h5>
-                    <p><strong>Razon Social </strong><input type="text" id="empresaRazonSocial"
-                            value="<?php echo $empresaResultante['razonSocial'] ?>"></p>
-                    <p><strong>RFC: </strong><input type="text" id="empresaRFC"
-                            value="<?php echo $empresaResultante['rfc'] ?>"></p>
-                    <p><strong>Tipo de Regimen: </strong><input type="text" id="empresaTipoRegimen"
-                            value="<?php echo $empresaResultante['tipoRegimen'] ?>"></p>
-                    <p><strong>Representante Legal: </strong><input type="text" id="empresaRepresentante"
-                            value="<?php echo $empresaResultante['representanteLegal'] ?>"></p>
-                    <p><strong>Correo: </strong><input type="text" id="empresaCorreo"
-                            value="<?php echo $empresaResultante['correo'] ?>"></p>
-                    <p><strong>Telefono: </strong><input type="text" id="empresaTelefono"
-                            value="<?php echo $empresaResultante['telefono'] ?>"></p>
-                    <p><strong>url del logo: </strong><input type="text" id="empresaLogo"
-                            value="<?php echo $empresaResultante['logo'] ?>"></p>
-                    <p><button type="submit" class="btn btn-primary" id="btnGuardarEmpresa">Guardar</button></p>
+                    <h5><strong>Informacion de la empresa </strong><i class="fas fa-download"></i></h5>
+                    <br>
+                    <p><strong>Razon Social </strong><input type="text" id="empresaRazonSocial" value="<?php echo $empresaResultante['razonSocial'] ?>"></p>
+                    <p><strong>Representante Legal: </strong><input type="text" id="empresaRepresentantes" value="<?php echo $empresaResultante['representanteLegal'] ?>"></p>
+                    <hr>
+                    <h5><strong>Datos de Facturacion</strong></h5>
+                    <br>
+                    <p><strong>RFC: </strong><input type="text" id="empresaRFC" value="<?php echo $empresaResultante['rfc'] ?>"></p>
+                    <p><strong>Tipo de Regimen: </strong><input type="text" id="empresaTipoRegimen" value="<?php echo $empresaResultante['tipoRegimen'] ?>"></p>
+                    <p><strong>Numero De Cuenta: </strong><input type="text" id="empresaNumeroCuenta" value="<?php echo $empresaResultante['numeroCuenta'] ?>"></p>
+                    <p><strong>Banco: </strong><input type="text" id="empresaBanco" value="<?php echo $empresaResultante['banco'] ?>"></p>
+                    <p><strong>Correo Facturacion: </strong><input type="text" id="empresaCorreoFacturacion" value="<?php echo $empresaResultante['correoFacturacion'] ?>"></p>
+                    <p><strong>Fecha Vencimiento Constancia: </strong><input type="text" id="empresaFechaVencimientoConstancia" value="<?php echo $empresaResultante['fechaVencimientoConstancia'] ?>"></p>
+                    
 
+                    <hr>
+                    <h5><strong>Contacto</strong></h5>
+                    <br>
+                    <p><strong>Contacto: </strong><input type="text" id="empresaNombreContacto" value="<?php echo $empresaResultante['nombreContacto'] ?>"></p>
+                    <p><strong>Correo: </strong><input type="text" id="empresaCorreo" value="<?php echo $empresaResultante['correo'] ?>"></p>
+                    <p><strong>Telefono: </strong><input type="text" id="empresaTelefono" value="<?php echo $empresaResultante['telefono'] ?>"></p>
+                    <hr>
+                    <p><strong>Url Del Logo: </strong><input type="text" value="<?php echo $empresaResultante['logo'] ?>" id="empresaLogo"></p>
+                    <button id="btnGuardarEmpresa" class="btn btn-primary">Guardar</button>
 
-                <?php } 
+                <?php }
                 $conexion = null;
                 ?>
 

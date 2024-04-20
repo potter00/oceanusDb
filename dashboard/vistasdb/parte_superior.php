@@ -7,28 +7,28 @@ if ($_SESSION["s_usuario"] === null) {
 if (isset($_GET['table'])) {
 
   $table = $_GET['table'];
-  
+
   if ($table == 'contratos') {
-    
+
     if (!isset($_GET['idContrato'])) {
       include_once '../../loginBase/bd/conexion.php';
       $objeto = new Conexion();
       $conexion = $objeto->Conectar();
-      try{
-      $query = "SELECT * FROM contrato";
-      $resultado = $conexion->prepare($query);
-      $resultado->execute();
-      $contratos = $resultado->fetchAll(PDO::FETCH_ASSOC);
-      $idContrato = $contratos[0]['idContrato'];
-      
-      $conexion = null;
-      //redireccionamos a la misma pagina pero con $idEmpresa
-      header("Location: indexdb.php?table=contratos&idContrato=$idContrato");
-    } catch (Exception $e) {
-      error_log($e);
+      try {
+        $query = "SELECT * FROM contrato";
+        $resultado = $conexion->prepare($query);
+        $resultado->execute();
+        $contratos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+        $idContrato = $contratos[0]['idContrato'];
+
+        $conexion = null;
+        //redireccionamos a la misma pagina pero con $idEmpresa
+        header("Location: indexdb.php?table=contratos&idContrato=$idContrato");
+      } catch (Exception $e) {
+        error_log($e);
+      }
     }
-    }
-    
+
   } elseif ($table == 'personal') {
     error_log("Personal de Contrato");
 
@@ -36,19 +36,19 @@ if (isset($_GET['table'])) {
       include_once '../../loginBase/bd/conexion.php';
       $objeto = new Conexion();
       $conexion = $objeto->Conectar();
-      try{
-      $query = "SELECT * FROM subcontratados";
-      $resultado = $conexion->prepare($query);
-      $resultado->execute();
-      $subcontratados = $resultado->fetchAll(PDO::FETCH_ASSOC);
-      $idSubContratado = $subcontratados[0]['idSubContratado'];
-      error_log($idSubContratado);
-      $conexion = null;
-      //redireccionamos a la misma pagina pero con $idEmpresa
-      header("Location: indexdb.php?table=personal&idSubContratado=$idSubContratado");
-    } catch (Exception $e) {
-      error_log($e);
-    }
+      try {
+        $query = "SELECT * FROM subcontratados";
+        $resultado = $conexion->prepare($query);
+        $resultado->execute();
+        $subcontratados = $resultado->fetchAll(PDO::FETCH_ASSOC);
+        $idSubContratado = $subcontratados[0]['idSubContratado'];
+        error_log($idSubContratado);
+        $conexion = null;
+        //redireccionamos a la misma pagina pero con $idEmpresa
+        header("Location: indexdb.php?table=personal&idSubContratado=$idSubContratado");
+      } catch (Exception $e) {
+        error_log($e);
+      }
     }
 
   } elseif ($table == 'empresas') {
@@ -62,7 +62,7 @@ if (isset($_GET['table'])) {
       $resultado->execute();
       $empresas = $resultado->fetchAll(PDO::FETCH_ASSOC);
       $idEmpresa = $empresas[0]['idEmpresa'];
-      
+
       //redireccionamos a la misma pagina pero con $idEmpresa
       $conexion = null;
       header("Location: indexdb.php?table=empresas&idEmpresa=$idEmpresa");
@@ -138,35 +138,36 @@ if (isset($_GET['table'])) {
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="indexdb.php">
-          <i class="fas fa-fw fa-database"></i>
-          <span>Base de Datos</span></a>
-      </li>
+      
 
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <!-- Heading 
+      <!-- Heading -->
       <div class="sidebar-heading">
         Interface
       </div>
 
-       Nav Item - Pages Collapse Menu 
+      <!--Nav Item - Pages Collapse Menu-->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+          aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-database"></i>
+          <span>Bases de Datos</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.php">Buttons</a>
-            <a class="collapse-item" href="cards.php">Cards</a>
+            <h6 class="collapse-header">Secciones:</h6>
+            <a class="collapse-item" href="indexdb.php?table=personal">Personal de Terceros</a>
+            <a class="collapse-item" href="indexdb.php?table=empresas">Empresas</a>
+            <a class="collapse-item" href="indexdb.php?table=contratos">Contratos</a>
+            <a class="collapse-item" href="indexdb.php?table=facturas">Facturas</a>
+            <a class="collapse-item" href="indexdb.php?table=cotizaciones">Cotizaciones</a>
+            <a class="collapse-item" href="indexdb.php?table=pendientes">Pendientes</a>
           </div>
         </div>
       </li>
-    -->
+
 
 
 
@@ -223,17 +224,18 @@ if (isset($_GET['table'])) {
               </div>
             </li>
 
-            <!-- Nav Item - Alerts 
+            <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1" style="display = none">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
-                
+
                 <span class="badge badge-danger badge-counter">3+</span>
               </a>
-              
-              
+
+
             </li>
-            -->
+
             <!-- Nav Item - Messages -->
 
 
@@ -269,7 +271,7 @@ if (isset($_GET['table'])) {
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
 
-                <!--
+                <!---->
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
@@ -278,7 +280,7 @@ if (isset($_GET['table'])) {
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Activity Log
                 </a>
-                -->
+
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
