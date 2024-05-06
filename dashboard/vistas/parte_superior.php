@@ -60,32 +60,83 @@ if ($_SESSION["s_usuario"] === null) {
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
         <a class="nav-link" href="index.php">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+          <i class="fas fa-fw fa-users"></i>
+          <span>Personal</span></a>
       </li>
-      
+
 
       <!-- Divider -->
       <hr class="sidebar-divider">
-
+      <!--
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+        <a class="nav-link active" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
           aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-database"></i>
-          <span>Bases de Datos</span>
+          <i class="fas fa-fw fa-file-contract"></i>
+          <span>Contratos</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Secciones:</h6>
+            <a class="collapse-item" href="indexdb.php?table=contratos">Contratos</a>
             <a class="collapse-item" href="indexdb.php?table=personal">Personal de Terceros</a>
             <a class="collapse-item" href="indexdb.php?table=empresas">Empresas</a>
-            <a class="collapse-item" href="indexdb.php?table=contratos">Contratos</a>
             <a class="collapse-item" href="indexdb.php?table=facturas">Facturas</a>
             <a class="collapse-item" href="indexdb.php?table=cotizaciones">Cotizaciones</a>
             <a class="collapse-item" href="indexdb.php?table=pendientes">Pendientes</a>
           </div>
-        </div>
+
       </li>
+      -->
+      <li class="nav-item ">
+        <button class="nav-link btn" id="btnColapSideBar">
+          <i class="fas fa-fw fa-file-contract"></i>
+          <span>Contratos</span>
+        </button>
+      </li>
+
+
+      <div style="border-left: 10px double #7F98E4; display: none;" id="menuContratos">
+      <li class="nav-item">
+          <a class="nav-link" href="indexdb.php?table=contratos">
+            <i class="fas fa-fw fa-file-contract"></i>
+            <span>Contratos</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="indexdb.php?table=empresas">
+            <i class="fas fa-fw fa-building"></i>
+            <span>Empresas</span></a>
+        </li>
+        <li>
+        <li class="nav-item">
+          <a class="nav-link" href="indexdb.php?table=facturas">
+            <i class="fas fa-fw fa-file-invoice"></i>
+            <span>Facturas</span></a>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="indexdb.php?table=personal">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Personal de Terceros</span></a>
+
+        </li>
+        <li>
+        <li class="nav-item">
+          <a class="nav-link" href="indexdb.php?table=cotizaciones">
+            <i class="fas fa-fw fa-file-invoice"></i>
+            <span>Cotizaciones</span></a>
+
+        </li>
+        <li>
+        <li class="nav-item">
+          <a class="nav-link" href="indexdb.php?table=pendientes">
+            <i class="fas fa-bell fa-fw"></i>
+            <span>Pendientes</span></a>
+        </li>
+
+
+
+      </div>
 
 
 
@@ -164,16 +215,16 @@ if ($_SESSION["s_usuario"] === null) {
                 aria-haspopup="true" aria-expanded="false">
                 <div style="min-height: 30px ;">
                   <span class="badge" id="rolUsuario">
-                    <?php 
-                         $rol = $_SESSION["s_rol"];
-                         $rol = trim($rol);
-                          if($rol == "admin"){
-                            echo "Administrador";
-                          }else{
-                            echo "Usuario";
-                          }
-                    
-                    ?>  
+                    <?php
+                    $rol = $_SESSION["s_rol"];
+                    $rol = trim($rol);
+                    if ($rol == "admin") {
+                      echo "Administrador";
+                    } else {
+                      echo "Usuario";
+                    }
+
+                    ?>
 
                   </span>
                   <span class="mr-2 d-none d-lg-inline text-gray-600 small">

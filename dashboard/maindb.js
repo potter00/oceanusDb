@@ -290,6 +290,7 @@ $(document).ready(function () {
             });
     });
 
+
     $("#btnActualizarPersonal").click(function () {
         var idSubContratado = getQueryParam('idSubContratado');
         var nombre = $("#personalNombre").val();
@@ -366,6 +367,7 @@ $(document).ready(function () {
         var titulo = $("#contratoTitulo").val();
         var nombreContrato = $("#contratoNombreContrato").val();
         var contratante = $("#contratoContratante").val();
+        var contratado = 38;
         var tipoContrato = $("#contratoTipoContrato").val();
         var contratoFuente = $("#contratoFuente").val();
         var fechaInicio = $("#contratoInicio").val();
@@ -397,7 +399,7 @@ $(document).ready(function () {
             titulo: titulo,
             nombreContrato: nombreContrato,
             contratante: contratante,
-            contratado: 38,
+            contratado: contratado,
             tipoContrato: tipoContrato,
             contratoFuente: contratoFuente,
             fechaInicio: fechaInicio,
@@ -435,6 +437,33 @@ $(document).ready(function () {
 
     });
 
+    $("#btnContratoNuevo").click(function () {
+        var data = {
+            opcion: 'añadirContrato'
+        };
+        fetch('bd/crudContrato.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.href = "indexdb.php?table=contratos&edit=true&idContrato=" + data.data.idContrato;
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+    });
 
     function eliminarEmpresa(data) {
         fetch('bd/crudEmpresas.php', {

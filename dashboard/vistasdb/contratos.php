@@ -24,7 +24,10 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
 
 
     <div style="float: left; width: 60%;">
-        <h1>Contratos</h1>
+    <h1 id="labelEmpresas" style="float: left; width: 60%">Contratos</h1>
+        <button style="margin-top: 10px;" type="button" class="btn btn-primary" id="btnContratoNuevo"><i
+                class="fas fa-plus"></i> Agregar nuevo elemento</button>
+        <hr>
         <table id="tablaContratos" class="table table-sm table-striped table-bordered table-condensed">
             <thead>
                 <tr>
@@ -45,12 +48,12 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
             </thead>
             <tbody>
                 <?php foreach ($contratos as $contrato) {
-                    $direccion = "indexdb.php?table=contratos&idContrato=" . $_GET['idContrato'] . "&seccion=subcontratos";
-                    $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $_GET['idContrato'] . "&seccion=detalles";
+                    $direccion = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=subcontratos";
+                    $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato']. "&seccion=detalles";
                     ?>
                     <tr>
                         <td><?php echo $contrato['idContrato'] ?></td>
-                        <td><?php echo '<a  href="' . $direccion . '">' . $contrato['titulo'] . '</a> '; ?></td>
+                        <td><?php echo '<a  href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?></td>
 
                         <td><?php echo $contrato['nombreContrato'] ?></td>
                         <td><?php echo obtenerNombreEmpresa($contrato['idContrato'], $conexion) ?></td>
@@ -139,7 +142,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a id="btnEliminarContrato" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
                                 Eliminar</a>
-                                <a id="btnCrearConvenio" class="dropdown-item" href="#"><i class="fas fa-plus"></i>
+                            <a id="btnCrearConvenio" class="dropdown-item" href="#"><i class="fas fa-plus"></i>
                                 Crear Convenio</a>
 
                         </div>

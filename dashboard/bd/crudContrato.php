@@ -14,7 +14,66 @@ $datos = json_decode(file_get_contents("php://input"), true);
 error_log("Datos recibidos en copiaCrud.php (antes): " . print_r($datos, true));
 
 switch ($datos['opcion']) {
-    case 'añadirPersonal':
+    case 'añadirContrato':
+        //insertamos los datos de la tabla contrato y obtenemos el id del contrato
+        try {
+            //code...
+            $query = "INSERT INTO contrato (titulo) VALUES (titulo)";
+            $resultado = $conexion->prepare($query);
+            
+            $resultado->execute();
+            $idContrato = $conexion->lastInsertId();
+
+            //insertamos los datos de la tabla fianza_cumplimiento y obtenemos el id de la fianza
+            $query = "INSERT INTO fianza_cumplimiento (fianzaCumplimientoMonto) VALUES (000)";
+            $resultado = $conexion->prepare($query);
+            $resultado->execute();
+            $idFianzaCumplimiento = $conexion->lastInsertId();
+
+            //insertamos los datos de la tabla fianza_anticipo y obtenemos el id de la fianza
+            $query = "INSERT INTO fianza_anticipo (fianzaAnticipoMonto) VALUES (000)";
+            $resultado = $conexion->prepare($query);
+            $resultado->execute();
+            $idFianzaAnticipo = $conexion->lastInsertId();
+
+            //insertamos los datos de la tabla fianza_vicios_ocultos y obtenemos el id de la fianza
+            $query = "INSERT INTO fianza_vicios_ocultos (fianzaViciosOcultosMonto) VALUES (000)";
+            $resultado = $conexion->prepare($query);
+            $resultado->execute();
+            $idFianzaViciosOcultos = $conexion->lastInsertId();
+
+            //insertamos los datos en la table fianzas y obtenemos el id de la fianza
+            $query = "INSERT INTO fianzas (fianzaCumplimiento, fianzaAnticipo, fianzaViciosOcultos) VALUES (:idFianzaCumplimiento, :idFianzaAnticipo, :idFianzaViciosOcultos)";
+            $resultado = $conexion->prepare($query);
+            $resultado->bindParam(':idFianzaCumplimiento', $idFianzaCumplimiento, PDO::PARAM_INT);
+            $resultado->bindParam(':idFianzaAnticipo', $idFianzaAnticipo, PDO::PARAM_INT);
+            $resultado->bindParam(':idFianzaViciosOcultos', $idFianzaViciosOcultos, PDO::PARAM_INT);
+            $resultado->execute();
+            $idFianza = $conexion->lastInsertId();
+
+            //insertamos los datos en la table contrato_fianza y obtenemos el id de la fianza
+            $query = "INSERT INTO contrato_fianza (idContrato, idFianza) VALUES (:idContrato, :idFianza)";
+            $resultado = $conexion->prepare($query);
+            $resultado->bindParam(':idContrato', $idContrato, PDO::PARAM_INT);
+            $resultado->bindParam(':idFianza', $idFianza, PDO::PARAM_INT);
+            $resultado->execute();
+
+            $message = 'Contrato insertado correctamente';
+            $datos['idContrato'] = $idContrato;
+
+
+        } catch (\Throwable $th) {
+            $message = 'Error al insertar contrato:' . $th->getMessage();
+            error_log($message);
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        
+
+        
 
 
         # code...
@@ -75,6 +134,57 @@ switch ($datos['opcion']) {
             }
         }
         
+        //actualizamos los datos de la tabla fianza_anticipo
+        try {
+            //code...
+
+            $query = "UPDATE fianza_anticipo SET fianzaAnticipoMonto = :montoFianza, fianzaAnticipoInicio = :fechaInicio, fianzaAnticipoFin = :fechaFin, fianzaAnticipoPoliza = :poliza, fianzaAnticipoAseguradora = :aseguradora WHERE idFianzaAnticipo = :idFianzaAnticipo";
+            $resultado = $conexion->prepare($query);
+            $resultado->bindParam(':montoFianza', $datos['fianzaAnticipo']['monto'], PDO::PARAM_STR);
+            $resultado->bindParam(':fechaInicio', $datos['fianzaAnticipo']['inicio'], PDO::PARAM_STR);
+            $resultado->bindParam(':fechaFin', $datos['fianzaAnticipo']['fin'], PDO::PARAM_STR);
+            $resultado->bindParam(':idFianzaAnticipo', $fianzas['fianzaAnticipo']['idFianzaAnticipo'], PDO::PARAM_INT);
+            $resultado->bindParam(':poliza', $datos['fianzaAnticipo']['poliza'], PDO::PARAM_STR);
+            $resultado->bindParam(':aseguradora', $datos['fianzaAnticipo']['aseguradora'], PDO::PARAM_STR);
+
+            $resultado->execute();
+        } catch (\Throwable $th) {
+            $message = 'Error al actualizar fianza de anticipo:' . $th->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+
+        //actualizamos los datos de la tabla fianza_vicios_ocultos
+        try {
+            //code...
+
+            $query = "UPDATE fianza_vicios_ocultos SET fianzaViciosOcultosMonto = :montoFianza, fianzaViciosOcultosInicio = :fechaInicio, fianzaViciosOcultosFin = :fechaFin, fianzaViciosOcultosPoliza = :poliza, fianzaViciosOcultosAseguradora = :aseguradora WHERE idFianzaViciosOcultos = :idFianzaViciosOcultos";
+            $resultado = $conexion->prepare($query);
+            $resultado->bindParam(':montoFianza', $datos['fianzaViciosOcultos']['monto'], PDO::PARAM_STR);
+            $resultado->bindParam(':fechaInicio', $datos['fianzaViciosOcultos']['inicio'], PDO::PARAM_STR);
+            $resultado->bindParam(':fechaFin', $datos['fianzaViciosOcultos']['fin'], PDO::PARAM_STR);
+            $resultado->bindParam(':idFianzaViciosOcultos', $fianzas['fianzaViciosOcultos']['idFianzaViciosOcultos'], PDO::PARAM_INT);
+            $resultado->bindParam(':poliza', $datos['fianzaViciosOcultos']['poliza'], PDO::PARAM_STR);
+            $resultado->bindParam(':aseguradora', $datos['fianzaViciosOcultos']['aseguradora'], PDO::PARAM_STR);
+
+            $resultado->execute();
+        } catch (\Throwable $th) {
+            $message = 'Error al actualizar fianza de vicios ocultos:' . $th->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+
+
+
+
         $message = 'Contrato actualizado correctamente';
         # code...
         break;

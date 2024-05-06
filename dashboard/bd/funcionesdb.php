@@ -58,7 +58,7 @@ function obtenerFianzaContrato($idContrato, $conn)
         if ($result) {
             $idFianzaCumplimiento = $result['fianzaCumplimiento'];
             $idFianzaAnticipo = $result['fianzaAnticipo'];
-            $idFianzaVicios = $result['FianzaViciosOcultos'];
+            $idFianzaVicios = $result['fianzaViciosOcultos'];
 
         } else {
             return 'Fianzas no encontrada';
@@ -156,6 +156,23 @@ function ObtenerTiempoRestante($fecha)
     $diferencia = $fechaVencimiento - $fechaActual;
     $dias = floor($diferencia / (60 * 60 * 24));
     return $dias;
+}
+
+function ObtenerContrato($idContrato, $conn)
+{
+    try {
+        $stmt = $conn->prepare('SELECT * FROM contrato WHERE idContrato = :id');
+        $stmt->bindParam(':id', $idContrato);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        } else {
+            return 'Contrato no encontrado';
+        }
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
 }
 
 
