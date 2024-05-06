@@ -1,5 +1,3 @@
-
-
 <?php
 include_once '../../loginBase/bd/conexion.php';
 include_once '../dashboard/bd/funcionesdb.php';
@@ -23,7 +21,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
 ?>
 
 <div class="container">
-    
+
 
     <div style="float: left; width: 60%;">
         <h1>Contratos</h1>
@@ -42,20 +40,21 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     <th>Monto Contrato</th>
                     <th>Anticipo Contrato</th>
                     <th>SuBcontratos</th>
-                    
+
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($contratos as $contrato) { 
+                <?php foreach ($contratos as $contrato) {
                     $direccion = "indexdb.php?table=contratos&idContrato=" . $_GET['idContrato'] . "&seccion=subcontratos";
                     $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $_GET['idContrato'] . "&seccion=detalles";
                     ?>
                     <tr>
-                        <td><?php echo '<a  href="' . $direccion .'">'.$contrato['titulo'].'</a> '; ?></td>
-                        <td><?php echo $contrato['titulo'] ?></td>
+                        <td><?php echo $contrato['idContrato'] ?></td>
+                        <td><?php echo '<a  href="' . $direccion . '">' . $contrato['titulo'] . '</a> '; ?></td>
+
                         <td><?php echo $contrato['nombreContrato'] ?></td>
-                        <td><?php echo obtenerNombreEmpresa($contrato['idContrato'],$conexion) ?></td>
-                        <td><?php echo obtenerNombreEmpresa($contrato['idContratado'],$conexion) ?></td>
+                        <td><?php echo obtenerNombreEmpresa($contrato['idContrato'], $conexion) ?></td>
+                        <td><?php echo obtenerNombreEmpresa($contrato['idContratado'], $conexion) ?></td>
                         <td><?php echo $contrato['subContrato'] ?></td>
                         <td><?php echo $contrato['numeroContrato'] ?></td>
                         <td><?php echo $contrato['inicioContrato'] ?></td>
@@ -72,69 +71,79 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
         <h1><i class="fa fa-info" aria-hidden="true"></i>nformacion</h1>
 
         <div class="btn-group" role="group" aria-label="Grupo de botones" style="width: 100%;">
-            <?php   
-            $redirreccionDetalles = 'indexdb.php?table=contratos&seccion=detalles&idContrato='.$contratoSeleccionado['idContrato'];
-            $redirreccionPersonal = 'indexdb.php?table=contratos&seccion=personal&idContrato='.$contratoSeleccionado['idContrato']; 
-            $redirreccionSubcontratos = 'indexdb.php?table=contratos&seccion=subcontratos&idContrato='.$contratoSeleccionado['idContrato'];
-            
-            echo '<a href="'.$redirreccionDetalles.'" class="btn btn-primary">Detalles</a>';
-            echo '<a href="'.$redirreccionPersonal.'" class="btn btn-primary">Personal</a>';
-            echo '<a href="'.$redirreccionSubcontratos.'" class="btn btn-primary">SubContrados</a>';
+            <?php
+            $redirreccionDetalles = 'indexdb.php?table=contratos&seccion=detalles&idContrato=' . $contratoSeleccionado['idContrato'];
+            $redirreccionPersonal = 'indexdb.php?table=contratos&seccion=personal&idContrato=' . $contratoSeleccionado['idContrato'];
+            $redirreccionSubcontratos = 'indexdb.php?table=contratos&seccion=subcontratos&idContrato=' . $contratoSeleccionado['idContrato'];
+
+            echo '<a href="' . $redirreccionDetalles . '" class="btn btn-primary">Detalles</a>';
+            echo '<a href="' . $redirreccionPersonal . '" class="btn btn-primary">Personal</a>';
+            echo '<a href="' . $redirreccionSubcontratos . '" class="btn btn-primary">SubContrados</a>';
             ?>
-          
+
         </div>
         <br>
         <div class="card">
             <div class="card-header">
                 <div style="float: left; width: 60%;">
-                    <h5 class="card-title"><?php echo $contratoSeleccionado['titulo']  ?></h5>
+                    <h5 class="card-title"><?php echo $contratoSeleccionado['titulo'] ?></h5>
                     <h6 class="card-subtitle">Contrato #<?php echo $contratoSeleccionado['numeroContrato'] ?></h6>
                 </div>
                 <div style="float: right;">
                     <?php
                     if (!isset($_GET['edit'])) {
-                        
-                    
-                        if (isset($_GET['seccion']) ) {
 
-                            if ($_GET['seccion'] == 'detalles') {
-                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=true&idContrato='.$_GET['idContrato'].'"></a> <!-- Icono de editar -->';
-                            } elseif ($_GET['seccion'] == 'personal') {
-                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=personal&edit=true&idContrato='.$_GET['idContrato'].'"></a> <!-- Icono de editar -->';
-                            } elseif ($_GET['seccion'] == 'subcontratos') {
-                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=subcontratos&edit=true&idContrato='.$_GET['idContrato'].'"></a> <!-- Icono de editar -->';
 
-                            }
-
-                        } else {
-                            echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=true&idContrato='.$_GET['idContrato'].'"></a> <!-- Icono de editar -->';
-                        }
-                    }else {
                         if (isset($_GET['seccion'])) {
 
                             if ($_GET['seccion'] == 'detalles') {
-                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&idContrato='.$_GET['idContrato'].'"></a> <!-- Icono de editar -->';
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=true&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
                             } elseif ($_GET['seccion'] == 'personal') {
-                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=personal&idContrato='.$_GET['idContrato'].'"></a> <!-- Icono de editar -->';
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=personal&edit=true&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
                             } elseif ($_GET['seccion'] == 'subcontratos') {
-                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=subcontratos&idContrato='.$_GET['idContrato'].'"></a> <!-- Icono de editar -->';
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=subcontratos&edit=true&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
 
                             }
 
                         } else {
-                            echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=false&idContrato='.$_GET['idContrato'].'"></a> <!-- Icono de editar -->';
+                            echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=true&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
+                        }
+                    } else {
+                        if (isset($_GET['seccion'])) {
+
+                            if ($_GET['seccion'] == 'detalles') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
+                            } elseif ($_GET['seccion'] == 'personal') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=personal&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
+                            } elseif ($_GET['seccion'] == 'subcontratos') {
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=subcontratos&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
+
+                            }
+
+                        } else {
+                            echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=detalles&edit=false&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
                         }
                     }
                     ?>
-                    <?php 
+                    <?php
                     if (isset($_GET['edit'])) {
                         echo '<i class="fas fa-upload"></i>';
-                    }else {
+                    } else {
                         echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
                     }
                     ?>
-                    
-                    <i class="fas fa-cog"></i> <!-- Icono de configuración -->
+
+                    <div class="dropdown" style="margin-top: 4px; margin-left:4px; float: right;">
+                        <i class="fas fa-cog dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></i>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a id="btnEliminarContrato" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
+                                Eliminar</a>
+                                <a id="btnCrearConvenio" class="dropdown-item" href="#"><i class="fas fa-plus"></i>
+                                Crear Convenio</a>
+
+                        </div>
+                    </div> <!-- Icono de configuración -->
                 </div>
             </div>
             <div class="card-body" style="line-height: .8;">

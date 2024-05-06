@@ -10,7 +10,7 @@ $conexion = $objeto->Conectar();
 //recepcion de datos
 $datos = json_decode(file_get_contents("php://input"), true);
 
-//error_log("Datos recibidos en copiaCrud.php (antes): " . print_r($datos, true));
+error_log("Datos recibidos en copiaCrud.php (antes): " . print_r($datos, true));
 
 switch ($datos['opcion']) {
     case 'añadirEmpresa':
@@ -77,14 +77,14 @@ contacto: contacto,
         $banco = $datos['banco'];
         $fechaVencimientoConstancia = $datos['fechaVencimientoConstancia'];
 
-        
+
         try {
             //code...
 
             //preparacion para la insercion
             $consulta = "UPDATE empresa SET razonSocial = :razonSocial, rfc = :rfc, tipoRegimen = :tipoRegimen, representanteLegal = :representanteLegal, correo = :correo, telefono = :telefono, logo = :logo, nombreContacto = :nombreContacto, correoFacturacion = :correoFacturacion, numeroCuenta = :numeroCuenta, banco = :banco, fechaVencimientoConstancia = :fechaVencimientoConstancia  WHERE idEmpresa = :id";
             $resultado = $conexion->prepare($consulta);
-            
+
             $resultado->bindParam(':razonSocial', $razonSocial, PDO::PARAM_STR);
             $resultado->bindParam(':rfc', $rfc, PDO::PARAM_STR);
             $resultado->bindParam(':tipoRegimen', $tipoRegimen, PDO::PARAM_STR);
@@ -99,7 +99,7 @@ contacto: contacto,
             $resultado->bindParam(':banco', $banco, PDO::PARAM_STR);
             $resultado->bindParam(':fechaVencimientoConstancia', $fechaVencimientoConstancia, PDO::PARAM_STR);
 
-            
+
             $resultado->execute();
 
 

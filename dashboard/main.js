@@ -1174,7 +1174,7 @@ $(document).ready(function () {
         dataJSON = JSON.stringify(dataObject);
         return fetch('../dashboard/bd/copiaCrud.php', {
             method: 'POST',
-            body: dataJSON,
+            body: dataJSON, 
             headers: {
                 'Content-Type': 'application/json'
             }

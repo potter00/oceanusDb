@@ -166,7 +166,7 @@ foreach ($empresas as $empresa) {
                     <p><strong>Numero De Cuenta: </strong><input type="text" id="empresaNumeroCuenta" value="<?php echo $empresaResultante['numeroCuenta'] ?>"></p>
                     <p><strong>Banco: </strong><input type="text" id="empresaBanco" value="<?php echo $empresaResultante['banco'] ?>"></p>
                     <p><strong>Correo Facturacion: </strong><input type="text" id="empresaCorreoFacturacion" value="<?php echo $empresaResultante['correoFacturacion'] ?>"></p>
-                    <p><strong>Fecha Vencimiento Constancia: </strong><input type="text" id="empresaFechaVencimientoConstancia" value="<?php echo $empresaResultante['fechaVencimientoConstancia'] ?>"></p>
+                    <p><strong>Fecha Vencimiento Constancia: </strong><input type="date" id="empresaFechaVencimientoConstancia" value="<?php echo $empresaResultante['fechaVencimientoConstancia'] ?>"></p>
                     
 
                     <hr>

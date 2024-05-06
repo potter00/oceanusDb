@@ -360,6 +360,82 @@ $(document).ready(function () {
         eliminarEmpresa(data);
     });
 
+    $("#btnActualizarContrato").click(function () {
+        //inicio obtener los valores de los campos
+        var idContrato = getQueryParam('idContrato');
+        var titulo = $("#contratoTitulo").val();
+        var nombreContrato = $("#contratoNombreContrato").val();
+        var contratante = $("#contratoContratante").val();
+        var tipoContrato = $("#contratoTipoContrato").val();
+        var contratoFuente = $("#contratoFuente").val();
+        var fechaInicio = $("#contratoInicio").val();
+        var fechaFin = $("#contratoFin").val();
+        var monto = $("#contratoMonto").val();
+        var anticipo = $("#contratoAnticipo").val();
+        var numero = $("#contratoNumero").val();
+        var convenio = $("#contratoConvenio").val();
+        var fianzaCumplimientoInicio = $("#contratoFianzaCumplimientoInicio").val();
+        var fianzaCumplimientoFin = $("#contratoFianzaCumplimientoFin").val();
+        var fianzaCumplimientoMonto = $("#contratoFianzaCumplimientoMonto").val();
+        var fianzaCumplimientoPoliza = $("#contratoFianzaCumplimientoPoliza").val();
+        var fianzaCumplimientoAseguradora = $("#contratoFianzaCumplimientoAseguradora").val();
+        var fianzaAnticipoInicio = $("#contratoFianzaAnticipoInicio").val();
+        var fianzaAnticipoFin = $("#contratoFianzaAnticipoFin").val();
+        var fianzaAnticipoMonto = $("#contratoFianzaAnticipoMonto").val();
+        var fianzaAnticipoPoliza = $("#contratoFianzaAnticipoPoliza").val();
+        var fianzaAnticipoAseguradora = $("#contratoFianzaAnticipoAseguradora").val();
+        var fianzaViciosOcultosInicio = $("#contratoFianzaViciosOcultosInicio").val();
+        var fianzaViciosOcultosFin = $("#contratoFianzaViciosOcultosFin").val();
+        var fianzaViciosOcultosMonto = $("#contratoFianzaViciosOcultosMonto").val();
+        var fianzaViciosOcultosPoliza = $("#contratoFianzaViciosOcultosPoliza").val();
+        var fianzaViciosOcultosAseguradora = $("#contratoFianzaViciosOcultosAseguradora").val();
+        //fin obtener los valores de los campos
+
+        //inicio de la creacion del objeto data
+        var data = {
+            idContrato: idContrato,
+            titulo: titulo,
+            nombreContrato: nombreContrato,
+            contratante: contratante,
+            contratado: 38,
+            tipoContrato: tipoContrato,
+            contratoFuente: contratoFuente,
+            fechaInicio: fechaInicio,
+            fechaFin: fechaFin,
+            monto: monto,
+            anticipo: anticipo,
+            numero: numero,
+            convenio: convenio,
+            fianzaCumplimiento : {
+                inicio: fianzaCumplimientoInicio,
+                fin: fianzaCumplimientoFin,
+                monto: fianzaCumplimientoMonto,
+                poliza: fianzaCumplimientoPoliza,
+                aseguradora: fianzaCumplimientoAseguradora
+            },
+            fianzaAnticipo: {
+                inicio: fianzaAnticipoInicio,
+                fin: fianzaAnticipoFin,
+                monto: fianzaAnticipoMonto,
+                poliza: fianzaAnticipoPoliza,
+                aseguradora: fianzaAnticipoAseguradora
+
+            },
+            fianzaViciosOcultos: {
+                inicio: fianzaViciosOcultosInicio,
+                fin: fianzaViciosOcultosFin,
+                monto: fianzaViciosOcultosMonto,
+                poliza: fianzaViciosOcultosPoliza,
+                aseguradora: fianzaViciosOcultosAseguradora
+            },
+            
+            opcion: 'editarContrato'
+        };
+        actualizarContrato(data);
+
+    });
+
+
     function eliminarEmpresa(data) {
         fetch('bd/crudEmpresas.php', {
             method: 'POST',
@@ -465,6 +541,34 @@ $(document).ready(function () {
             .catch(error => {
                 // Handle the error
             });
+    }
+
+    function actualizarContrato(data) {
+        // Aquí va la lógica para actualizar el contrato
+        fetch('bd/crudContrato.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.href = "indexdb.php?table=contratos";
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                // Handle the error
+            });
+
     }
 
     
