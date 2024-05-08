@@ -69,7 +69,29 @@ if (isset($_GET['table'])) {
 
     }
   } elseif ($table == 'facturas') {
-    error_log("Facturas");
+    
+    if (!isset($_GET['idFactura'])) {
+      include_once '../../loginBase/bd/conexion.php';
+      $objeto = new Conexion();
+      $conexion = $objeto->Conectar();
+
+      $query = "SELECT * FROM factura";
+      $resultado = $conexion->prepare($query);
+      $resultado->execute();
+      $facturas = $resultado->fetchAll(PDO::FETCH_ASSOC);
+      $idFactura = $facturas[0]['idFactura'];
+
+      //redireccionamos a la misma pagina pero con $idEmpresa
+      $conexion = null;
+      if ($_GET['idContrato']) {
+        header("Location: indexdb.php?table=facturas&idFactura=$idFactura&idContrato=" . $_GET['idContrato']);
+      }else {
+        header("Location: indexdb.php?table=facturas&idFactura=$idFactura");
+      }
+      
+
+    }
+
   } elseif ($table == 'cotizaciones') {
     error_log("Cotizaciones");
   } elseif ($table == 'pendientes') {
@@ -108,7 +130,7 @@ if (isset($_GET['table'])) {
   <link rel="stylesheet" type="text/css" href="vendor/datatables/datatables.min.css" />
   <!--datables estilo bootstrap 4 CSS-->
   <link rel="stylesheet" type="text/css" href="vendor/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">
-
+  <link href="../plugins/select2-4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
 
 
 </head>

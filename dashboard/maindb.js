@@ -204,7 +204,7 @@ $(document).ready(function () {
 
     });
     tablaContratos.buttons().container().appendTo('#tablaContratos_wrapper .col-md-6:eq(0)');
-    
+
     tablaContratos.column(2).visible(false);
     tablaContratos.column(4).visible(false);
     tablaContratos.column(6).visible(false);
@@ -216,6 +216,119 @@ $(document).ready(function () {
     //fin de la tabla tablaContratos
 
 
+    //inicializar la tabla de facturas
+    var tablaFacturas = $("#tablaFacturas").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": true,
+        "buttons": [
+
+            {
+                extend: 'excel',
+                className: 'btn btn-primary',
+                text: 'Exportar a Excel'
+            },
+            {
+                extend: 'colvis',
+                className: 'btn btn-primary',
+                text: 'Filtrar columnas'
+            }],
+
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sSearch": "Buscar:",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "sProcessing": "Procesando...",
+            "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad",
+                "collection": "Colección",
+                "colvisRestore": "Restaurar visibilidad",
+                "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+                "copySuccess": {
+                    "1": "Copiada 1 fila al portapapeles",
+                    "_": "Copiadas %ds fila al portapapeles"
+                },
+                "copyTitle": "Copiar al portapapeles",
+                "csv": "CSV",
+                "excel": "Excel",
+                "pageLength": {
+                    "-1": "Mostrar todas las filas",
+                    "_": "Mostrar %d filas"
+                },
+                "pdf": "PDF",
+                "print": "Imprimir",
+                "renameState": "Cambiar nombre",
+                "updateState": "Actualizar",
+                "createState": "Crear Estado",
+                "removeAllStates": "Remover Estados",
+                "removeState": "Remover",
+                "savedStates": "Estados Guardados",
+                "stateRestore": "Estado %d"
+            }
+        }
+    });
+    tablaFacturas.buttons().container().appendTo('#tablaFacturas_wrapper .col-md-6:eq(0)');
+
+    //fin de la tabla de facturas
+
+    var idsSeleccionados = [];
+
+    // Obtener todos los checkboxes
+    var checkboxes = document.querySelectorAll('.checkBoxContrato');
+
+    // Agregar un event listener a cada checkbox
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            // Obtener el ID de la fila correspondiente al checkbox
+            var id = this.parentNode.parentNode.querySelector('td:first-child').textContent;
+
+            //si el checkbox esta seleccionando guardar el id en una variable
+            if (this.checked) {
+                idsSeleccionados.push(id);
+            } else {
+                //si el checkbox esta deseleccionado eliminar el id de la variable
+                var index = idsSeleccionados.indexOf(id);
+                if (index > -1) {
+                    idsSeleccionados.splice(index, 1);
+                }
+            }
+
+            
+
+            // Imprimir los IDs seleccionados en la consola (puedes enviarlos al servidor aquí)
+
+
+            if (idsSeleccionados.length > 0) {
+                //guardamos el id seleccionado en una variable de _SESSION
+                enviarCheckboxAlServidor(idsSeleccionados['0']);
+
+                
+            }else{
+                enviarCheckboxAlServidor(0);
+            }
+            
+        });
+
+    });
+    
+
+    //inicializamos selects
+    $('#selectPersonalTerceros').select2({
+        placeholder: 'Selecciona una opción'
+    });
+
+    $('#selectPersonalOceanus').select2({
+        placeholder: 'Selecciona una opción'
+    });
+    
     $("#btnGuardarEmpresa").click(function () {
         var razonSocial = $("#empresaRazonSocial").val();
         var rfc = $("#empresaRFC").val();
@@ -366,6 +479,7 @@ $(document).ready(function () {
         var idContrato = getQueryParam('idContrato');
         var titulo = $("#contratoTitulo").val();
         var nombreContrato = $("#contratoNombreContrato").val();
+        var direccion = $("#contratoDireccion").val();
         var contratante = $("#contratoContratante").val();
         var contratado = 38;
         var tipoContrato = $("#contratoTipoContrato").val();
@@ -398,6 +512,7 @@ $(document).ready(function () {
             idContrato: idContrato,
             titulo: titulo,
             nombreContrato: nombreContrato,
+            direccion: direccion,
             contratante: contratante,
             contratado: contratado,
             tipoContrato: tipoContrato,
@@ -408,7 +523,7 @@ $(document).ready(function () {
             anticipo: anticipo,
             numero: numero,
             convenio: convenio,
-            fianzaCumplimiento : {
+            fianzaCumplimiento: {
                 inicio: fianzaCumplimientoInicio,
                 fin: fianzaCumplimientoFin,
                 monto: fianzaCumplimientoMonto,
@@ -430,7 +545,7 @@ $(document).ready(function () {
                 poliza: fianzaViciosOcultosPoliza,
                 aseguradora: fianzaViciosOcultosAseguradora
             },
-            
+
             opcion: 'editarContrato'
         };
         actualizarContrato(data);
@@ -455,6 +570,102 @@ $(document).ready(function () {
                     console.log(data);
                     try {
                         window.location.href = "indexdb.php?table=contratos&edit=true&idContrato=" + data.data.idContrato;
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+    });
+
+    $("#btnNuevaRelacionContratoPersonal").click(function () {
+        var idContrato = getQueryParam('idContrato');
+        var idSubContratado = $("#relacionPersonal").val();
+        var data = {
+            idContrato: idContrato,
+            idSubContratado: idSubContratado,
+            opcion: 'añadirRelacionContratoPersonal'
+        };
+        fetch('bd/crudContratoPersonal.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.reload();
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+
+    });
+
+    $("#btnNuevaRelacionContratoPersonalTerceros").click(function () {
+        
+        var idContrato = getQueryParam('idContrato');
+        var idSubContratado = $("#selectPersonalTerceros").val();
+        var data = {
+            idContrato: idContrato,
+            idSubContratado: idSubContratado,
+            tipo: 'terceros',
+            opcion: 'añadirRelacionContratoPersonal'
+        };
+        añadirRelacionContratoPersonal(data);
+
+
+
+    });
+    $("#btnNuevaRelacionContratoPersonalOceanus").click(function () {
+        
+        var idContrato = getQueryParam('idContrato');
+        var idSubContratado = $("#selectPersonalOceanus").val();
+        var data = {
+            idContrato: idContrato,
+            idSubContratado: idSubContratado,
+            tipo: 'oceanus',
+            opcion: 'añadirRelacionContratoPersonal'
+        };
+        añadirRelacionContratoPersonal(data);
+
+
+
+    });
+
+    $(".btnEliminarRelacionContratoPersonal").click(function () {
+        var idContrato = getQueryParam('idContrato');
+        var idSubContratado = $(this).attr('data-id');
+        var data = {
+            idContrato: idContrato,
+            idPersonal: idSubContratado,
+            opcion: 'eliminarRelacionContratoPersonal'
+        };
+        fetch('bd/crudContratoPersonal.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.reload();
                     } catch (error) {
                         console.log('error', error);
                     }
@@ -511,8 +722,9 @@ $(document).ready(function () {
                         window.location.href = "indexdb.php?table=personal";
                     } catch (error) {
                         console.log('error', error);
+                    }
                 }
-            }})
+            })
             .catch(error => {
                 console.log('error', error);
             });
@@ -600,9 +812,47 @@ $(document).ready(function () {
 
     }
 
-    
+    function enviarCheckboxAlServidor(valor) {
+        // Realizar una solicitud AJAX al servidor para guardar el estado del checkbox
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'bd/sesion.php');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            // Manejar la respuesta del servidor si es necesario
+            console.log(xhr.responseText);
+        };
+        xhr.send('estado=' + valor);
+    }
 
-    
+    function añadirRelacionContratoPersonal(data) {
+        fetch('bd/crudContratoPersonal.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.reload();
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+
+    }
+
+
+
+
 
 
 

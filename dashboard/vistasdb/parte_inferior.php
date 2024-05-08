@@ -66,7 +66,7 @@
 <script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script src="../plugins/datatables-select/js/dataTables.select.min.js"></script>
-
+<script src="../plugins/select2-4.0.13/dist/js/select2.min.js"></script>
 
 
 

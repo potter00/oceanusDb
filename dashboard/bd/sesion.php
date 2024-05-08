@@ -1,18 +1,15 @@
 <?php
 session_start();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener el valor del checkbox de la solicitud POST
+    $estadoCheckbox = $_POST['estado'];
+
+    // Guardar el estado del checkbox en la variable de sesión
+    $_SESSION['checkBoxContrato'] = $estadoCheckbox;
+    error_log("El estado del checkbox es: " . $estadoCheckbox);
+    error_log("El estado del checkbox en la variable de sesión es: " . $_SESSION['checkBoxContrato']);
+    
+}
 
 
-// Crear un array con los datos de sesión
-$datosSesion = array(
-    'username' => $_SESSION['s_usuario'],
-    'rol' => $_SESSION['s_rol'],
-    'nombre' => $_SESSION['s_nombre']
-);
-
-// Convertir el array a JSON
-$jsonDatosSesion = json_encode($datosSesion);
-
-// Devolver los datos de sesión como parte de la respuesta
-echo $jsonDatosSesion;
-?>

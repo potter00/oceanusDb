@@ -6,11 +6,11 @@
 if (isset ($_GET['table'])) {
 
     $table = $_GET['table'];
-    error_log($table);
+   
     if ($table == 'contratos') {
         require_once "vistasdb/contratos.php";
     } elseif ($table == 'personal') {
-        error_log("Personal");
+        
         require_once "vistasdb/personal.php";
     } elseif ($table == 'empresas') {
         require_once "vistasdb/empresas.php";

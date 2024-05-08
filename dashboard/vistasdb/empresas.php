@@ -15,6 +15,10 @@ foreach ($empresas as $empresa) {
     }
 }
 
+//si la session no existe la iniciamos
+if (!isset($_SESSION)) {
+    session_start();
+}
 
 
 
@@ -47,7 +51,7 @@ foreach ($empresas as $empresa) {
                     <th>Correo Facturacion</th>
                     <th>Numero de cuenta</th>
                     <th>Banco</th>
-                    <th>Fecha Vencimiento Constansia</th>
+                    <th>Fecha Vencimiento Constancia</th>
                 </tr>
             </thead>
             <tbody>

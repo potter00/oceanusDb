@@ -5,7 +5,14 @@ if (!isset($_GET['edit'])) {
 
         <h5><strong>Informacion General </strong><i class="fas fa-download"></i></h5>
         <p><Strong>Nombre Completo del Contrato: </Strong><?php echo $contratoSeleccionado['nombreContrato'] ?></p>
-        <p><Strong>contratante: </Strong> <?php echo obtenerNombreEmpresa($contratoSeleccionado['idContratante'], $conexion) ?>
+        <p><strong>Direccion del Contrato: </strong><?php echo $contratoSeleccionado['direccion'] ?> </p>
+        <p><Strong>contratante: </Strong> 
+        <?php 
+                $direccion = "indexdb.php?table=empresas&idEmpresa=" . $contratoSeleccionado['idContratante'];
+                echo '<a  href="' . $direccion . '">' . obtenerNombreEmpresa($contratoSeleccionado['idContratante'], $conexion) . '</a>';
+
+
+        ?>
         </p>
         <p><Strong>contratado: </Strong><?php echo obtenerNombreEmpresa($contratoSeleccionado['idContratado'], $conexion) ?></p>
         <p><Strong>Tipo de contrato: </Strong> <?php echo $contratoSeleccionado['subContrato'] ?> </p>
@@ -79,6 +86,8 @@ if (!isset($_GET['edit'])) {
                         value="<?php echo $contratoSeleccionado['titulo'] ?>" type="text"></p>
         <p><Strong>Nombre Completo del Contrato: </Strong> <input id="contratoNombreContrato"
                         value="<?php echo $contratoSeleccionado['nombreContrato'] ?>" type="text"></p>
+        <p><strong>Direccion del Contrato: </strong> <input id="contratoDireccion"
+                        value="<?php echo $contratoSeleccionado['direccion'] ?>" type="text"></p>
         <p><Strong>Numero Contrato: </Strong> <input id="contratoNumero"
                         value="<?php echo $contratoSeleccionado['numeroContrato'] ?>" type="text"></p>
         <p><Strong>contratante: </Strong>

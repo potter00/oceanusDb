@@ -1,5 +1,6 @@
 <?php
 include_once '../../loginBase/bd/conexion.php';
+include_once '../../loginBase/dashboard/bd/funcionesdb.php';
 $objeto = new Conexion();
 $conexion = $objeto->Conectar();
 
@@ -13,6 +14,10 @@ foreach ($subcontratados as $subcontratado) {
     }
 }
 
+//si la session no existe la iniciamos
+if (!isset($_SESSION)) {
+    session_start();
+}
 
 
 ?>
@@ -23,7 +28,7 @@ foreach ($subcontratados as $subcontratado) {
 
 
 <div class="container">
-    
+
 
     <div style="float: left; width: 60%;">
         <h1 style="float: left; width: 60%;">Personal De Terceros</h1>
@@ -44,7 +49,28 @@ foreach ($subcontratados as $subcontratado) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($subcontratados as $subcontratado) {
+                <?php
+                $relaciones = ObtenerTabla('personal_contrato', $conexion);
+                $seleccionados = array();
+                if ($_SESSION['checkBoxContrato'] != 0) {
+                    # code...
+                
+                    foreach ($relaciones as $relacion) {
+                        if ($relacion['idContrato'] == $_SESSION['checkBoxContrato']) {
+                            $seleccionados[] = $relacion['idPersonal'];
+
+                        }
+                    }
+                }
+
+
+                foreach ($subcontratados as $subcontratado) {
+                    if ($_SESSION['checkBoxContrato'] != 0) {
+
+                        if (in_array($subcontratado['idSubContratado'], $seleccionados)) {
+                            continue;
+                        }
+                    }
                     $idSubContratado = $subcontratado['idSubContratado'];
                     $direccion = "indexdb.php?table=personal&idSubContratado=" . $idSubContratado;
                     $nombreSubcontratado = $subcontratado['nombre'];
@@ -99,8 +125,9 @@ foreach ($subcontratados as $subcontratado) {
                             <i class="fas fa-cog dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"></i>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a id="btnEliminarPersonal" class="dropdown-item" href="#"><i class="fas fa-trash"></i> Eliminar</a>
-                                
+                                <a id="btnEliminarPersonal" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
+                                    Eliminar</a>
+
                             </div>
                         </div>
                     </div>

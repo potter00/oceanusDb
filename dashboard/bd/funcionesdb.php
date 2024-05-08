@@ -174,5 +174,56 @@ function ObtenerContrato($idContrato, $conn)
         return 'Error al conectar con la base de datos: ' . $e->getMessage();
     }
 }
+function ObtenerFactura($idFactura, $conn)
+{
+    try {
+        $stmt = $conn->prepare('SELECT * FROM factura WHERE idFactura = :id');
+        $stmt->bindParam(':id', $idFactura);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        } else {
+            return 'Factura no encontrada';
+        }
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+}
+
+function ObtenerEmpresa($idEmpresa, $conn)
+{
+    try {
+        $stmt = $conn->prepare('SELECT * FROM empresa WHERE idEmpresa = :id');
+        $stmt->bindParam(':id', $idEmpresa);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        } else {
+            return 'Empresa no encontrada';
+        }
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+}
+
+function ObtenerTabla($tabla, $conn)
+{
+    try {
+        $stmt = $conn->prepare('SELECT * FROM ' . $tabla);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        } else {
+            return 'Tabla no encontrada';
+        }
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+}
+
+
 
 
