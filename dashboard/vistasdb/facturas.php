@@ -34,7 +34,13 @@
     ?>
 
     <div style="float: left; width: 60%;">
-        <h1>Facturas</h1>
+        <h1 id="labelEmpresas" style="float: left; width: 60%">Facturas</h1>
+
+
+        <button style="margin-top: 10px;" type="button" class="btn btn-primary" id="btnFacturaNueva"><i
+                class="fas fa-plus"></i> Agregar nuevo elemento</button>
+        <br>
+        <hr>
         <table class="table table-sm table-striped table-bordered table-condensed" id="tablaFacturas">
             <thead>
                 <tr>
@@ -64,7 +70,12 @@
                     <tr>
 
                         <td style="width:15px"><?php echo $factura['idFactura'] ?></td>
-                        <td><?php echo $factura['titulo'] ?></td>
+                        <td><?php
+                        $direccion = "indexdb.php?table=facturas&idFactura=" . $factura['idFactura'];
+                        echo '<a  href="' . $direccion . '">' . $factura['titulo'] . '</a> ';
+
+
+                        ?></td>
                         <td><?php
                         if ($ContratoAsociado != 'Contrato no encontrado') {
                             echo '<a  href="' . $direccionContrato . '">' . $ContratoAsociado['titulo'] . '</a> ';
@@ -81,8 +92,8 @@
                             }
                             ?>
                         </td>
-                        <td style="width:150px"><?php echo $facturas[0]['fecha'] ?></td>
-                        <td style="width:30px"><?php echo $facturas[0]['importe'] ?></td>
+                        <td style="width:150px"><?php echo $factura['fecha'] ?></td>
+                        <td style="width:30px"><?php echo $factura['importe'] ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -100,10 +111,10 @@
                     <?php
                     if (!isset($_GET['edit'])) {
 
-                        echo '<a class="fas fa-edit" href="indexdb.php?table=facturas&edit=true"></a> <!-- Icono de editar -->';
+                        echo '<a class="fas fa-edit" href="indexdb.php?table=facturas&edit=true&idFactura=' . $_GET['idFactura'] . '"></a> <!-- Icono de editar -->';
 
                     } else {
-                        echo '<a class="fas fa-edit" href="indexdb.php?table=facturas"></a> <!-- Icono de editar -->';
+                        echo '<a class="fas fa-edit" href="indexdb.php?table=facturas&idFactura=' . $_GET['idFactura'] . '"></a> <!-- Icono de editar -->';
                     }
 
                     if (!isset($_GET['edit'])) {
@@ -115,7 +126,15 @@
                     }
 
                     ?>
-                    <i class="fas fa-cog"></i> <!-- Icono de configuración -->
+                    <div class="dropdown" style="margin-top: 4px; margin-left:4px; float: right;">
+                        <i class="fas fa-cog dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></i>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a id="btnEliminarFactura" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
+                                Eliminar</a>
+
+                        </div>
+                    
                 </div>
             </div>
             <div class="card-body" style="line-height: .8;">
@@ -152,12 +171,59 @@
 
                     <?php
                 } else {
+                    $contratos = ObtenerTabla('contrato', $conexion);
+                    $empresas = ObtenerTabla('empresa', $conexion);
+
                     ?>
                     <h5><strong>Informacion de la Factura</strong><i class="fas fa-upload"></i></h5>
-                    <p><strong>Titulo factura </strong><input type="text"></p>
-                    <p><strong>Numero de factura: </strong><input type="text"></p>
-                    <p><strong>Fecha de la Factura: </strong><input type="date"></p>
-                    <p><strong>Importe Total: </strong><input type="text"></p>
+                    <p><strong>Titulo factura </strong><input type="text" id="tituloFactura"
+                            value="<?php echo $facturaSeleccionada['titulo'] ?>"></p>
+                    <p><strong>Numero de factura: </strong><input type="text" id="numeroFactura"
+                            value="<?php echo $facturaSeleccionada['numero'] ?>"></p>
+                    <p><strong>Fecha de la Factura: </strong><input type="date" id="fechaFactura"
+                            value="<?php echo $facturaSeleccionada['fecha'] ?>"></p>
+                    <p><strong>Importe Total: </strong><input type="text" id="importeFactura"
+                            value="<?php echo $facturaSeleccionada['importe'] ?>"></p>
+                    <p><strong>Contrato Asociado: </strong>
+                        <select id="selectFacturaContrato">
+                            <?php
+                            foreach ($contratos as $contrato) {
+                                if ($contrato['idContrato'] == $facturaSeleccionada['idContrato']) {
+                                    # code...
+                        
+                                    echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
+                                }
+                            }
+                            foreach ($contratos as $contrato) {
+                                if ($contrato['idContrato'] != $facturaSeleccionada['idContrato']) {
+                                    # code...
+                        
+                                    echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </p>
+                    <p><strong>Empresa Asociada: </strong>
+                        <select id="selectFacturaEmpresa">
+                            <?php
+                            foreach ($empresas as $empresa) {
+                                if ($empresa['idEmpresa'] == $facturaSeleccionada['idEmpresa']) {
+                                    echo '<option value="' . $empresa['idEmpresa'] . '">' . $empresa['razonSocial'] . '</option>';
+                                }
+
+                            }
+                            foreach ($empresas as $empresa) {
+                                if ($empresa['idEmpresa'] != $facturaSeleccionada['idEmpresa']) {
+                                    echo '<option value="' . $empresa['idEmpresa'] . '">' . $empresa['razonSocial'] . '</option>';
+                                }
+
+                            }
+
+                            ?>
+                        </select>
+                    </p>
+                    <button id="btnActualizarFactura" class="btn btn-primary">Guardar</button>
                     <?php
                 }
                 ?>

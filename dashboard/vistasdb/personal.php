@@ -52,6 +52,10 @@ if (!isset($_SESSION)) {
                 <?php
                 $relaciones = ObtenerTabla('personal_contrato', $conexion);
                 $seleccionados = array();
+                if (!isset($_SESSION['checkBoxContrato'])) {
+                    $_SESSION['checkBoxContrato'] = 0;
+                }
+
                 if ($_SESSION['checkBoxContrato'] != 0) {
                     # code...
                 

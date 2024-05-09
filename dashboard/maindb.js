@@ -328,6 +328,10 @@ $(document).ready(function () {
     $('#selectPersonalOceanus').select2({
         placeholder: 'Selecciona una opción'
     });
+
+    $('#selectFacturaContrato').select2();
+
+    $('#selectFacturaEmpresa').select2();
     
     $("#btnGuardarEmpresa").click(function () {
         var razonSocial = $("#empresaRazonSocial").val();
@@ -676,6 +680,142 @@ $(document).ready(function () {
             });
     });
 
+    $("#btnFacturaNueva").click(function () {
+        
+        
+        var data = {
+            opcion: 'añadirFactura'
+        };
+        fetch('bd/crudFactura.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        console.log(data.data.id);
+
+                        window.location.href = "indexdb.php?table=facturas&edit=true&idFactura=" + data.data.id;
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+
+
+    });
+
+    $("#btnActualizarFactura").click(function () {
+        var idFactura = getQueryParam('idFactura');
+        var idContrato = $("#selectFacturaContrato").val();
+        var idEmpresa = $("#selectFacturaEmpresa").val();
+        var fecha = $("#fechaFactura").val();
+        var importe = $("#importeFactura").val();
+        var titulo = $("#tituloFactura").val();
+        var numero = $("#numeroFactura").val();
+        var data = {
+            idFactura: idFactura,
+            idContrato: idContrato,
+            idEmpresa: idEmpresa,
+            fecha: fecha,
+            importe: importe,
+            titulo: titulo,
+            numero: numero,
+            opcion: 'editarFactura'
+        };
+        fetch('bd/crudFactura.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.reload();
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+    });
+
+    $("#btnEliminarFactura").click(function () {
+        var idFactura = getQueryParam('idFactura');
+        var data = {
+            idFactura: idFactura,
+            opcion: 'eliminarFactura'
+        };
+        fetch('bd/crudFactura.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.href = "indexdb.php?table=facturas";
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+    });
+
+    $("#btnEliminarContrato").click(function () {
+        var idContrato = getQueryParam('idContrato');
+        var data = {
+            idContrato: idContrato,
+            opcion: 'eliminarContrato'
+        };
+        fetch('bd/crudContrato.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.href = "indexdb.php?table=contratos";
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+    });
+
     function eliminarEmpresa(data) {
         fetch('bd/crudEmpresas.php', {
             method: 'POST',
@@ -800,7 +940,7 @@ $(document).ready(function () {
                     // La operación fue exitosa, puedes realizar otras acciones aquí
                     console.log(data);
                     try {
-                        window.location.href = "indexdb.php?table=contratos";
+                        window.location.reload();
                     } catch (error) {
                         console.log('error', error);
                     }

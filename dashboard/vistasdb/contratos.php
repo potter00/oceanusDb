@@ -52,14 +52,17 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                 <?php foreach ($contratos as $contrato) {
                     $direccion = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=subcontratos";
                     $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=detalles";
-
+                    $redirreccionContratante = 'indexdb.php?table=empresas&idEmpresa=' . $contratoSeleccionado['idContrato'];
                     ?>
                     <tr>
                         <td><?php echo $contrato['idContrato'] ?></td>
                         <td><?php echo '<a  href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?></td>
 
                         <td><?php echo $contrato['nombreContrato'] ?></td>
-                        <td><?php echo obtenerNombreEmpresa($contrato['idContrato'], $conexion) ?></td>
+                        <td><?php 
+                        echo '<a  href="' . $redirreccionContratante . '">' . obtenerNombreEmpresa($contrato['idContratante'], $conexion) . '</a> ';
+                        
+                        ?></td>
                         <td><?php echo obtenerNombreEmpresa($contrato['idContratado'], $conexion) ?></td>
                         <td><?php echo $contrato['subContrato'] ?></td>
                         <td><?php echo $contrato['numeroContrato'] ?></td>
@@ -75,12 +78,19 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                             session_start();
                         }
 
-                        if ($_SESSION['checkBoxContrato'] == $contrato['idContrato']) {
+                        if (isset($_SESSION['checkBoxContrato'])) {
+                            # code...
+                    
+                            if ($_SESSION['checkBoxContrato'] == $contrato['idContrato']) {
 
-                            echo '<td><input type="checkbox" name="checkBoxContrato" class="checkBoxContrato" checked></td>';
+                                echo '<td><input type="checkbox" name="checkBoxContrato" class="checkBoxContrato" checked></td>';
+                            } else {
+                                echo '<td><input type="checkbox" name="checkBoxContrato" class="checkBoxContrato"></td>';
+
+
+                            }
                         } else {
                             echo '<td><input type="checkbox" name="checkBoxContrato" class="checkBoxContrato"></td>';
-
 
                         }
 
@@ -161,10 +171,12 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                         <i class="fas fa-cog dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"></i>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a id="btnEliminarContrato" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
-                                Eliminar</a>
-                            <a id="btnCrearConvenio" class="dropdown-item" href="#"><i class="fas fa-plus"></i>
-                                Crear Convenio</a>
+                            <button id="btnEliminarContrato" class="dropdown-item btn" type="button"><i
+                                    class="fas fa-trash"></i>
+                                Eliminar</button>
+                            <button id="btnCrearConvenio" class="dropdown-item btn" type="button"><i
+                                    class="fas fa-plus"></i>
+                                Crear Convenio</button>
 
                         </div>
                     </div> <!-- Icono de configuración -->

@@ -6,13 +6,13 @@ if (!isset($_GET['edit'])) {
         <h5><strong>Informacion General </strong><i class="fas fa-download"></i></h5>
         <p><Strong>Nombre Completo del Contrato: </Strong><?php echo $contratoSeleccionado['nombreContrato'] ?></p>
         <p><strong>Direccion del Contrato: </strong><?php echo $contratoSeleccionado['direccion'] ?> </p>
-        <p><Strong>contratante: </Strong> 
-        <?php 
+        <p><Strong>contratante: </Strong>
+                <?php
                 $direccion = "indexdb.php?table=empresas&idEmpresa=" . $contratoSeleccionado['idContratante'];
                 echo '<a  href="' . $direccion . '">' . obtenerNombreEmpresa($contratoSeleccionado['idContratante'], $conexion) . '</a>';
 
 
-        ?>
+                ?>
         </p>
         <p><Strong>contratado: </Strong><?php echo obtenerNombreEmpresa($contratoSeleccionado['idContratado'], $conexion) ?></p>
         <p><Strong>Tipo de contrato: </Strong> <?php echo $contratoSeleccionado['subContrato'] ?> </p>
@@ -156,6 +156,27 @@ if (!isset($_GET['edit'])) {
         <p><strong>Anticipo: </strong><input id="contratoAnticipo"
                         value="<?php echo $contratoSeleccionado['anticipoContrato'] ?>" type="text"></p>
         <hr>
+        <?php
+
+        if ($contratoSeleccionado['idConvenio'] != 0) {
+
+
+
+                ?>
+
+                <h5><strong>Convenio </strong><i class="fas fa-download"></i></h5>
+                <p><strong>Fecha Inicio Convenio: </strong></p>
+                <p><strong>Fecha Fin Convenio: </strong>0000-00-00</p>
+                <p><strong>Monto Adicional: </strong>456463165</p>
+                <hr>
+
+                <?php
+
+        }
+
+        ?>
+
+
 
 
         <h5><strong>Fianza De Cumplimiento </strong><i class="fas fa-upload"></i></h5>

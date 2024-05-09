@@ -14,24 +14,30 @@ if (!isset($_GET['edit'])) {
         </thead>
         <tbody>
 
-            <tr>
+            
                 <?php
                 foreach ($contratos as $contrato) {
                     if ($contrato['subContrato'] == 'SubContrato' && $contrato['idContratoFuente'] == $_GET['idContrato']) {
+                        
+
                         $direccion = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=detalles";
                         $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=detalles";
                         ?>
+                        <tr>
                         <td><?php echo $contrato['numeroContrato'] ?></td>
                         <td><?php echo '<a  href="' . $direccion . '">' . $contrato['titulo'] . '</a> '; ?></td>
+                        </tr>
                         <?php
                     }
+                    unset($direccion);
+                    unset($direccionDetalles);
                 }
 
 
                 ?>
-                
 
-            </tr>
+
+           
 
         </tbody>
     </table>

@@ -189,9 +189,27 @@ switch ($datos['opcion']) {
         $message = 'Contrato actualizado correctamente';
         # code...
         break;
-    case 'eliminarPersonal':
+    case 'eliminarContrato':
+        //eliminamos los datos de la tabla contrato
+        try {
+            //code...
 
-        # code...
+            $query = "DELETE FROM contrato WHERE idContrato = :idContrato";
+            $resultado = $conexion->prepare($query);
+            $resultado->bindParam(':idContrato', $datos['idContrato'], PDO::PARAM_INT);
+            $resultado->execute();
+            $message = 'Contrato eliminado correctamente';
+        } catch (\Throwable $th) {
+            $message = 'Error al eliminar contrato:' . $th->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+
+
+        
         break;
     default:
         $message = 'Opción no válida';
