@@ -81,9 +81,15 @@ if (!isset($_GET['edit'])) {
 } else {
 
         ?>
-        <h5><strong>Informacion General </strong><i class="fas fa-upload"></i></h5>
+        <h5 style="max-width: 200px;  float: left; margin-top: 4px;"><strong>Informacion General</strong></h5>
+        <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="contrato" data-inputFile="inputFileContrato"
+                data-nombreArchivo="contrato"><i class="fas fa-upload"></i></button>
+        <input type="file" id="inputFileContrato">
+        <br>
+        <br>
         <p><Strong>Titulo del Contrato: </Strong> <input id="contratoTitulo"
                         value="<?php echo $contratoSeleccionado['titulo'] ?>" type="text"></p>
+
         <p><Strong>Nombre Completo del Contrato: </Strong> <input id="contratoNombreContrato"
                         value="<?php echo $contratoSeleccionado['nombreContrato'] ?>" type="text"></p>
         <p><strong>Direccion del Contrato: </strong> <input id="contratoDireccion"
@@ -179,7 +185,12 @@ if (!isset($_GET['edit'])) {
 
 
 
-        <h5><strong>Fianza De Cumplimiento </strong><i class="fas fa-upload"></i></h5>
+        <h5 style="max-width: 300px;  float: left; margin-top: 4px;"><strong>Fianza de Cumplimiento</strong></h5>
+        <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="fianzas" data-inputFile="inputFileFianzaCumplimiento"
+                data-nombreArchivo="Fianza_Cumplimiento"><i class="fas fa-upload"></i></button>
+        <input type="file" id="inputFileFianzaCumplimiento">
+        <br>
+        <br>
         <p><strong>Fecha de Inicio: </strong><input id="contratoFianzaCumplimientoInicio"
                         value="<?php echo $datosFianzas["fianzaCumplimiento"]['fianzaCumplimientoInicio'] ?>" type="date"></p>
         <p><strong>Fecha de Fin: </strong><input id="contratoFianzaCumplimientoFin"
@@ -193,7 +204,12 @@ if (!isset($_GET['edit'])) {
         </p>
         <hr>
 
-        <h5><strong>Fianza de Anticipo </strong><i class="fas fa-upload"></i></h5>
+        <h5 style="max-width: 300px;  float: left; margin-top: 4px;"><strong>Fianza de Anticipo</strong></h5>
+        <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="fianzas" data-inputFile="inputFileFianzaAnticipo"
+                data-nombreArchivo="Fianza_Anticipo"><i class="fas fa-upload"></i></button>
+        <input type="file" id="inputFileFianzaAnticipo">
+        <br>
+        <br>
         <p><strong>Fecha de Inicio: </strong><input id="contratoFianzaAnticipoInicio"
                         value="<?php echo $datosFianzas["fianzaAnticipo"]['fianzaAnticipoInicio'] ?>" type="date"></p>
         <p><strong>Fecha de Fin: </strong><input id="contratoFianzaAnticipoFin"
@@ -205,7 +221,14 @@ if (!isset($_GET['edit'])) {
         <p><strong>Aseguradora</strong><input id="contratoFianzaAnticipoAseguradora"
                         value="<?php echo $datosFianzas["fianzaAnticipo"]['fianzaAnticipoAseguradora'] ?>" type="text"></p>
         <hr>
-        <h5><strong>Fianza de Vicios Ocultos </strong><i class="fas fa-upload"></i></h5>
+
+
+        <h5 style="max-width: 300px;  float: left; margin-top: 4px;"><strong>Fianza de Vicios Ocultos</strong></h5>
+        <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="fianzas" data-inputFile="inputFileFianzaViciosOcultos"
+                data-nombreArchivo="Fianza_Vicios_Ocultos"><i class="fas fa-upload"></i></button>
+        <input type="file" id="inputFileFianzaViciosOcultos">
+        <br>
+        <br>
         <p><strong>Fecha de Inicio: </strong><input id="contratoFianzaViciosOcultosInicio"
                         value="<?php echo $datosFianzas["fianzaViciosOcultos"]['fianzaViciosOcultosInicio'] ?>" type="date"></p>
         <p><strong>Fecha de Fin: </strong><input id="contratoFianzaViciosOcultosFin"

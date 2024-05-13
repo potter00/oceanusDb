@@ -107,6 +107,7 @@
                     <h5 class="card-title">Título</h5>
                     <h6 class="card-subtitle">Subtítulo</h6>
                 </div>
+                
                 <div style="float: right;">
                     <?php
                     if (!isset($_GET['edit'])) {
@@ -130,11 +131,11 @@
                         <i class="fas fa-cog dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"></i>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a id="btnEliminarFactura" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
+                            <a id="btnEliminarEmpresa" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
                                 Eliminar</a>
 
                         </div>
-                    
+                    </div><i class="fas fa-cog"></i> <!-- Icono de configuración -->
                 </div>
             </div>
             <div class="card-body" style="line-height: .8;">

@@ -1,6 +1,10 @@
 <?php
 
 require_once ('../loginBase/dashboard/bd/funciones.php');
+require_once ('../loginBase/dashboard/bd/funcionesdb.php');
+require_once ('../loginBase/bd/conexion.php');
+$objeto = new Conexion();
+$conexion = $objeto->Conectar();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos_recibidos = json_decode(file_get_contents("php://input"), true);
 
@@ -43,6 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $respuesta = array('success' => false, 'message' => 'Error al subir el archivo');
             }
 
+
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+
             // Devolver la respuesta como JSON
             header('Content-Type: application/json');
             echo json_encode($respuesta);
@@ -63,6 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $respuesta = array('success' => false, 'message' => 'Error al eliminar la carpeta');
             }
+
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
             header('Content-Type: application/json');
             echo json_encode($respuesta);
             break;
@@ -163,9 +174,91 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+
             header('Content-Type: application/json');
             $respuesta = array('success' => true, 'message' => 'Archivo guardado con éxito', 'ruta' => $carpetaRelativa, 'Id' => $id);
 
+            echo json_encode($respuesta);
+
+            break;
+
+        case 4: //subir archivos de contrato y devolver la ruta donde se guardo
+            $id = $_POST['id'];
+            $tipoDocumento = $_POST['tipoDocumento'];
+            $nombreDocumento = $_POST['nombreDocumento'];  //nombre del documento
+
+            // Carpeta donde se guardarán los archivos (asegúrate de tener permisos de escritura)
+            $carpetaBase = 'archivos/contratos/';
+            switch ($tipoDocumento) {
+                case 'contrato':
+                    $carpetaDestino = $carpetaBase . $id . '/';
+                    break;
+                case 'facturas':
+                    $carpetaDestino = $carpetaBase . $id . '/facturas/';
+                    break;
+                case 'fianzas':
+                    $carpetaDestino = $carpetaBase . $id . '/fianzas/';
+                    break;
+                default:
+                    $carpetaDestino = $carpetaBase . $id . '/';
+                    break;
+            }
+
+
+            // Crear la carpeta si no existe
+            if (!file_exists($carpetaDestino)) {
+                mkdir($carpetaDestino, 0777, true);
+            }
+
+            // Obtener el nombre original del archivo
+            $nombreArchivo = basename($_FILES['archivo']['name']);
+
+            $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION); // Obtiene la extensión del archivo
+
+            // Construir la ruta completa para guardar el archivo
+            $rutaArchivo = $carpetaDestino . $id . '_' . $nombreDocumento . '.' . $extension;
+            error_log("extensión: " . $extension);
+            error_log("rutaArchivo: " . $rutaArchivo);
+            error_log("tipoDocumento: " . $tipoDocumento);
+            error_log("nombreDocumento: " . $nombreDocumento);
+            // Mover el archivo al destino
+            if (isset($_FILES['archivo'])) {
+                if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaArchivo)) {
+                    if ($tipoDocumento == 'contrato') {
+                        $message = ActualizarDato('contrato', $rutaArchivo, 'ubicacionContrato', $id, $conexion);# code...
+                    } elseif ($tipoDocumento == 'fianzas') {
+                        if ($nombreDocumento == 'Fianza_Cumplimiento') {
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo , $conexion, 'fianza_cumplimiento', 'fianzaCumplimientoDoc');
+                        } elseif ($nombreDocumento == 'Fianza_Anticipo') {
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo , $conexion, 'fianza_anticipo', 'fianzaAnticipoDoc');
+                        } elseif ($nombreDocumento == 'Fianza_Vicios_Ocultos') {
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo , $conexion, 'fianza_vicios_ocultos', 'fianzaViciosOcultosDoc');
+                        }
+                    }
+
+                    $respuesta = array('success' => true, 'message' => $message, 'ruta' => $rutaArchivo, 'id' => $id);
+                } else {
+                    // Si el archivo ya existe, cambiar el nombre del archivo existente
+                    $nombreArchivoNuevo = uniqid() . '.' . $extension;
+                    $rutaArchivoNuevo = $carpetaDestino . $nombreArchivoNuevo;
+
+                    if (rename($rutaArchivo, $rutaArchivoNuevo)) {
+                        $respuesta = array('success' => true, 'message' => 'Archivo subido con éxito', 'ruta' => $rutaArchivoNuevo);
+
+                    } else {
+                        $respuesta = array('success' => false, 'message' => 'Error al subir el archivo');
+                    }
+                }
+            } else {
+                $respuesta = array('success' => false, 'message' => 'No se ha seleccionado ningún archivo');
+            }
+
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+            // Devolver la respuesta como JSON
+            header('Content-Type: application/json');
             echo json_encode($respuesta);
 
             break;
@@ -176,7 +269,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 } else {
-
+    //antes de devolver la respuesta cerramos la conexion
+    $conexion = null;
     //switch para descargar archivos
     $respuesta = array('success' => false, 'message' => 'Acceso denegado');
     header('Content-Type: application/json');

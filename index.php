@@ -29,7 +29,7 @@
                 </div>
                 
                 <div class="wrap-input100" data-validate="Password incorrecto">
-                    <input class="input100" type="password" id="password" name="password" placeholder="Password">
+                    <input class="input100" type="password" id="password" name="password" placeholder="Contraseña">
                     <span class="focus-efecto"></span>
                 </div>
                 

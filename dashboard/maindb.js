@@ -816,6 +816,61 @@ $(document).ready(function () {
             });
     });
 
+    $(".btnSubirArchivo").click(function () {
+        //obtener el id del contrato
+        var idContrato = getQueryParam('idContrato');
+        //obtenemos el tipo de archivo
+        var tipoArchivo = $(this).attr('data-tipoArchivo');
+        //obtener el id del input file
+        var idInputFile = $(this).attr('data-inputFile');
+        //agregamos el nombre del archivo
+        var nombreArchivo = $(this).attr('data-nombreArchivo');
+
+
+
+
+        //obtener el archivo seleccionado
+        var archivo = document.getElementById(idInputFile).files[0];
+        //creamos un objeto FormData
+        var formData = new FormData();
+        //agregamos el archivo al objeto FormData
+        formData.append('archivo', archivo);
+        //agregamos el nombre del acrhivo
+        formData.append('nombreDocumento', nombreArchivo);
+
+
+        //agregamos el id del contrato al objeto FormData
+        formData.append('id', idContrato);
+        //agregamos el tipo de archivo al objeto FormData
+        formData.append('tipoDocumento', tipoArchivo);
+        //agregamos la opcion al objeto FormData
+        formData.append('opcion', '4');
+        //realizamos la peticion al servidor
+        fetch('../upload.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.reload();
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+
+    });
+
     function eliminarEmpresa(data) {
         fetch('bd/crudEmpresas.php', {
             method: 'POST',
@@ -989,6 +1044,8 @@ $(document).ready(function () {
             });
 
     }
+
+
 
 
 

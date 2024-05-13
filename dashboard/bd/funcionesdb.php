@@ -224,6 +224,124 @@ function ObtenerTabla($tabla, $conn)
     }
 }
 
+//funcion guardar un dato en una tabla
+function GuardarDato($tabla, $datos, $columna ,  $conn)
+{
+    
+
+    try {
+        $stmt = $conn->prepare('INSERT INTO ' . $tabla . ' (' . $columna . ') VALUES (' . $datos . ')');
+        $stmt->execute();
+        return 'Dato guardado correctamente';
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+
+}
+
+//funcion actualizar un dato en una tabla
+function ActualizarDato($tabla, $datos, $columna, $id, $conn)
+{
+    try {
+        $stmt = $conn->prepare('UPDATE ' . $tabla . ' SET ' . $datos . ' WHERE ' . $columna . ' = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $message = 'Se actualizo la tabla ' . $tabla . ' con los datos ' . $datos . ' en la columna ' . $columna . ' con el id ' . $id;
+        return $message;
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+}
+
+//funcion para actializar un dato de una tabla de fianza conforme el id de un contrato
+function ActualizarFianzaContrato($idContrato, $datos, $conn, $tipoFianza, $columnaFianza)
+{
+    
+    try {
+        $stmt = $conn->prepare('SELECT idFianza FROM contrato_fianza WHERE idContrato = :id');
+        $stmt->bindParam(':id', $idContrato);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            $idFianza = $result['idFianza'];
+        } else {
+            error_log('Fianza no encontrada');
+            return 'Fianza no encontrada';
+        }
+    } catch (PDOException $e) {
+        error_log('Error al conectar con la base de datos par aobtener la relacion de fianza contrato: ' . $e->getMessage());
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+
+    //obtenemos la fianza correspondiente
+    try {
+        error_log('SELECT * FROM fianzas WHERE ' . $tipoFianza . ' = :id');
+        $stmt = $conn->prepare('SELECT * FROM fianzas WHERE idFianzas = :id');
+        $stmt->bindParam(':id', $idFianza);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            $datosFianza = $result;
+        } else {
+            return 'Fianza no encontrada';
+        }
+    } catch (PDOException $e) {
+        error_log('Error al conectar con la base de datos para obtener la fianza: ' . $e->getMessage());
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+        
+    }
+
+    //obtenemos el id de cada fianza 
+    $idFianzaCumplimiento = $datosFianza['fianzaCumplimiento'];
+    $idFianzaAnticipo = $datosFianza['fianzaAnticipo'];
+    $idFianzaVicios = $datosFianza['fianzaViciosOcultos'];
+    error_log('antes de entrar a fianza cumplimiento');
+    error_log($tipoFianza);
+    //actualizamos la fianza correspondiente
+    if ($tipoFianza == 'fianza_cumplimiento') {
+        error_log('entro a fianza cumplimiento');
+        try {
+            error_log('UPDATE ' . $tipoFianza . ' SET ' . $columnaFianza . ' = :datos WHERE idFianzaCumplimiento = :id');
+            $stmt = $conn->prepare('UPDATE ' . $tipoFianza . ' SET ' . $columnaFianza . ' = :datos WHERE idFianzaCumplimiento = :id');
+        
+            $stmt->bindParam(':datos', $datos);
+            $stmt->bindParam(':id', $idFianzaCumplimiento);
+            $stmt->execute();
+            $message = 'Se actualizo la tabla ' . $tipoFianza . ' con los datos ' . $datos . ' en la columna ' . $columnaFianza . ' con el id ' . $idFianzaCumplimiento;
+            return $message;
+        } catch (PDOException $e) {
+            error_log('Error al conectar con la base de datos: ' . $e->getMessage());
+            return 'Error al conectar con la base de datos: ' . $e->getMessage();
+        }
+    }elseif ($tipoFianza == 'fianza_anticipo') {
+        try {
+            $stmt = $conn->prepare('UPDATE ' . $tipoFianza . ' SET ' . $columnaFianza . ' = :datos WHERE idFianzaAnticipo = :id');
+            $stmt->bindParam(':datos', $datos);
+            $stmt->bindParam(':id', $idFianzaAnticipo);
+            $stmt->execute();
+            $message = 'Se actualizo la tabla ' . $tipoFianza . ' con los datos ' . $datos . ' en la columna ' . $columnaFianza . ' con el id ' . $idFianzaAnticipo;
+            return $message;
+        } catch (PDOException $e) {
+            error_log('Error al conectar con la base de datos: ' . $e->getMessage());
+            return 'Error al conectar con la base de datos: ' . $e->getMessage();
+        }
+    }elseif ($tipoFianza == 'fianza_vicios_ocultos') {
+        try {
+            $stmt = $conn->prepare('UPDATE ' . $tipoFianza . ' SET ' . $columnaFianza . ' = :datos WHERE idFianzaViciosOcultos = :id');
+            $stmt->bindParam(':datos', $datos);
+            $stmt->bindParam(':id', $idFianzaVicios);
+            $stmt->execute();
+            $message = 'Se actualizo la tabla ' . $tipoFianza . ' con los datos ' . $datos . ' en la columna ' . $columnaFianza . ' con el id ' . $idFianzaVicios;
+            return $message;
+        } catch (PDOException $e) {
+            error_log('Error al conectar con la base de datos: ' . $e->getMessage());
+            return 'Error al conectar con la base de datos: ' . $e->getMessage();
+        }
+    }
+
+
+    
+}
 
 
 
