@@ -3,6 +3,11 @@
 require_once ('../loginBase/dashboard/bd/funciones.php');
 require_once ('../loginBase/dashboard/bd/funcionesdb.php');
 require_once ('../loginBase/bd/conexion.php');
+
+
+//antes de devolver la respuesta cerramos la conexion
+$conexion = null;
+
 $objeto = new Conexion();
 $conexion = $objeto->Conectar();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -189,8 +194,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tipoDocumento = $_POST['tipoDocumento'];
             $nombreDocumento = $_POST['nombreDocumento'];  //nombre del documento
 
+            //le añadimos un _ a cada espacion en blanco del nombre del documento
+            $nombreDocumento = str_replace(' ', '_', $nombreDocumento);
+
             // Carpeta donde se guardarán los archivos (asegúrate de tener permisos de escritura)
             $carpetaBase = 'archivos/contratos/';
+            $carpetaBaseEmpresas = 'archivos/empresas/';
             switch ($tipoDocumento) {
                 case 'contrato':
                     $carpetaDestino = $carpetaBase . $id . '/';
@@ -200,6 +209,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     break;
                 case 'fianzas':
                     $carpetaDestino = $carpetaBase . $id . '/fianzas/';
+                    break;
+                case 'empresa':
+                    $carpetaDestino = $carpetaBaseEmpresas;
+                    break;
+                case 'subContratado';
+                    $carpetaDestino = 'archivos/subContratados/';
                     break;
                 default:
                     $carpetaDestino = $carpetaBase . $id . '/';
@@ -227,15 +242,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_FILES['archivo'])) {
                 if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaArchivo)) {
                     if ($tipoDocumento == 'contrato') {
-                        $message = ActualizarDato('contrato', $rutaArchivo, 'ubicacionContrato', $id, $conexion);# code...
+                        $message = ActualizarDato('contrato', $rutaArchivo, 'ubicacionContrato', $id, $conexion, 'idContrato');# code...
                     } elseif ($tipoDocumento == 'fianzas') {
                         if ($nombreDocumento == 'Fianza_Cumplimiento') {
-                            $message = ActualizarFianzaContrato($id, $rutaArchivo , $conexion, 'fianza_cumplimiento', 'fianzaCumplimientoDoc');
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo, $conexion, 'fianza_cumplimiento', 'fianzaCumplimientoDoc');
                         } elseif ($nombreDocumento == 'Fianza_Anticipo') {
-                            $message = ActualizarFianzaContrato($id, $rutaArchivo , $conexion, 'fianza_anticipo', 'fianzaAnticipoDoc');
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo, $conexion, 'fianza_anticipo', 'fianzaAnticipoDoc');
                         } elseif ($nombreDocumento == 'Fianza_Vicios_Ocultos') {
-                            $message = ActualizarFianzaContrato($id, $rutaArchivo , $conexion, 'fianza_vicios_ocultos', 'fianzaViciosOcultosDoc');
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo, $conexion, 'fianza_vicios_ocultos', 'fianzaViciosOcultosDoc');
                         }
+
+                    } elseif ($tipoDocumento == 'facturas') {
+                        if (isset($_POST['datoExtra'])) {
+                            $message = ActualizarFacturaContrato($id, $rutaArchivo, $conexion, 'documento', $_POST['datoExtra']);
+
+                        } else {
+                            $message = 'Error no se a proporcionado id de la factura';
+                        }
+
+                    } elseif ($tipoDocumento == 'empresa') {
+                        error_log("tipoDocumento: " . $tipoDocumento);
+                        $message = ActualizarDato('empresa', $rutaArchivo, 'constanciaFiscal', $id, $conexion, 'idEmpresa');# code...
+                    } elseif ($tipoDocumento == 'subContratado') {
+                        error_log("tipoDocumento: " . $tipoDocumento);
+                        $message = ActualizarDato('subcontratados', $rutaArchivo, 'doc', $id, $conexion, 'idSubContratado');# code...
                     }
 
                     $respuesta = array('success' => true, 'message' => $message, 'ruta' => $rutaArchivo, 'id' => $id);
@@ -262,6 +292,104 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode($respuesta);
 
             break;
+        case 5: //crear contratos en base a un excel con los datos
+
+            require 'vendor/autoload.php'; // Carga la librería PHPSpreadSheet
+            $dateFormat = new \PhpOffice\PhpSpreadsheet\Shared\Date();
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx(); // Crea una instancia de la clase Reader
+            $spreadsheet = $reader->load($_FILES['archivo']['tmp_name']); // Carga el archivo Excel
+            $sheet = $spreadsheet->getActiveSheet(); // Obtiene la hoja activa
+
+
+
+
+            // Itera sobre las filas y columnas
+            foreach ($sheet->getRowIterator() as $fila) {
+
+                $fila = $fila->getRowIndex();
+                $numero = $sheet->getCell('A' . $fila)->getValue();
+
+                if ($numero == 'NUM' || $numero == null) {
+                    continue;
+                }
+                $contratante = $sheet->getCell('B' . $fila)->getValue();
+                $idContratante = CrearEmpresa($contratante, $conexion);
+
+                $numeroContrato = $sheet->getCell('C' . $fila)->getValue();
+                $nombreContrato = $sheet->getCell('D' . $fila)->getValue();
+
+
+                //si el contrato ya existe no lo crea
+                if (ComprobarContrato($nombreContrato, $conexion)) {
+                    continue;
+                }
+
+                $direccion = $sheet->getCell('E' . $fila)->getValue();
+                $monto = $sheet->getCell('F' . $fila)->getValue();
+                $fechaInicio = $sheet->getCell('I' . $fila)->getValue();
+                $fechaFin = $sheet->getCell('J' . $fila)->getValue();
+
+                //trasnformamos las fechas de excel a un formato numerico
+
+
+
+
+                //si la fecha esta vacia le asignamos un valor por defecto
+                if ($fechaInicio == null || $fechaInicio == '') {
+
+                    $fechaInicio = '0001-01-01';
+
+                } else {
+
+                    $fechaInicio = $dateFormat::excelToDateTimeObject(intVal($fechaInicio))->format('Y-m-d');
+                }
+
+                if ($fechaFin == null || $fechaFin == '') {
+
+                    $fechaFin = '0001-01-01';
+
+                } else {
+                    $fechaFin = $dateFormat::excelToDateTimeObject(intval($fechaFin))->format('Y-m-d');
+                }
+
+                //si el monto no esta en formato numerico le asignamos un valor por defecto
+                if (!is_numeric($monto)) {
+                    $monto = 0;
+                }
+
+                //error_log($monto);
+
+                //se va a crear un titulo para el contrato tomando el nombre de este pero recortandolo a 20 caracteres y añadiendo 3 puntos suspensivos
+                $tituloContrato = substr($nombreContrato, 0, 20) . '...';
+
+
+                error_log('nombre Contrato' . $tituloContrato);
+                //creamos el contrato 
+                CrearContrato($tituloContrato, $nombreContrato, $numeroContrato, $idContratante, $direccion, $monto, $fechaInicio, $fechaFin, $conexion);
+
+
+
+
+
+            }
+
+
+
+
+            $respuesta = 'prueba terminada';
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+            // Devolver la respuesta como JSON
+            header('Content-Type: application/json');
+            echo json_encode($respuesta);
+
+            break;
+
+
+
+
+
+
 
         default:
             # code...

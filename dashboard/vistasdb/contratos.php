@@ -23,11 +23,18 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
 <div class="container">
 
 
+
     <div style="float: left; width: 60%;">
         <h1 id="labelEmpresas" style="float: left; width: 60%">Contratos</h1>
         <button style="margin-top: 10px;" type="button" class="btn btn-primary" id="btnContratoNuevo"><i
                 class="fas fa-plus"></i> Agregar nuevo elemento</button>
         <hr>
+        <h2 style="float: left; margin-right: 5px;">Subir excel</h2>
+
+        <input type="file" id="inputFileExecelContratos">
+        <button class="btn btn-sm btn-primary" id="btnInputFileExecelContratos">Subir</button>
+        <br><br><hr>
+        
         <table id="tablaContratos" class="table table-sm table-striped table-bordered table-condensed">
             <thead>
                 <tr>
@@ -59,9 +66,9 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                         <td><?php echo '<a  href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?></td>
 
                         <td><?php echo $contrato['nombreContrato'] ?></td>
-                        <td><?php 
+                        <td><?php
                         echo '<a  href="' . $redirreccionContratante . '">' . obtenerNombreEmpresa($contrato['idContratante'], $conexion) . '</a> ';
-                        
+
                         ?></td>
                         <td><?php echo obtenerNombreEmpresa($contrato['idContratado'], $conexion) ?></td>
                         <td><?php echo $contrato['subContrato'] ?></td>
@@ -163,7 +170,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     if (isset($_GET['edit'])) {
                         echo '<i class="fas fa-upload"></i>';
                     } else {
-                        echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+                        echo '<a class="fas fa-download" href="../' . $contratoSeleccionado['ubicacionContrato'] . '"></a>';
                     }
                     ?>
 

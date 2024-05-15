@@ -104,10 +104,10 @@
         <div class="card">
             <div class="card-header">
                 <div style="float: left; width: 60%;">
-                    <h5 class="card-title">Título</h5>
-                    <h6 class="card-subtitle">Subtítulo</h6>
+                    <h5 class="card-title"><?php echo $facturaSeleccionada['titulo'] ?></h5>
+                    <h6 class="card-subtitle">#<?php echo $facturaSeleccionada['numero'] ?></h6>
                 </div>
-                
+
                 <div style="float: right;">
                     <?php
                     if (!isset($_GET['edit'])) {
@@ -120,7 +120,7 @@
 
                     if (!isset($_GET['edit'])) {
 
-                        echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+                        echo '<a class="fas fa-download" href="../' . $facturaSeleccionada['documento'] . '"></a>';
 
                     } else {
                         echo '<i class="fas fa-upload"></i> <!-- Icono de descarga -->';
@@ -142,7 +142,7 @@
                 <?php
                 if (!isset($_GET['edit'])) {
                     ?>
-                    <h5><strong>Informacion de la Factura</strong><i class="fas fa-download"></i></h5>
+                    <h5><strong>Informacion de la Factura</strong><?php echo '<a class="fas fa-download" href="../' . $facturaSeleccionada['documento'] . '"></a>'; ?></h5>
                     <p><strong><?php echo $facturaSeleccionada['titulo'] ?></strong></p>
                     <p><strong>Numero de factura: </strong><?php echo $facturaSeleccionada['numero'] ?></p>
                     <p><strong>Fecha de la Factura: </strong><?php echo $facturaSeleccionada['fecha'] ?></p>
@@ -176,7 +176,24 @@
                     $empresas = ObtenerTabla('empresa', $conexion);
 
                     ?>
-                    <h5><strong>Informacion de la Factura</strong><i class="fas fa-upload"></i></h5>
+                    <h5 style="max-width: 150px;  float: left; margin-top: 4px;"><strong>Factura</strong>
+                    </h5>
+                    <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="facturas"
+                        data-inputFile="inputFileFactura"
+                        data-datoExtra="<?php echo $facturaSeleccionada['idContrato'] ?>"
+                        data-nombreArchivo="<?php echo 'Factura_' . $facturaSeleccionada['numero'] ?>" data-idContrato="<?php
+                             
+                             $ContratoAsociado = ObtenerContrato($facturaSeleccionada['idContrato'], $conexion);
+                             
+                             if ($ContratoAsociado != 'Contrato no encontrado') {
+                                 echo $ContratoAsociado['idContrato'];
+                             } else {
+                                 echo '0';
+                             }
+                             ?>"><i class="fas fa-upload"></i></button>
+                    <input type="file" id="inputFileFactura">
+                    <br>
+                    <br>
                     <p><strong>Titulo factura </strong><input type="text" id="tituloFactura"
                             value="<?php echo $facturaSeleccionada['titulo'] ?>"></p>
                     <p><strong>Numero de factura: </strong><input type="text" id="numeroFactura"

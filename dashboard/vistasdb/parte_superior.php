@@ -69,7 +69,7 @@ if (isset($_GET['table'])) {
 
     }
   } elseif ($table == 'facturas') {
-    
+
     if (!isset($_GET['idFactura'])) {
       include_once '../../loginBase/bd/conexion.php';
       $objeto = new Conexion();
@@ -85,15 +85,34 @@ if (isset($_GET['table'])) {
       $conexion = null;
       if ($_GET['idContrato']) {
         header("Location: indexdb.php?table=facturas&idFactura=$idFactura&idContrato=" . $_GET['idContrato']);
-      }else {
+      } else {
         header("Location: indexdb.php?table=facturas&idFactura=$idFactura");
       }
-      
+
 
     }
 
   } elseif ($table == 'cotizaciones') {
-    error_log("Cotizaciones");
+    if (!isset($_GET['idContrato'])) {
+      include_once '../../loginBase/bd/conexion.php';
+      $objeto = new Conexion();
+      $conexion = $objeto->Conectar();
+      try {
+        //seleccionamos por contrato pero solo si la columna de subContrato tiene el valor de Cotizacion
+        $query = "SELECT * FROM contrato WHERE subContrato = 'Cotizacion'";
+        $resultado = $conexion->prepare($query);
+        $resultado->execute();
+        $contratos = $resultado->fetchAll(PDO::FETCH_ASSOC);
+        $idContrato = $contratos[0]['idContrato'];
+
+        $conexion = null;
+        //redireccionamos a la misma pagina pero con $idEmpresa
+        header("Location: indexdb.php?table=cotizaciones&idContrato=$idContrato");
+      } catch (Exception $e) {
+        error_log($e);
+      }
+    }
+
   } elseif ($table == 'pendientes') {
     error_log("Pendientes");
   } else {
@@ -130,7 +149,7 @@ if (isset($_GET['table'])) {
   <link rel="stylesheet" type="text/css" href="vendor/datatables/datatables.min.css" />
   <!--datables estilo bootstrap 4 CSS-->
   <link rel="stylesheet" type="text/css" href="vendor/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">
-  <link href="../plugins/select2-4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
+  <link href="../plugins/select2-4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
 
 </head>
@@ -160,7 +179,7 @@ if (isset($_GET['table'])) {
           <i class="fas fa-fw fa-users"></i>
           <span>Personal</span></a>
       </li>
-      
+
 
       <!-- Divider -->
       <hr class="sidebar-divider">

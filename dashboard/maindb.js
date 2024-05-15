@@ -818,13 +818,32 @@ $(document).ready(function () {
 
     $(".btnSubirArchivo").click(function () {
         //obtener el id del contrato
-        var idContrato = getQueryParam('idContrato');
+        
+        if (getQueryParam('idContrato') == null) {
+            var idContrato = $(this).attr('data-idContrato');
+            
+        }else{
+            var idContrato = getQueryParam('idContrato');
+
+            
+        }
+
+
         //obtenemos el tipo de archivo
         var tipoArchivo = $(this).attr('data-tipoArchivo');
         //obtener el id del input file
         var idInputFile = $(this).attr('data-inputFile');
         //agregamos el nombre del archivo
         var nombreArchivo = $(this).attr('data-nombreArchivo');
+
+        //posible dato extra en caso de existir
+
+        if ($(this).attr('data-datoExtra') == null) {
+            var datoExtra = '';
+        } else {
+            var datoExtra = $(this).attr('data-datoExtra');
+        }
+        
 
 
 
@@ -837,7 +856,8 @@ $(document).ready(function () {
         formData.append('archivo', archivo);
         //agregamos el nombre del acrhivo
         formData.append('nombreDocumento', nombreArchivo);
-
+        //agregamos el posible dato extra
+        formData.append('datoExtra', datoExtra);
 
         //agregamos el id del contrato al objeto FormData
         formData.append('id', idContrato);
@@ -858,6 +878,8 @@ $(document).ready(function () {
                 } else {
                     // La operación fue exitosa, puedes realizar otras acciones aquí
                     console.log(data);
+
+                    console.log(data.message);
                     try {
                         window.location.reload();
                     } catch (error) {
@@ -869,6 +891,43 @@ $(document).ready(function () {
                 console.log('error', error);
             });
 
+    });
+
+
+    $("#btnInputFileExecelContratos").click(function () {
+        //obtenemos el archivo seleccionado
+        var archivo = document.getElementById('inputFileExecelContratos').files[0];
+        //creamos un objeto FormData
+        var formData = new FormData();
+        //agregamos el archivo al objeto FormData
+        formData.append('archivo', archivo);
+        //agregamos la opcion al objeto FormData
+        formData.append('opcion', '5');
+        //realizamos la peticion al servidor
+        fetch('../upload.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+
+                    console.log(data.message);
+                    try {
+                        window.location.reload();
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
     });
 
     function eliminarEmpresa(data) {

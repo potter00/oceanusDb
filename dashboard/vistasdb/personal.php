@@ -14,6 +14,7 @@ foreach ($subcontratados as $subcontratado) {
     }
 }
 
+
 //si la session no existe la iniciamos
 if (!isset($_SESSION)) {
     session_start();
@@ -99,8 +100,8 @@ if (!isset($_SESSION)) {
         <div class="card">
             <div class="card-header">
                 <div style="float: left; width: 60%;">
-                    <h5 class="card-title">Título</h5>
-                    <h6 class="card-subtitle">Subtítulo</h6>
+                    <h5 class="card-title"><?php $subContratadoSeleccionado['nombre'] ?></h5>
+                    <h6 class="card-subtitle"><?php $subContratadoSeleccionado['estado'] ?></h6>
                 </div>
                 <div style="float: right;">
                     <?php
@@ -114,8 +115,8 @@ if (!isset($_SESSION)) {
 
                     if (!isset($_GET['edit'])) {
 
-                        echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
 
+                        echo '<a class="fas fa-download" href="../' . $subContratadoSeleccionado['doc'] . '"></a>';
                     } else {
                         echo '<i class="fas fa-upload"></i> <!-- Icono de descarga -->';
                     }
@@ -147,7 +148,7 @@ if (!isset($_SESSION)) {
 
                     ?>
 
-                    <h5><strong>Informacion de SubContratado </strong><i class="fas fa-download"></i></h5>
+                    <h5><strong>Informacion de SubContratado </strong><?php echo '<a class="fas fa-download" href="../' . $subContratadoSeleccionado['doc'] . '"></a>'  ?></h5>
                     <p><strong><?php echo $subContratadoSeleccionado['nombre'] ?> </strong></p>
                     <p><strong>RFC: </strong><?php echo $subContratadoSeleccionado['rfc'] ?></p>
                     <p><strong>INSS: </strong><?php echo $subContratadoSeleccionado['inss'] ?></p>
@@ -158,7 +159,14 @@ if (!isset($_SESSION)) {
                     <?php
                 } else {
                     ?>
-                    <h5><strong>Informacion de SubContratado </strong><i class="fas fa-upload"></i></h5>
+                    <h5 style="max-width: 300px;  float: left; margin-top: 4px;"><strong>Personal De Terceros</strong></h5>
+
+                    <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="subContratado"
+                        data-inputFile="inputFileSubcotratado" data-idContrato="<?php echo $_GET['idSubContratado'] ?>"
+                        data-nombreArchivo="<?php echo $subContratadoSeleccionado['nombre'] ?>"><i
+                            class="fas fa-upload"></i></button>
+                    <input type="file" id="inputFileSubcotratado">
+                    <br><br>
                     <p><strong>Nombre:<input type="text" id="personalNombre"
                                 value="<?php echo $subContratadoSeleccionado['nombre'] ?>"> </strong></p>
                     <p><strong>RFC: </strong><input type="text" id="personalRFC"
