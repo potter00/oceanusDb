@@ -182,7 +182,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                                     class="fas fa-trash"></i>
                                 Eliminar</button>
                             <button id="btnCrearConvenio" class="dropdown-item btn" type="button"><i
-                                    class="fas fa-plus"></i>
+                                    class="fas fa-plus" ></i>
                                 Crear Convenio</button>
 
                         </div>

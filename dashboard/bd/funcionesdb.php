@@ -469,3 +469,39 @@ function CrearContrato( $tituloContrato, $nombreContrato, $numeroContrato, $idCo
     }
 }
 
+//funcion para pedir convenios relacionados a un contrato
+function ObtenerConvenios($idContrato, $conn)
+{
+    try {
+        $stmt = $conn->prepare('SELECT idConvenio FROM contrato_convenio WHERE idContrato = :id');
+        $stmt->bindParam(':id', $idContrato);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        } else {
+            return 'Convenios no encontrados';
+        }
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+}
+
+//funcion para optener un fila de una tabla mediante su id
+function ObtenerFila($tabla, $id, $conn)
+{
+    try {
+        $stmt = $conn->prepare('SELECT * FROM ' . $tabla . ' WHERE id' . $tabla . ' = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        } else {
+            return 'Fila no encontrada';
+        }
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+}
+

@@ -60,7 +60,28 @@ switch ($datos['opcion']) {
 
             $message = 'Contrato insertado correctamente';
             $datos['idContrato'] = $idContrato;
+            
+            if ($datos['convenio']['tieneConvenio'] == 1){
+                //insertamos los datos de la tabla convenio y obtenemos el id del convenio
+                $query = "INSERT INTO convenio (fechaInicio, fechaFin, montoConvenio) VALUES (:fechaInicio, :fechaFin, :montoConvenio)";
+                $resultado = $conexion->prepare($query);
+                $resultado->bindParam(':fechaInicio', $datos['convenio']['fechaInicio'], PDO::PARAM_STR);
+                $resultado->bindParam(':fechaFin', $datos['convenio']['fechaFin'], PDO::PARAM_STR);
+                $resultado->bindParam(':montoConvenio', $datos['convenio']['monto'], PDO::PARAM_STR);
+                $resultado->execute();
+                $idConvenio = $conexion->lastInsertId();
 
+
+                //insertamos los datos en la table contrato_convenio y obtenemos el id del convenio
+                $query = "INSERT INTO contrato_convenio (idContrato, idConvenio) VALUES (:idContrato, :idConvenio)";
+                $resultado = $conexion->prepare($query);
+                $resultado->bindParam(':idContrato', $idContrato, PDO::PARAM_INT);
+                $resultado->bindParam(':idConvenio', $idConvenio, PDO::PARAM_INT);
+                $resultado->execute();
+
+                $datos['convenio']['idConvenio'] = $idConvenio;
+
+            }
 
         } catch (\Throwable $th) {
             $message = 'Error al insertar contrato:' . $th->getMessage();
@@ -182,6 +203,7 @@ switch ($datos['opcion']) {
             }
         }
 
+         
 
 
 

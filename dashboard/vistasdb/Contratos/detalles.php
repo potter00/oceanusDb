@@ -36,19 +36,21 @@ if (!isset($_GET['edit'])) {
         <hr>
         <?php
 
-        if ($contratoSeleccionado['idConvenio'] != 0) {
+         $conveniosContrato = ObtenerConvenios($_GET['idContrato'], $conexion);
+         $convenios = ObtenerTabla('convenio', $conexion);
 
+        if ($conveniosContrato != 'Convenios no encontrados') {
+                error_log("Convenios encontrados: " . print_r($conveniosContrato, true));
 
-
-                ?>
-
-                <h5><strong>Convenio </strong><i class="fas fa-download"></i></h5>
-                <p><strong>Fecha Inicio Convenio: </strong>0000-00-00</p>
-                <p><strong>Fecha Fin Convenio: </strong>0000-00-00</p>
-                <p><strong>Monto Adicional: </strong>456463165</p>
-                <hr>
-
-                <?php
+                foreach ($conveniosContrato as $convenioContrato) {
+                        $convenio = ObtenerFila('convenio', $convenioContrato['idConvenio'], $conexion);
+                        $direccion = "indexdb.php?table=convenios&idConvenio=" . $convenio['idConvenio'] . "&seccion=detalles";
+                        echo '<h5><strong>Convenio </strong><a class="fas fa-download" href="../' . $convenio['documento'] . '"></a></h5>';
+                        echo '<p><strong>Fecha Inicio Convenio: </strong>' . $convenio['fechaInicio'] . '</p>';
+                        echo '<p><strong>Fecha Fin Convenio: </strong>' . $convenio['fechaFinal'] . '</p>';
+                        echo '<p><strong>Monto Adicional: </strong>' . $convenio['montoAdicional'] . '</p>';
+                        echo '<hr>';
+                }
 
         }
 
@@ -164,10 +166,16 @@ if (!isset($_GET['edit'])) {
                         value="<?php echo $contratoSeleccionado['anticipoContrato'] ?>" type="text"></p>
         <hr>
         
+
+        <?php   
+        
+        
+        ?>
+
         <h5><strong>Convenio </strong><i class="fas fa-download"></i></h5>
         <p><strong>Tiene convenio? </strong><input type="checkbox" id="contratoConvenio"></p>
-        <p><strong>Fecha Inicio Convenio: </strong><input type="date" value="0001-01-01" id="contratoFechaInicioConvenio"></p>
-        <p><strong>Fecha Fin Convenio: </strong><input type="date" value="0001-01-01" id="contratoFechaFinConvenio"></p>
+        <p><strong>Fecha Inicio Convenio: </strong><input type="date" value="0001-01-01" id="contratoConvenioInicio"></p>
+        <p><strong>Fecha Fin Convenio: </strong><input type="date" value="0001-01-01" id="contratoConvenioFin"></p>
         <p><strong>Monto Adicional: </strong><input type="text" value="0" id="contratoMontoConvenio"></p>
         <hr>
 

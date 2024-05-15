@@ -493,7 +493,10 @@ $(document).ready(function () {
         var monto = $("#contratoMonto").val();
         var anticipo = $("#contratoAnticipo").val();
         var numero = $("#contratoNumero").val();
-        var convenio = $("#contratoConvenio").val();
+        var convenio = $("#contratoConvenio").is(":checked");
+        var convenioInicio = $("#contratoConvenioInicio").val();
+        var convenioFin = $("#contratoConvenioFin").val();
+        var montoAdicional = $("#contratoMontoConvenio").val();
         var fianzaCumplimientoInicio = $("#contratoFianzaCumplimientoInicio").val();
         var fianzaCumplimientoFin = $("#contratoFianzaCumplimientoFin").val();
         var fianzaCumplimientoMonto = $("#contratoFianzaCumplimientoMonto").val();
@@ -526,7 +529,14 @@ $(document).ready(function () {
             monto: monto,
             anticipo: anticipo,
             numero: numero,
-            convenio: convenio,
+            convenio: {
+                tieneConvenio: convenio,
+                inicio: convenioInicio,
+                fin: convenioFin,
+                montoAdicional: montoAdicional
+ 
+            },
+            
             fianzaCumplimiento: {
                 inicio: fianzaCumplimientoInicio,
                 fin: fianzaCumplimientoFin,
@@ -557,6 +567,10 @@ $(document).ready(function () {
     });
 
     $("#btnContratoNuevo").click(function () {
+
+    
+
+
         var data = {
             opcion: 'añadirContrato'
         };
@@ -930,6 +944,22 @@ $(document).ready(function () {
             });
     });
 
+    $("#btnCrearConvenio").click(function () {
+        // Code to handle the click event of btnCrearConvenio
+        
+        var idContrato = getQueryParam('idContrato');
+
+
+        var data = {
+            idContrato: idContrato,
+            opcion: 'crearConvenio',
+            fechaInicio: '0001-01-01',
+            fechaFin: '0001-01-01',
+            montoAdicional: 0
+        };
+        crearConvenio(data);
+    });
+
     function eliminarEmpresa(data) {
         fetch('bd/crudEmpresas.php', {
             method: 'POST',
@@ -957,6 +987,8 @@ $(document).ready(function () {
 
             });
     }
+
+
 
 
     function eliminarPersonal(data) {
@@ -1104,6 +1136,31 @@ $(document).ready(function () {
 
     }
 
+    function crearConvenio(data) {
+        fetch('bd/crudConvenio.php', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    try {
+                        window.location.reload();
+                    } catch (error) {
+                        console.log('error', error);
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+
+    }
 
 
 
