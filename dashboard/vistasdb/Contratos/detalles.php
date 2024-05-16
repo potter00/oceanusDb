@@ -36,19 +36,19 @@ if (!isset($_GET['edit'])) {
         <hr>
         <?php
 
-         $conveniosContrato = ObtenerConvenios($_GET['idContrato'], $conexion);
-         $convenios = ObtenerTabla('convenio', $conexion);
+        $conveniosContrato = ObtenerConvenios($_GET['idContrato'], $conexion);
+        $convenios = ObtenerTabla('convenio', $conexion);
 
         if ($conveniosContrato != 'Convenios no encontrados') {
                 error_log("Convenios encontrados: " . print_r($conveniosContrato, true));
 
                 foreach ($conveniosContrato as $convenioContrato) {
                         $convenio = ObtenerFila('convenio', $convenioContrato['idConvenio'], $conexion);
-                        $direccion = "indexdb.php?table=convenios&idConvenio=" . $convenio['idConvenio'] . "&seccion=detalles";
+
                         echo '<h5><strong>Convenio </strong><a class="fas fa-download" href="../' . $convenio['documento'] . '"></a></h5>';
-                        echo '<p><strong>Fecha Inicio Convenio: </strong>' . $convenio['fechaInicio'] . '</p>';
-                        echo '<p><strong>Fecha Fin Convenio: </strong>' . $convenio['fechaFinal'] . '</p>';
-                        echo '<p><strong>Monto Adicional: </strong>' . $convenio['montoAdicional'] . '</p>';
+                        echo '<p class="conveniosFechaInicio" data-id="' . $convenio['idConvenio'] . '" ><strong>Fecha Inicio Convenio: </strong>' . $convenio['fechaInicio'] . '</p>';
+                        echo '<p class="conveniosFechaFin"><strong>Fecha Fin Convenio: </strong>' . $convenio['fechaFinal'] . '</p>';
+                        echo '<p class="conveniosMontoAdicional"><strong>Monto Adicional: </strong>' . $convenio['montoAdicional'] . '</p>';
                         echo '<hr>';
                 }
 
@@ -156,7 +156,7 @@ if (!isset($_GET['edit'])) {
                         type="date"></p>
 
 
-        
+
 
 
         <p><strong>Monto de Contrato: </strong><input type="text" id="contratoMonto"
@@ -165,21 +165,34 @@ if (!isset($_GET['edit'])) {
         <p><strong>Anticipo: </strong><input id="contratoAnticipo"
                         value="<?php echo $contratoSeleccionado['anticipoContrato'] ?>" type="text"></p>
         <hr>
-        
 
-        <?php   
-        
-        
+
+        <?php
+
+
         ?>
 
-        <h5><strong>Convenio </strong><i class="fas fa-download"></i></h5>
-        <p><strong>Tiene convenio? </strong><input type="checkbox" id="contratoConvenio"></p>
-        <p><strong>Fecha Inicio Convenio: </strong><input type="date" value="0001-01-01" id="contratoConvenioInicio"></p>
-        <p><strong>Fecha Fin Convenio: </strong><input type="date" value="0001-01-01" id="contratoConvenioFin"></p>
-        <p><strong>Monto Adicional: </strong><input type="text" value="0" id="contratoMontoConvenio"></p>
-        <hr>
+        <?php
 
+        $conveniosContrato = ObtenerConvenios($_GET['idContrato'], $conexion);
+        $convenios = ObtenerTabla('convenio', $conexion);
 
+        if ($conveniosContrato != 'Convenios no encontrados') {
+                error_log("Convenios encontrados: " . print_r($conveniosContrato, true));
+
+                foreach ($conveniosContrato as $convenioContrato) {
+                        $convenio = ObtenerFila('convenio', $convenioContrato['idConvenio'], $conexion);
+
+                        echo '<h5><strong>Convenio </strong></h5>';
+                        echo '<p class="conveniosFechaInicio" data-id="' . $convenio['idConvenio'] . '" ><strong>Fecha Inicio Convenio: </strong>' . $convenio['fechaInicio'] . '</p>';
+                        echo '<p class="conveniosFechaFin"><strong>Fecha Fin Convenio: </strong>' . $convenio['fechaFinal'] . '</p>';
+                        echo '<p class="conveniosMontoAdicional"><strong>Monto Adicional: </strong>' . $convenio['montoAdicional'] . '</p>';
+                        echo '<hr>';
+                }
+
+        }
+
+        ?>
 
 
         <h5 style="max-width: 300px;  float: left; margin-top: 4px;"><strong>Fianza de Cumplimiento</strong></h5>

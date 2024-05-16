@@ -285,8 +285,8 @@ $(document).ready(function () {
     var checkboxes = document.querySelectorAll('.checkBoxContrato');
 
     // Agregar un event listener a cada checkbox
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
             // Obtener el ID de la fila correspondiente al checkbox
             var id = this.parentNode.parentNode.querySelector('td:first-child').textContent;
 
@@ -301,7 +301,7 @@ $(document).ready(function () {
                 }
             }
 
-            
+
 
             // Imprimir los IDs seleccionados en la consola (puedes enviarlos al servidor aquí)
 
@@ -310,15 +310,15 @@ $(document).ready(function () {
                 //guardamos el id seleccionado en una variable de _SESSION
                 enviarCheckboxAlServidor(idsSeleccionados['0']);
 
-                
-            }else{
+
+            } else {
                 enviarCheckboxAlServidor(0);
             }
-            
+
         });
 
     });
-    
+
 
     //inicializamos selects
     $('#selectPersonalTerceros').select2({
@@ -332,7 +332,7 @@ $(document).ready(function () {
     $('#selectFacturaContrato').select2();
 
     $('#selectFacturaEmpresa').select2();
-    
+
     $("#btnGuardarEmpresa").click(function () {
         var razonSocial = $("#empresaRazonSocial").val();
         var rfc = $("#empresaRFC").val();
@@ -347,6 +347,10 @@ $(document).ready(function () {
         var numeroCuenta = $("#empresaNumeroCuenta").val();
         var banco = $("#empresaBanco").val();
         var fechaVencimientoConstancia = $("#empresaFechaVencimientoConstancia").val();
+
+
+
+
 
 
 
@@ -514,6 +518,28 @@ $(document).ready(function () {
         var fianzaViciosOcultosAseguradora = $("#contratoFianzaViciosOcultosAseguradora").val();
         //fin obtener los valores de los campos
 
+
+        //obtenemos la informacion de los convenios del contrato con los nombres de sus clases
+        var convenios = [];
+        var conveniosInputs = document.querySelectorAll('.convenio');
+        console.log(conveniosInputs);
+        conveniosInputs.forEach(function (convenio) {
+            
+            var convenioObj = {
+                id: convenio.getAttribute('data-id'),
+                inicio: convenio.querySelector('.conveniosFechaInicio').value,
+                fin: convenio.querySelector('.conveniosFechaFin').value,
+                montoAdicional: convenio.querySelector('.conveniosMontoAdicional').value
+            };
+            console.log('convenioObj');
+            console.log(convenioObj);
+            convenios.push(convenioObj);
+        });
+        console.log(convenios);
+
+
+
+
         //inicio de la creacion del objeto data
         var data = {
             idContrato: idContrato,
@@ -529,14 +555,8 @@ $(document).ready(function () {
             monto: monto,
             anticipo: anticipo,
             numero: numero,
-            convenio: {
-                tieneConvenio: convenio,
-                inicio: convenioInicio,
-                fin: convenioFin,
-                montoAdicional: montoAdicional
- 
-            },
-            
+            convenios: convenios,
+
             fianzaCumplimiento: {
                 inicio: fianzaCumplimientoInicio,
                 fin: fianzaCumplimientoFin,
@@ -568,7 +588,7 @@ $(document).ready(function () {
 
     $("#btnContratoNuevo").click(function () {
 
-    
+
 
 
         var data = {
@@ -632,7 +652,7 @@ $(document).ready(function () {
     });
 
     $("#btnNuevaRelacionContratoPersonalTerceros").click(function () {
-        
+
         var idContrato = getQueryParam('idContrato');
         var idSubContratado = $("#selectPersonalTerceros").val();
         var data = {
@@ -647,7 +667,7 @@ $(document).ready(function () {
 
     });
     $("#btnNuevaRelacionContratoPersonalOceanus").click(function () {
-        
+
         var idContrato = getQueryParam('idContrato');
         var idSubContratado = $("#selectPersonalOceanus").val();
         var data = {
@@ -695,8 +715,8 @@ $(document).ready(function () {
     });
 
     $("#btnFacturaNueva").click(function () {
-        
-        
+
+
         var data = {
             opcion: 'añadirFactura'
         };
@@ -832,14 +852,14 @@ $(document).ready(function () {
 
     $(".btnSubirArchivo").click(function () {
         //obtener el id del contrato
-        
+
         if (getQueryParam('idContrato') == null) {
             var idContrato = $(this).attr('data-idContrato');
-            
-        }else{
+
+        } else {
             var idContrato = getQueryParam('idContrato');
 
-            
+
         }
 
 
@@ -857,7 +877,7 @@ $(document).ready(function () {
         } else {
             var datoExtra = $(this).attr('data-datoExtra');
         }
-        
+
 
 
 
@@ -946,7 +966,7 @@ $(document).ready(function () {
 
     $("#btnCrearConvenio").click(function () {
         // Code to handle the click event of btnCrearConvenio
-        
+
         var idContrato = getQueryParam('idContrato');
 
 
@@ -1103,7 +1123,7 @@ $(document).ready(function () {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'bd/sesion.php');
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
+        xhr.onload = function () {
             // Manejar la respuesta del servidor si es necesario
             console.log(xhr.responseText);
         };
