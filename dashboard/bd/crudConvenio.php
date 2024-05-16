@@ -15,7 +15,7 @@ error_log("Datos recibidos en crudConvenio.php (antes): " . print_r($datos, true
 switch ($datos['opcion']) {
     case 'crearConvenio':
         try {
-            
+
             $query = "INSERT INTO convenio (fechaInicio, fechaFinal, montoAdicional) VALUES (:fechaInicio, :fechaFin, :montoAdicional)";
             $resultado = $conexion->prepare($query);
             $resultado->bindParam(':fechaInicio', $datos['fechaInicio'], PDO::PARAM_STR);
@@ -30,7 +30,7 @@ switch ($datos['opcion']) {
             $resultado->execute();
             $idConvenio = $resultado->fetch(PDO::FETCH_ASSOC);
             $idConvenio = $idConvenio['idConvenio'];
-            
+
             //creamos la relacion con el contrato en la tabla contrato_convenio
             $query = "INSERT INTO contrato_convenio (idContrato, idConvenio) VALUES (:idContrato, :idConvenio)";
             $resultado = $conexion->prepare($query);
@@ -38,21 +38,52 @@ switch ($datos['opcion']) {
             $resultado->bindParam(':idConvenio', $idConvenio, PDO::PARAM_INT);
             $resultado->execute();
             $message = 'Convenio creado correctamente';
-            
-            
+
+
 
 
         } catch (\Throwable $th) {
             $message = 'Error al crear el convenio' . $th->getMessage();
-        if (isset($errores)) {
-            $errores[] = $message;
-        } else {
-            $errores = array($message);
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
         }
-        }
-        
+
         break;
-       
+    case 'eliminarConvenio';
+        try {
+            $query = "DELETE FROM convenio WHERE idConvenio = :idConvenio";
+            $resultado = $conexion->prepare($query);
+            $resultado->bindParam(':idConvenio', $datos['idConvenio'], PDO::PARAM_INT);
+            $resultado->execute();
+            $message = 'Convenio eliminado correctamente';
+        } catch (\Throwable $th) {
+            $message = 'Error al eliminar el convenio' . $th->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        //borramos la relacion convenio contrato
+        try {
+            $query = "DELETE FROM contrato_convenio WHERE idConvenio = :idConvenio";
+            $resultado = $conexion->prepare($query);
+            $resultado->bindParam(':idConvenio', $datos['idConvenio'], PDO::PARAM_INT);
+            $resultado->execute();
+            $message = 'Convenio eliminado correctamente';
+        } catch (\Throwable $th) {
+            $message = 'Error al eliminar el convenio' . $th->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        break;
+
     default:
         $message = 'Opción no válida';
         if (isset($errores)) {

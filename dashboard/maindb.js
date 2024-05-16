@@ -540,7 +540,7 @@ $(document).ready(function () {
                 convenios.push(convenio);
             }
 
-        }else{
+        } else {
             convenios = 'sin convenios';
         }
 
@@ -983,6 +983,50 @@ $(document).ready(function () {
         };
         crearConvenio(data);
     });
+
+    $(".btnEliminarConvenio").click(function () {
+
+        //creamos un aviso para el usuario para ver si esta seguro
+        var r = confirm("¿Estas seguro de eliminar este convenio?");
+        //si el usuario acepta
+        console.log(r);
+        if (r == true) {
+
+
+
+
+            var idConvenio = $(this).attr('data-id');
+            var data = {
+                idConvenio: idConvenio,
+                opcion: 'eliminarConvenio'
+            };
+            fetch('bd/crudConvenio.php', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.errores && data.errores.length > 0) {
+                        // Mostrar los errores en el contenedor
+                        console.log('Errores:', data.errores);
+                    } else {
+                        // La operación fue exitosa, puedes realizar otras acciones aquí
+                        console.log(data);
+                        try {
+                            window.location.reload();
+                        } catch (error) {
+                            console.log('error', error);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log('error', error);
+                });
+        }
+    });
+
+
+
 
     function eliminarEmpresa(data) {
         fetch('bd/crudEmpresas.php', {

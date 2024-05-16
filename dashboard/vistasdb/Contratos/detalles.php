@@ -106,7 +106,7 @@ if (!isset($_GET['edit'])) {
         <p><Strong>Numero Contrato: </Strong> <input id="contratoNumero"
                         value="<?php echo $contratoSeleccionado['numeroContrato'] ?>" type="text"></p>
         <p><Strong>contratante: </Strong>
-                <select name="contratante" id="contratoContratante">+
+                <select name="contratante" id="contratoContratante" style="max-width: 300px;">
                         <?php
                         $query = "SELECT * FROM empresa";
                         $resultado = $conexion->prepare($query);
@@ -190,27 +190,29 @@ if (!isset($_GET['edit'])) {
                         <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="convenio"
                                 data-inputFile="inputFileConvenio<?php echo $i ?>" data-nombreArchivo="Convenio_<?php echo $i ?>"><i
                                         class="fas fa-upload"></i></button>
-
+                        <button type="button" class="btn btn-sm btnEliminarConvenio" data-id="<?php echo $convenio['idConvenio'] ?>">
+                                <i class="fas fa-trash-alt" style="color: red;"></i>
+                        </button>
                         <input type="file" id="inputFileConvenio<?php echo $i ?>">
                         <br>
                         <br>
-                        
+
                         <p><strong>Fecha de Inicio: </strong><input id="convenioInicio<?php echo $i ?>"
                                         value="<?php echo $convenio['fechaInicio'] ?>" type="date"></p>
-                        <p><strong>Fecha de Fin: </strong><input id="convenioFin<?php echo $i ?>"
-                                        value="<?php echo $convenio['fechaFinal'] ?>" type="date"></p>
+                        <p><strong>Fecha de Fin: </strong><input id="convenioFin<?php echo $i ?>" value="<?php echo $convenio['fechaFinal'] ?>"
+                                        type="date"></p>
 
                         <p><strong>Monto Adicional: </strong><input id="convenioMonto<?php echo $i ?>"
                                         value="<?php echo $convenio['montoAdicional'] ?>" type="text">
                                 </strong></p>
-                                
+
                         <hr>
                         <?php
-                        
+
                         $i++;
                 }
-                
-        }else {
+
+        } else {
                 echo '<div id="divConvenios" data-total="0"></div>';
         }
 
