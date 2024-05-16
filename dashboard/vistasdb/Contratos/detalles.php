@@ -179,20 +179,43 @@ if (!isset($_GET['edit'])) {
 
         if ($conveniosContrato != 'Convenios no encontrados') {
                 error_log("Convenios encontrados: " . print_r($conveniosContrato, true));
-
+                $i = 1;
+                $totalConvenios = count($conveniosContrato);
+                echo '<div id="divConvenios" data-total="' . $totalConvenios . '"></div>';
                 foreach ($conveniosContrato as $convenioContrato) {
                         $convenio = ObtenerFila('convenio', $convenioContrato['idConvenio'], $conexion);
+                        ?>
+                        <div id="convenioId<?php echo $i ?>" data-id-covenio="<?php echo $convenio['idConvenio'] ?>"></div>
+                        <h5 style="max-width: 200px;  float: left; margin-top: 4px;"><strong>Convenio <?php echo $i ?></strong></h5>
+                        <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="convenio"
+                                data-inputFile="inputFileConvenio<?php echo $i ?>" data-nombreArchivo="Convenio_<?php echo $i ?>"><i
+                                        class="fas fa-upload"></i></button>
 
-                        echo '<h5><strong>Convenio </strong></h5>';
-                        echo '<p class="conveniosFechaInicio" data-id="' . $convenio['idConvenio'] . '" ><strong>Fecha Inicio Convenio: </strong>' . $convenio['fechaInicio'] . '</p>';
-                        echo '<p class="conveniosFechaFin"><strong>Fecha Fin Convenio: </strong>' . $convenio['fechaFinal'] . '</p>';
-                        echo '<p class="conveniosMontoAdicional"><strong>Monto Adicional: </strong>' . $convenio['montoAdicional'] . '</p>';
-                        echo '<hr>';
+                        <input type="file" id="inputFileConvenio<?php echo $i ?>">
+                        <br>
+                        <br>
+                        
+                        <p><strong>Fecha de Inicio: </strong><input id="convenioInicio<?php echo $i ?>"
+                                        value="<?php echo $convenio['fechaInicio'] ?>" type="date"></p>
+                        <p><strong>Fecha de Fin: </strong><input id="convenioFin<?php echo $i ?>"
+                                        value="<?php echo $convenio['fechaFinal'] ?>" type="date"></p>
+
+                        <p><strong>Monto Adicional: </strong><input id="convenioMonto<?php echo $i ?>"
+                                        value="<?php echo $convenio['montoAdicional'] ?>" type="text">
+                                </strong></p>
+                                
+                        <hr>
+                        <?php
+                        
+                        $i++;
                 }
-
+                
+        }else {
+                echo '<div id="divConvenios" data-total="0"></div>';
         }
 
         ?>
+
 
 
         <h5 style="max-width: 300px;  float: left; margin-top: 4px;"><strong>Fianza de Cumplimiento</strong></h5>

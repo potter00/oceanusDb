@@ -498,9 +498,6 @@ $(document).ready(function () {
         var anticipo = $("#contratoAnticipo").val();
         var numero = $("#contratoNumero").val();
         var convenio = $("#contratoConvenio").is(":checked");
-        var convenioInicio = $("#contratoConvenioInicio").val();
-        var convenioFin = $("#contratoConvenioFin").val();
-        var montoAdicional = $("#contratoMontoConvenio").val();
         var fianzaCumplimientoInicio = $("#contratoFianzaCumplimientoInicio").val();
         var fianzaCumplimientoFin = $("#contratoFianzaCumplimientoFin").val();
         var fianzaCumplimientoMonto = $("#contratoFianzaCumplimientoMonto").val();
@@ -521,24 +518,31 @@ $(document).ready(function () {
 
         //obtenemos la informacion de los convenios del contrato con los nombres de sus clases
         var convenios = [];
-        var conveniosInputs = document.querySelectorAll('.convenio');
-        console.log(conveniosInputs);
-        conveniosInputs.forEach(function (convenio) {
-            
-            var convenioObj = {
-                id: convenio.getAttribute('data-id'),
-                inicio: convenio.querySelector('.conveniosFechaInicio').value,
-                fin: convenio.querySelector('.conveniosFechaFin').value,
-                montoAdicional: convenio.querySelector('.conveniosMontoAdicional').value
-            };
-            console.log('convenioObj');
-            console.log(convenioObj);
-            convenios.push(convenioObj);
-        });
-        console.log(convenios);
+
+        var totalConvenios = document.getElementById('divConvenios').getAttribute('data-total');
 
 
+        if (totalConvenios > 0) {
 
+
+            for (var i = 1; i <= totalConvenios; i++) {
+                console.log('convenio numero ' + i);
+                var idConvenio = document.getElementById('convenioId' + i).getAttribute('data-id-covenio');
+                var fechaInicioConvenio = $("#convenioInicio" + i).val();
+                var fechaFinConvenio = $("#convenioFin" + i).val();
+                var montoConvenio = $("#convenioMonto" + i).val();
+                var convenio = {
+                    idConvenio: idConvenio,
+                    fechaInicioConvenio: fechaInicioConvenio,
+                    fechaFinConvenio: fechaFinConvenio,
+                    montoConvenio: montoConvenio
+                };
+                convenios.push(convenio);
+            }
+
+        }else{
+            convenios = 'sin convenios';
+        }
 
         //inicio de la creacion del objeto data
         var data = {

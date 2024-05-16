@@ -204,7 +204,30 @@ switch ($datos['opcion']) {
         }
 
          
+        if ($datos['convenios'] != 'sin convenios') {
+            foreach ($datos['convenios'] as $convenio) {
+                //actualizamos los datos de la tabla convenio
+                error_log("Convenio: " . print_r($convenio, true));
+                try {
+                    //code...
 
+                    $query = "UPDATE convenio SET fechaInicio = :fechaInicio, fechaFinal = :fechaFin, montoAdicional = :montoConvenio WHERE idConvenio = :idConvenio";
+                    $resultado = $conexion->prepare($query);
+                    $resultado->bindParam(':fechaInicio', $convenio['fechaInicioConvenio'], PDO::PARAM_STR);
+                    $resultado->bindParam(':fechaFin', $convenio['fechaFinConvenio'], PDO::PARAM_STR);
+                    $resultado->bindParam(':montoConvenio', $convenio['montoConvenio'], PDO::PARAM_STR);
+                    $resultado->bindParam(':idConvenio', $convenio['idConvenio'], PDO::PARAM_INT);
+                    $resultado->execute();
+                } catch (\Throwable $th) {
+                    $message = 'Error al actualizar convenio:' . $th->getMessage();
+                    if (isset($errores)) {
+                        $errores[] = $message;
+                    } else {
+                        $errores = array($message);
+                    }
+                }
+            }
+        }
 
 
 
