@@ -389,7 +389,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
+        case 6: //Generarl un archivo zip de la carpeta de un contrato en especifico
+            error_log("entro a la opcion 6");
+            $id = $_POST['id'];
+            $carpetaBase = 'archivos/contratos/';
+            $carpetaDestino = $carpetaBase . $id . '/';
+            $zip = new ZipArchive();
+            $nombreZip = $carpetaDestino . 'documentos.zip';
+            if ($zip->open($nombreZip, ZipArchive::CREATE) === TRUE) {
+                $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($carpetaDestino));
+                foreach ($files as $file) {
+                    $file = str_replace('\\', '/', $file);
+                    if (is_file($file)) {
+                        $zip->addFile($file, str_replace($carpetaDestino, '', $file));
+                    }
+                }
+                $zip->close();
+                $respuesta = array('success' => true, 'message' => 'Archivo zip creado con éxito', 'ruta' => $nombreZip);
+            } else {
+                $respuesta = array('success' => false, 'message' => 'Error al crear el archivo zip');
+            }
+            error_log('ruta: ' . $nombreZip);
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+            // Devolver la respuesta como JSON
+            header('Content-Type: application/json');
+            echo json_encode($respuesta);
 
+            break;
 
         default:
             # code...

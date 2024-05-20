@@ -170,7 +170,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     if (isset($_GET['edit'])) {
                         echo '<i class="fas fa-upload"></i>';
                     } else {
-                        echo '<a class="fas fa-download" href="../' . $contratoSeleccionado['ubicacionContrato'] . '"></a>';
+                        echo '<a class="fas fa-download" href="" id="DescargarZipContrato">  </a>';
                     }
                     ?>
 
@@ -189,7 +189,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     </div> <!-- Icono de configuración -->
                 </div>
             </div>
-            <div class="card-body" style="line-height: .8;">
+            <div class="card-body" style="line-height: 1.2;">
                 <?php
 
                 if (isset($_GET['seccion'])) {

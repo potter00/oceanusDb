@@ -38,7 +38,7 @@
                     <i class="fas fa-cog"></i> <!-- Icono de configuración -->
                 </div>
             </div>
-            <div class="card-body" style="line-height: .8;">
+            <div class="card-body" style="line-height: 1.2;">
 
                 <p><strong>Descripcion: </strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor,
                     nunc at tincidunt ultricies, velit nunc tincidunt nunc, id lacinia nunc nunc eu nunc. Sed euismod,

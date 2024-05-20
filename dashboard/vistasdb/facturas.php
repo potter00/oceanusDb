@@ -138,7 +138,7 @@
                     </div><i class="fas fa-cog"></i> <!-- Icono de configuración -->
                 </div>
             </div>
-            <div class="card-body" style="line-height: .8;">
+            <div class="card-body" style="line-height: 1.2;">
                 <?php
                 if (!isset($_GET['edit'])) {
                     ?>
@@ -223,7 +223,7 @@
                         </select>
                     </p>
                     <p><strong>Empresa Asociada: </strong>
-                        <select id="selectFacturaEmpresa">
+                        <select id="selectFacturaEmpresa" style="max-width: 125px;">
                             <?php
                             foreach ($empresas as $empresa) {
                                 if ($empresa['idEmpresa'] == $facturaSeleccionada['idEmpresa']) {

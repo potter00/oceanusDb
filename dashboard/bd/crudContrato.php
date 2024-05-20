@@ -20,7 +20,7 @@ switch ($datos['opcion']) {
             //code...
             $query = "INSERT INTO contrato (titulo) VALUES (titulo)";
             $resultado = $conexion->prepare($query);
-            
+
             $resultado->execute();
             $idContrato = $conexion->lastInsertId();
 
@@ -60,8 +60,8 @@ switch ($datos['opcion']) {
 
             $message = 'Contrato insertado correctamente';
             $datos['idContrato'] = $idContrato;
-            
-            if ($datos['convenio']['tieneConvenio'] == 1){
+
+            if ($datos['convenio']['tieneConvenio'] == 1) {
                 //insertamos los datos de la tabla convenio y obtenemos el id del convenio
                 $query = "INSERT INTO convenio (fechaInicio, fechaFin, montoConvenio) VALUES (:fechaInicio, :fechaFin, :montoConvenio)";
                 $resultado = $conexion->prepare($query);
@@ -92,9 +92,9 @@ switch ($datos['opcion']) {
                 $errores = array($message);
             }
         }
-        
 
-        
+
+
 
 
         # code...
@@ -131,7 +131,7 @@ switch ($datos['opcion']) {
             }
         }
 
-        $fianzas =  obtenerFianzaContrato($datos['idContrato'], $conexion);
+        $fianzas = obtenerFianzaContrato($datos['idContrato'], $conexion);
 
         //actualizamos los datos de la tabla fianza_cumplimiento
         try {
@@ -155,7 +155,7 @@ switch ($datos['opcion']) {
                 $errores = array($message);
             }
         }
-        
+
         //actualizamos los datos de la tabla fianza_anticipo
         try {
             //code...
@@ -203,7 +203,7 @@ switch ($datos['opcion']) {
             }
         }
 
-         
+
         if ($datos['convenios'] != 'sin convenios') {
             foreach ($datos['convenios'] as $convenio) {
                 //actualizamos los datos de la tabla convenio
@@ -254,8 +254,10 @@ switch ($datos['opcion']) {
         }
 
 
-        
+
         break;
+
+    
     default:
         $message = 'Opción no válida';
         if (isset($errores)) {

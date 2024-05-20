@@ -137,6 +137,7 @@ $(document).ready(function () {
     });
 
     tablaSubContratados.buttons().container().appendTo('#tablaSubContratados_wrapper .col-md-6:eq(0)');
+
     tablaSubContratados.column(4).visible(false);
     tablaSubContratados.column(3).visible(false);
 
@@ -204,7 +205,7 @@ $(document).ready(function () {
 
     });
     tablaContratos.buttons().container().appendTo('#tablaContratos_wrapper .col-md-6:eq(0)');
-
+    tablaContratos.column(0).visible(false);
     tablaContratos.column(2).visible(false);
     tablaContratos.column(4).visible(false);
     tablaContratos.column(6).visible(false);
@@ -1024,6 +1025,45 @@ $(document).ready(function () {
                 });
         }
     });
+
+    $("#DescargarZipContrato").click(function () {
+        //prevenimos el comportamiento por defecto del boton
+        event.preventDefault();
+        var idContrato = getQueryParam('idContrato');
+        
+        //generamos el fetch para generar el archivo zip y recibir la ruta por upload.php
+        FormData = new FormData();
+        FormData.append('opcion', '6');
+        FormData.append('id', idContrato);
+        fetch('../upload.php', {
+            method: 'POST',
+            body: FormData
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data
+                if (data.errores && data.errores.length > 0) {
+                    // Mostrar los errores en el contenedor
+                    console.log('Errores:', data.errores);
+                } else {
+                    // La operación fue exitosa, puedes realizar otras acciones aquí
+                    console.log(data);
+                    //descargamos el archivo zip de la ruta recibida
+                    rutaCompleta = '../' + data.ruta;
+                    window.location.href = rutaCompleta;
+
+                    
+                }
+            })
+            .catch(error => {
+                // Handle the error
+                console.log('error', error);
+            });
+
+
+    });
+
+
 
 
 

@@ -138,7 +138,7 @@ if (!isset($_SESSION)) {
                     </div>
                 </div>
             </div>
-            <div class="card-body" style="line-height: .8;">
+            <div class="card-body" style="line-height: 1.2;">
 
                 <?php
                 if (!isset($_GET['edit'])) {

@@ -185,7 +185,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     </div> <!-- Icono de configuración -->
                 </div>
             </div>
-            <div class="card-body" style="line-height: .8;">
+            <div class="card-body" style="line-height: 1.2;">
                 <?php
 
                 if (isset($_GET['seccion'])) {
