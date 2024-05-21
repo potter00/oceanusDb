@@ -33,8 +33,9 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
 
         <input type="file" id="inputFileExecelContratos">
         <button class="btn btn-sm btn-primary" id="btnInputFileExecelContratos">Subir</button>
-        <br><br><hr>
-        
+        <br><br>
+        <hr>
+
         <table id="tablaContratos" class="table table-sm table-striped table-bordered table-condensed">
             <thead>
                 <tr>
@@ -50,6 +51,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     <th>Monto Contrato</th>
                     <th>Anticipo Contrato</th>
                     <th>SubContratos</th>
+                    <th>Vigencia</th>
                     <th>Seleccionar</th>
                     <th>Direccion</th>
 
@@ -60,26 +62,81 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     $direccion = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=subcontratos";
                     $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=detalles";
                     $redirreccionContratante = 'indexdb.php?table=empresas&idEmpresa=' . $contratoSeleccionado['idContrato'];
+                    if ($contrato['subContrato'] == 'Cotizacion') {
+                        continue;
+                    }
                     ?>
                     <tr>
                         <td><?php echo $contrato['idContrato'] ?></td>
-                        <td><?php echo '<a  href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?></td>
+                        <td class="text-lowercase">
+                            <?php echo '<a  href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?>
+                        </td>
 
-                        <td><?php echo $contrato['nombreContrato'] ?></td>
-                        <td><?php
+                        <td class="text-lowercase"><?php echo $contrato['nombreContrato'] ?></td>
+                        <td class="text-lowercase" style="max-width: 50px;"><?php
                         echo '<a  href="' . $redirreccionContratante . '">' . obtenerNombreEmpresa($contrato['idContratante'], $conexion) . '</a> ';
 
                         ?></td>
-                        <td><?php echo obtenerNombreEmpresa($contrato['idContratado'], $conexion) ?></td>
-                        <td><?php echo $contrato['subContrato'] ?></td>
+                        <td class="text-lowercase"><?php echo obtenerNombreEmpresa($contrato['idContratado'], $conexion) ?>
+                        </td>
+                        <td class="text-lowercase"><?php echo $contrato['subContrato'] ?></td>
                         <td><?php echo $contrato['numeroContrato'] ?></td>
                         <td><?php echo $contrato['inicioContrato'] ?></td>
                         <td><?php echo $contrato['finContrato'] ?></td>
                         <td><?php echo $contrato['montoContrato'] ?></td>
                         <td><?php echo $contrato['anticipoContrato'] ?></td>
-                        <td><?php echo '<a  href="' . $direccion . '">' . 'SubContratos' . '</a> '; ?></td>
+                        <td class="text-lowercase">
+                            <?php echo '<a  href="' . $direccion . '">' . 'SubContratos' . '</a> '; ?>
+                        </td>
 
                         <?php
+
+                        $estadoContrato = VerificarFecha($contrato['finContrato']);
+
+
+                        $conveniosContrato = ObtenerConvenios($contrato['idContrato'], $conexion);
+                        $convenios = ObtenerTabla('convenio', $conexion);
+
+
+                        if ($conveniosContrato != 'Convenios no encontrados') {
+                            error_log("Convenios encontrados: " . print_r($conveniosContrato, true));
+
+
+                            //obtenemos el ultimo convenio de la lista 
+                            $convenioContrato = end($conveniosContrato);
+
+
+                            $convenio = ObtenerFila('convenio', $convenioContrato['idConvenio'], $conexion);
+
+                            $estadoConvenio = VerificarFecha($convenio['fechaFinal']);
+                            if ($estadoConvenio == 1) {
+                                echo '<td style="color: red;">Vencido</td>';
+                                # code...
+                            } else {
+                                echo '<td style="color: green;">Vigente</td>';
+                            }
+
+
+
+                        } else {
+                            # code...
+                    
+
+
+                            if ($estadoContrato == 1) {
+                                echo '<td style="color: red;">Vencido</td>';
+                            } else {
+                                echo '<td style="color: green;">Vigente</td>';
+                            }
+                        }
+
+
+
+
+
+
+
+
                         //si la sesion no esta iniciada la iniciamos
                         if (!isset($_SESSION)) {
                             session_start();
@@ -127,7 +184,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
         <div class="card">
             <div class="card-header">
                 <div style="float: left; width: 60%;">
-                    <h5 class="card-title"><?php echo $contratoSeleccionado['titulo'] ?></h5>
+                    <h5 class="card-title"><a href="<?php echo "detalles_contrato.php?idContrato=" . $contratoSeleccionado['idContrato']  ?>"><?php  echo $contratoSeleccionado['nombreContrato']  ?></a></h5>
                     <h6 class="card-subtitle">Contrato #<?php echo $contratoSeleccionado['numeroContrato'] ?></h6>
                 </div>
                 <div style="float: right;">
@@ -142,7 +199,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                             } elseif ($_GET['seccion'] == 'personal') {
                                 echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=personal&edit=true&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
                             } elseif ($_GET['seccion'] == 'subcontratos') {
-                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=subcontratos&edit=true&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
+                                echo '<a class="fas fa-edit" href="indexdb.php?table=contratos&seccion=subcontratos&idContrato=' . $_GET['idContrato'] . '"></a> <!-- Icono de editar -->';
 
                             }
 
@@ -182,7 +239,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                                     class="fas fa-trash"></i>
                                 Eliminar</button>
                             <button id="btnCrearConvenio" class="dropdown-item btn" type="button"><i
-                                    class="fas fa-plus" ></i>
+                                    class="fas fa-plus"></i>
                                 Crear Convenio</button>
 
                         </div>

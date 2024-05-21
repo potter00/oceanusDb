@@ -23,4 +23,9 @@ function eliminarCaracter($cadena, $caracter) {
     return str_replace($caracter, "", $cadena);
 }
 
+//funcion para darle formato a un numero largo
+function formatoNumero($numero) {
+    return number_format($numero, 0, ',', '.');
+}
+
 

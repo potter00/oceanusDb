@@ -213,7 +213,11 @@ $(document).ready(function () {
     tablaContratos.column(8).visible(false);
     tablaContratos.column(9).visible(false);
     tablaContratos.column(10).visible(false);
+    
     //tablaContratos.column(11).visible(false);
+
+
+    tablaContratos.order([12, 'desc']).draw();
     //fin de la tabla tablaContratos
 
 

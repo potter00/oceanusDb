@@ -128,12 +128,13 @@ if ($_SESSION["s_usuario"] === null) {
 
         </li>
         <li>
+          <!--
         <li class="nav-item">
           <a class="nav-link" href="indexdb.php?table=pendientes">
             <i class="fas fa-bell fa-fw"></i>
             <span>Pendientes</span></a>
         </li>
-
+        -->
 
 
       </div>

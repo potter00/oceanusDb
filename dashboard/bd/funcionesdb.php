@@ -505,3 +505,20 @@ function ObtenerFila($tabla, $id, $conn)
     }
 }
 
+//funcion para ver si una fecha  apasado o no
+function VerificarFecha($fecha)
+{
+    
+    $fechaActual = date('Y-m-d');
+    $fechaVencimiento = $fecha;
+    $fechaActual = strtotime($fechaActual, 0);
+    $fechaVencimiento = strtotime($fechaVencimiento, 0);
+    
+    
+    if ($fechaActual > $fechaVencimiento) {
+        return true;
+    } else {
+        return false;
+    }
+}
+

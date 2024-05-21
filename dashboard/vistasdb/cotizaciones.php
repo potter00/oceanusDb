@@ -62,7 +62,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                         <td><?php echo '<a  href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?></td>
 
                         <td><?php echo $contrato['nombreContrato'] ?></td>
-                        <td><?php
+                        <td class="text-lowercase"><?php
                         echo '<a  href="' . $redirreccionContratante . '">' . obtenerNombreEmpresa($contrato['idContratante'], $conexion) . '</a> ';
 
                         ?></td>

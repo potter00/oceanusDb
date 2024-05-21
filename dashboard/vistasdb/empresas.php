@@ -64,7 +64,7 @@ if (!isset($_SESSION)) {
                         ?>
                     <tr>
                         <td style="width:15px"><?php echo $empresa['idEmpresa'] ?></td>
-                        <td><?php echo '<a  href="' . $direccion . '">' . $razonSocial . '</a> '; ?></td>
+                        <td class="text-lowercase" ><?php echo '<a  href="' . $direccion . '">' . $razonSocial . '</a> '; ?></td>
                         <td><?php echo $empresa['representanteLegal'] ?></td>
                         <td><?php echo $empresa['rfc'] ?></td>
                         <td><?php echo $empresa['tipoRegimen'] ?></td>
