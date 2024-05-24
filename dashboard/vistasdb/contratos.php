@@ -184,7 +184,9 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
         <div class="card">
             <div class="card-header">
                 <div style="float: left; width: 60%;">
-                    <h5 class="card-title"><a href="<?php echo "detalles_contrato.php?idContrato=" . $contratoSeleccionado['idContrato']  ?>"><?php  echo $contratoSeleccionado['nombreContrato']  ?></a></h5>
+                    <h5 class="card-title"><a
+                            href="<?php echo "detalles_contrato.php?idContrato=" . $contratoSeleccionado['idContrato'] ?>"><?php echo $contratoSeleccionado['nombreContrato'] ?></a>
+                    </h5>
                     <h6 class="card-subtitle">Contrato #<?php echo $contratoSeleccionado['numeroContrato'] ?></h6>
                 </div>
                 <div style="float: right;">
@@ -248,23 +250,32 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
             </div>
             <div class="card-body" style="line-height: 1.2;">
                 <?php
-
                 if (isset($_GET['seccion'])) {
-                    error_log($_GET['seccion']);
-                    if ($_GET['seccion'] == 'detalles') {
-                        require_once 'Contratos\detalles.php';
-                    } elseif ($_GET['seccion'] == 'personal') {
-                        require_once 'Contratos\personal.php';
-                    } elseif ($_GET['seccion'] == 'subcontratos') {
-                        require_once 'Contratos\subcontratos.php';
-                    }
+                    // Sanitize the input to prevent potential security issues
+                    $seccion = filter_var($_GET['seccion'], FILTER_SANITIZE_STRING);
+                    error_log($seccion);
 
+                    // Use forward slashes for paths
+                    if ($seccion == 'detalles') {
+                        require_once 'Contratos/detalles.php';
+                    } elseif ($seccion == 'personal') {
+                        require_once 'Contratos/personal.php';
+                    } elseif ($seccion == 'subcontratos') {
+                        require_once 'Contratos/subcontratos.php';
+                    } else {
+                        // Handle unexpected 'seccion' values
+                        require_once 'Contratos/detalles.php';
+                    }
                 } else {
-                    require_once 'Contratos\detalles.php';
+                    require_once 'Contratos/detalles.php';
                 }
 
-                $conexion = null;
+                // Close database connection if it's defined
+                if ($conexion !== null) {
+                    $conexion = null;
+                }
                 ?>
+
 
 
             </div>

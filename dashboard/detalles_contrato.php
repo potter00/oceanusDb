@@ -220,6 +220,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
         </div>
     </div>
     <!--End Modal para CRUD-->
+    
 </body>
 
 <?php require_once "vistas/parte_inferior.php" ?>
