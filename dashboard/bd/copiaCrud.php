@@ -15,7 +15,7 @@ $datos = json_decode(file_get_contents("php://input"), true);
 switch ($datos['opcion']) {
     case 1: //alta
         //recopilamos los datos necesarios para la operacion
-        
+
         //Datos personales
         $nombre = $datos['nombre'];
         $fechaNacimiento = $datos['fechaNacimiento'];
@@ -57,7 +57,7 @@ switch ($datos['opcion']) {
         //verificamos que los datos sean validos --inicio
 
 
-        
+
         //Verificamos que la fecha de nacimiento sea valida
         if (!verificarFormatoFecha($fechaNacimiento, 'Y-m-d')) {
             $message = 'La fecha de nacimiento no es valida';
@@ -142,15 +142,7 @@ switch ($datos['opcion']) {
             }
         }
 
-        //verificamos cedula
-        if (strlen($cedula) < 7 || strlen($cedula) > 8) {
-            $message = 'La cedula no es valida';
-            if (isset($errores)) {
-                $errores[] = $message;
-            } else {
-                $errores = array($message);
-            }
-        }
+
 
         //verificamos carrera
         if (strlen($carrera) === "NA" || strlen($carrera) < 5 || strlen($carrera) > 50) {
@@ -200,7 +192,7 @@ switch ($datos['opcion']) {
                 $resultado->bindParam(':correo', $correo);
                 $resultado->bindParam(':INE', $INE);
                 $resultado->bindParam(':estadoCivil', $estadoCivil);
-                
+
 
                 $resultado->execute();
 
@@ -468,7 +460,7 @@ switch ($datos['opcion']) {
         );
         break;
     case 4: //actualizar
-        
+
         //recopilamos los datos necesarios para la operacion
 
         //Datos personales
@@ -514,7 +506,7 @@ switch ($datos['opcion']) {
 
 
         //Verificamos que el nombre sea valido
-        if (!preg_match("/^[a-zA-Z-' ]*$/", $nombre) || strlen($nombre) < 3 || strlen($nombre) > 50) {
+        if (strlen($nombre) < 3 || strlen($nombre) > 50) {
             $message = 'El nombre no es valido';
             if (isset($errores)) {
                 $errores[] = $message;
@@ -606,15 +598,7 @@ switch ($datos['opcion']) {
             }
         }
 
-        //verificamos cedula
-        if (strlen($cedula) < 7 || strlen($cedula) > 8) {
-            $message = 'La cedula no es valida';
-            if (isset($errores)) {
-                $errores[] = $message;
-            } else {
-                $errores = array($message);
-            }
-        }
+
 
         //verificamos carrera
         if (strlen($carrera) === "NA" || strlen($carrera) < 5 || strlen($carrera) > 50) {
@@ -667,7 +651,7 @@ switch ($datos['opcion']) {
 
 
 
-                
+
 
                 $resultado->execute();
 
@@ -798,7 +782,7 @@ switch ($datos['opcion']) {
             }
         }
         break;
-        case 8: //solicitar todos los datos de tabla personas
+    case 8: //solicitar todos los datos de tabla personas
         # code...
         try {
             $consulta = "SELECT * FROM personas";
@@ -814,6 +798,29 @@ switch ($datos['opcion']) {
                 $errores = array($message);
             }
         }
+        break;
+    case 9: //eliminar la imagen de la ruta
+
+        $id = $datos['id'];
+
+        $consulta = "UPDATE documentacion SET Foto = 'sin cambio' WHERE IdEmpleado = :id";
+        $resultado = $conexion->prepare($consulta);
+        try {
+            //Ejecucion de la actualizacion con sus medidas de seguridad
+            $resultado->bindParam(':id', $id);
+            $resultado->execute();
+            $message = 'Datos procesados con exito';
+        } catch (PDOException $e) {
+            $message = 'Error al procesar los datos: ' . $e->getMessage();
+            if (isset($errores)) {
+                $errores[] = $message;
+            } else {
+                $errores = array($message);
+            }
+        }
+        
+
+
         break;
     default:
         $message = 'Opcion no valida';

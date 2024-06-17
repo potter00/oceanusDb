@@ -517,7 +517,7 @@ $(document).ready(function () {
             var datos = XLSX.utils.sheet_to_json(hoja);
 
             document.getElementById('loader').style.display = 'block';
-            procesarDato(0,datos);
+            procesarDato(0, datos);
 
             actualizarTablaPersonas();
         };
@@ -529,7 +529,59 @@ $(document).ready(function () {
 
 
     });
+    $(document).on("click", "#btnBorrarImagen", function () {
+        //obtenemso el id de la persona
+        console.log("borrando imagen");
+        //mandamos una mensaje de confirmacion
+        var respuesta = confirm("¿Está seguro de eliminar la imagen de la persona?");
+        if (respuesta) {
+            //obtenemos el id de la persona
+            var id = getQueryParam('id');
 
+
+
+
+            console.log(id);
+            
+
+            //hacemos la peticion para borrar la imagen
+            var dataObject = {};
+            dataObject['id'] = id;
+            dataObject['opcion'] = 9; //borrar imagen
+            dataJSON = JSON.stringify(dataObject);
+            fetch('../dashboard/bd/copiaCrud.php', {
+                method: 'POST',
+                body: dataJSON,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.errores && data.errores.length > 0) {
+                        // Mostrar los errores en el contenedor
+                        console.log('Errores:', data.errores);
+
+                    } else {
+                        // La operación fue exitosa, puedes realizar otras acciones aquí
+                        console.log(data);
+                        window.location.href = "./detalles_usuario.php?id=" + id;
+
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            console.log("no se elimino la imagen");
+        }
+    });
 
 
     document.getElementById('fileInputExcel').addEventListener('change', function (e) {
@@ -548,6 +600,10 @@ $(document).ready(function () {
 
         lector.readAsBinaryString(archivo);
     });
+
+
+
+
 
     //funcion para subir archivo al servidor
     function subirArchivo(id, tipoDocumento, nombre, idFileInput) {
@@ -1174,7 +1230,7 @@ $(document).ready(function () {
         dataJSON = JSON.stringify(dataObject);
         return fetch('../dashboard/bd/copiaCrud.php', {
             method: 'POST',
-            body: dataJSON, 
+            body: dataJSON,
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -1477,14 +1533,18 @@ $(document).ready(function () {
         if (i < datos.length) {
             // Programamos una llamada a la función 'procesarDato' con el siguiente índice después de 1000ms (1 segundo)
             setTimeout(function () {
-                procesarDato(i,datos);
+                procesarDato(i, datos);
             }, 10000);
-        }else{
+        } else {
             console.log("terminado");
             document.getElementById('loader').style.display = 'none';
         }
     }
 
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
 
 
 

@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="cedula" class="col-form-label">Cedula profecional: <span class="required">*</span></label>
+    <label for="cedula" class="col-form-label">Cedula profesional: </label>
     <input type="text" class="form-control" id="cedula" name="cedula">
 </div>
 <div class="form-group">
