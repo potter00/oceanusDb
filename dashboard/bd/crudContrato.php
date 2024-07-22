@@ -104,7 +104,7 @@ switch ($datos['opcion']) {
         try {
             //code...
 
-            $query = "UPDATE contrato SET titulo = :titulo, nombreContrato = :nombreContrato, idContratante = :idContratante, idContratado = :idContratado, subContrato = :subContrato, idContratoFuente = :idContratoFuente, numeroContrato = :numeroContrato, inicioContrato = :inicioContrato, finContrato = :finContrato, idConvenio = :idConvenio, montoContrato = :montoContrato, anticipoContrato = :anticipoContrato, direccion = :direccion WHERE idContrato = :idContrato";
+            $query = "UPDATE contrato SET titulo = :titulo, nombreContrato = :nombreContrato, idContratante = :idContratante, idContratado = :idContratado, subContrato = :subContrato, idContratoFuente = :idContratoFuente, numeroContrato = :numeroContrato, inicioContrato = :inicioContrato, finContrato = :finContrato, idConvenio = :idConvenio, montoContrato = :montoContrato, anticipoContrato = :anticipoContrato, direccion = :direccion, numeroControl = :numeroControl WHERE idContrato = :idContrato";
             $resultado = $conexion->prepare($query);
             $resultado->bindParam(':titulo', $datos['titulo'], PDO::PARAM_STR);
             $resultado->bindParam(':nombreContrato', $datos['nombreContrato'], PDO::PARAM_STR);
@@ -120,6 +120,7 @@ switch ($datos['opcion']) {
             $resultado->bindParam(':anticipoContrato', $datos['anticipo'], PDO::PARAM_STR);
             $resultado->bindParam(':idContrato', $datos['idContrato'], PDO::PARAM_INT);
             $resultado->bindParam(':direccion', $datos['direccion'], PDO::PARAM_STR);
+            $resultado->bindParam(':numeroControl', $datos['numeroControl'], PDO::PARAM_STR);
             $resultado->execute();
         } catch (\Throwable $th) {
             $message = 'Error al actualizar contrato:' . $th->getMessage();

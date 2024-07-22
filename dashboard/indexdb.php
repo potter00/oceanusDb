@@ -1,7 +1,7 @@
 <?php require_once "vistasdb/parte_superior.php" ?>
 <!--INICIO del cont principal-->
 
-<div style="line-height: 1.2;">
+<div style="line-height: 1.2; width: 100%;" class="container-fluid">
     <?php
     if (isset($_GET['table'])) {
 

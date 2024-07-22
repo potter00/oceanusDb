@@ -20,7 +20,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
 
 ?>
 
-<div class="container">
+<div style="margin-left: 5%; margin-right: 5%;">
 
 
 

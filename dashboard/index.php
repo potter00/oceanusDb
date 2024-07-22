@@ -18,9 +18,9 @@
     ?>
 
 
-    <div class="container">
+    <div style="margin-left: 5%; margin-right: 5%;">
         <div class="row">
-            <div class="">
+            <div style="margin-left: 5%; margin-right: 5%;">
 
                 <button id="btnActualizar" type="button" class="btn btn-primary" data-toggle="modal">Actualizar
                     Tabla</button>

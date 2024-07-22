@@ -1,5 +1,20 @@
 $(document).ready(function () {
 
+
+
+    //buscamos en la url la variable "paginaActual" si no existe la creamos con el valor 1 y la añadimos a la url
+    if (getQueryParam('paginaActual') == null) {
+        var paginaActual = 1;
+        var url = window.location.href;
+        var nuevaUrl = url + '&paginaActual=' + paginaActual;
+        window.location.href = nuevaUrl;
+
+
+    }
+    else {
+        var paginaActual = getQueryParam('paginaActual');
+    }
+
     //inicializar la tabla
     var tablaEmpresas = $("#tablaEmpresas").DataTable({
         "responsive": true, "lengthChange": false, "autoWidth": true,
@@ -141,6 +156,8 @@ $(document).ready(function () {
     tablaSubContratados.column(4).visible(false);
     tablaSubContratados.column(3).visible(false);
 
+
+
     //fin de la tabla subcontratados
 
     //inicializar la tabla de tablaContratos
@@ -205,19 +222,22 @@ $(document).ready(function () {
 
     });
     tablaContratos.buttons().container().appendTo('#tablaContratos_wrapper .col-md-6:eq(0)');
-    tablaContratos.column(0).visible(false);
+    tablaContratos.column(5).visible(false);
     tablaContratos.column(2).visible(false);
     tablaContratos.column(4).visible(false);
     tablaContratos.column(6).visible(false);
-    tablaContratos.column(7).visible(false);
+    tablaContratos.column(11).visible(false);
     tablaContratos.column(8).visible(false);
     tablaContratos.column(9).visible(false);
     tablaContratos.column(10).visible(false);
-    
+
     //tablaContratos.column(11).visible(false);
 
 
-    tablaContratos.order([12, 'desc']).draw();
+    tablaContratos.order([7, 'desc']).draw();
+    tablaContratos.page(getQueryParam('paginaActual') - 1).draw('page');
+
+
     //fin de la tabla tablaContratos
 
 
@@ -284,6 +304,110 @@ $(document).ready(function () {
 
     //fin de la tabla de facturas
 
+    //creamos un evento para cuando se cambie de pagina en la tabla de contratos
+    tablaContratos.on('draw.dt', function () {
+        setTimeout(function () {
+            var info = tablaContratos.page.info();
+            var paginaActual = info.page + 1;
+            var url = window.location.href;
+            var nuevaUrl = url.split('&paginaActual')[0];
+            nuevaUrl = nuevaUrl + '&paginaActual=' + paginaActual;
+            window.history.pushState(null, null, nuevaUrl);
+
+            // Cambiamos el último parámetro de las URL de los <a> de la tabla de contratos
+            var links = document.querySelectorAll('.linkContrato');
+            links.forEach(function (link) {
+                var href = link.getAttribute('href');
+                if (href) {
+                    var nuevaHref = href.split('&paginaActual')[0];
+                    nuevaHref = nuevaHref + '&paginaActual=' + paginaActual;
+                    link.setAttribute('href', nuevaHref);
+                }
+            });
+        }, 100); // 100 milisegundos de retraso
+    });
+
+    //creamos un evento para cuando se cambie de pagina en la tabla de empresas
+    tablaEmpresas.on('draw.dt', function () {
+        setTimeout(function () {
+            var info = tablaEmpresas.page.info();
+            var paginaActual = info.page + 1;
+            var url = window.location.href;
+            var nuevaUrl = url.split('&paginaActual')[0];
+            nuevaUrl = nuevaUrl + '&paginaActual=' + paginaActual;
+            window.history.pushState(null, null, nuevaUrl);
+
+            // Cambiamos el último parámetro de las URL de los <a> de la tabla de empresas
+            var links = document.querySelectorAll('.linkEmpresa');
+            links.forEach(function (link) {
+                var href = link.getAttribute('href');
+                if (href) {
+                    var nuevaHref = href.split('&paginaActual')[0];
+                    nuevaHref = nuevaHref + '&paginaActual=' + paginaActual;
+                    link.setAttribute('href', nuevaHref);
+                }
+            });
+        }, 100); // 100 milisegundos de retraso
+    }
+
+    );
+
+    //creamos un evento para cuando se cambie de pagina en la tabla de subcontratados
+    tablaSubContratados.on('draw.dt', function () {
+        setTimeout(function () {
+            var info = tablaSubContratados.page.info();
+            var paginaActual = info.page + 1;
+            var url = window.location.href;
+            var nuevaUrl = url.split('&paginaActual')[0];
+            nuevaUrl = nuevaUrl + '&paginaActual=' + paginaActual;
+            window.history.pushState(null, null, nuevaUrl);
+
+            // Cambiamos el último parámetro de las URL de los <a> de la tabla de subcontratados
+            var links = document.querySelectorAll('.linkSubContratado');
+            links.forEach(function (link) {
+                var href = link.getAttribute('href');
+                if (href) {
+                    var nuevaHref = href.split('&paginaActual')[0];
+                    nuevaHref = nuevaHref + '&paginaActual=' + paginaActual;
+                    link.setAttribute('href', nuevaHref);
+                }
+            });
+        }, 100); // 100 milisegundos de retraso
+    }
+
+    );
+
+    //creamos un evento para cuando se cambie de pagina en la tabla de facturas
+    tablaFacturas.on('draw.dt', function () {
+        setTimeout(function () {
+            var info = tablaFacturas.page.info();
+            var paginaActual = info.page + 1;
+            var url = window.location.href;
+            var nuevaUrl = url.split('&paginaActual')[0];
+            nuevaUrl = nuevaUrl + '&paginaActual=' + paginaActual;
+            window.history.pushState(null, null, nuevaUrl);
+
+            // Cambiamos el último parámetro de las URL de los <a> de la tabla de facturas
+            var links = document.querySelectorAll('.linkFactura');
+            links.forEach(function (link) {
+                var href = link.getAttribute('href');
+                if (href) {
+                    var nuevaHref = href.split('&paginaActual')[0];
+                    nuevaHref = nuevaHref + '&paginaActual=' + paginaActual;
+                    link.setAttribute('href', nuevaHref);
+                }
+            });
+        }, 100); // 100 milisegundos de retraso
+    }
+
+    );
+
+
+
+
+
+
+
     var idsSeleccionados = [];
 
     // Obtener todos los checkboxes
@@ -292,8 +416,8 @@ $(document).ready(function () {
     // Agregar un event listener a cada checkbox
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', function () {
-            // Obtener el ID de la fila correspondiente al checkbox
-            var id = this.parentNode.parentNode.querySelector('td:first-child').textContent;
+            // Obtener el ID de la fila por medio de su atributo data-idContrato
+            var id = this.getAttribute('data-idContrato');
 
             //si el checkbox esta seleccionando guardar el id en una variable
             if (this.checked) {
@@ -309,11 +433,12 @@ $(document).ready(function () {
 
 
             // Imprimir los IDs seleccionados en la consola (puedes enviarlos al servidor aquí)
-
+            console.log(idsSeleccionados);
 
             if (idsSeleccionados.length > 0) {
-                //guardamos el id seleccionado en una variable de _SESSION
-                enviarCheckboxAlServidor(idsSeleccionados['0']);
+                //guardamos los id seleccionados al servidor
+                enviarCheckboxAlServidor(idsSeleccionados);
+                
 
 
             } else {
@@ -323,6 +448,7 @@ $(document).ready(function () {
         });
 
     });
+
 
 
     //inicializamos selects
@@ -502,6 +628,7 @@ $(document).ready(function () {
         var monto = $("#contratoMonto").val();
         var anticipo = $("#contratoAnticipo").val();
         var numero = $("#contratoNumero").val();
+        var numeroControl = $("#contratoControl").val();
         var convenio = $("#contratoConvenio").is(":checked");
         var fianzaCumplimientoInicio = $("#contratoFianzaCumplimientoInicio").val();
         var fianzaCumplimientoFin = $("#contratoFianzaCumplimientoFin").val();
@@ -564,6 +691,7 @@ $(document).ready(function () {
             monto: monto,
             anticipo: anticipo,
             numero: numero,
+            numeroControl: numeroControl,
             convenios: convenios,
 
             fianzaCumplimiento: {
@@ -1034,7 +1162,7 @@ $(document).ready(function () {
         //prevenimos el comportamiento por defecto del boton
         event.preventDefault();
         var idContrato = getQueryParam('idContrato');
-        
+
         //generamos el fetch para generar el archivo zip y recibir la ruta por upload.php
         FormData = new FormData();
         FormData.append('opcion', '6');
@@ -1056,7 +1184,7 @@ $(document).ready(function () {
                     rutaCompleta = '../' + data.ruta;
                     window.location.href = rutaCompleta;
 
-                    
+
                 }
             })
             .catch(error => {

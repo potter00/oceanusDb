@@ -4,6 +4,27 @@ session_start();
 if ($_SESSION["s_usuario"] === null) {
   header("Location: ../index.php");
 }
+
+//incluimos el archivo de funciones y conexion a la base de datos en caso de que no se haya incluido
+if (!isset($conexion)) {
+  include_once '../../loginBase/bd/conexion.php';
+
+}
+
+include_once '../../loginBase/dashboard/bd/funcionesdb.php';
+
+//si no existe la variable de sesion la creamos
+if (!isset($_SESSION['checkBoxContrato'])) {
+  $_SESSION['checkBoxContrato'] = 0;
+}
+
+
+
+
+
+
+
+
 if (isset($_GET['table'])) {
 
   $table = $_GET['table'];
@@ -249,7 +270,7 @@ if (isset($_GET['table'])) {
 
         </li>
         <li>
-        <!--
+          <!--
         <li class="nav-item">
           <a class="nav-link" href="indexdb.php?table=pendientes">
             <i class="fas fa-bell fa-fw"></i>
@@ -384,4 +405,62 @@ if (isset($_GET['table'])) {
           </ul>
 
         </nav>
+
+
         <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+
+        <div style="margin-left: 5%; margin-right: 5%;">
+
+
+          <?php
+          //en caso de existir buscamos los contratos seleccionados y llamamos a la funcion CrearCardContrato
+          if ($_SESSION['checkBoxContrato'] != 0) {
+            ?>
+
+            <div class="alert alert-primary" role="alert">
+              <h4 class="alert-heading">Contratos Seleccionados</h4>
+              <p>Se han seleccionado los siguientes contratos:</p>
+              <hr>
+              <p class="mb-0">
+                <?php
+                $contratosSeleccionados = DividirString($_SESSION['checkBoxContrato'], ",");
+                foreach ($contratosSeleccionados as $contrato) {
+                  echo $contrato . " ";
+                }
+                ?>
+              </p>
+            </div>
+
+            <div class="row">
+              <?php
+
+
+              //si la conexion no esta creada la creamos
+              if (!isset($conexion)) {
+                $db = new Conexion();
+                $conexion = $db->Conectar();
+              }
+              error_log("Contratos Seleccionados");
+              error_log($_SESSION['checkBoxContrato']);
+              $contratosSeleccionados = DividirString($_SESSION['checkBoxContrato'], ",");
+              foreach ($contratosSeleccionados as $contrato) {
+
+                error_log("Contrato Seleccionado: " . $contrato);
+                echo CrearCardContrato($contrato, $conexion);
+                
+              }
+              
+              //cerramos la conexion y eliminamos la variable de conexion
+              $conexion = null;
+          }
+
+          ?>
+      
+          </div>
+        </div>
+        <br>
+        <hr>
+        
+      

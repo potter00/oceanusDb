@@ -629,6 +629,7 @@ switch ($datos['opcion']) {
             $resultado = $conexion->prepare($consulta);
 
             try {
+                
                 //Ejecucion de la actualizacion con sus medidas de seguridad
                 $resultado->bindParam(':nombre', $nombre);
                 $resultado->bindParam(':fechaNacimiento', $fechaNacimiento);
@@ -818,7 +819,7 @@ switch ($datos['opcion']) {
                 $errores = array($message);
             }
         }
-        
+
 
 
         break;

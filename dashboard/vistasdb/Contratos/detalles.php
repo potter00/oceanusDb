@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_GET['edit'])) {
-        
+
         ?>
 
         <h5><strong>Informacion General </strong><a class="fas fa-download"
@@ -32,8 +32,9 @@ if (!isset($_GET['edit'])) {
         <p><Strong>Fecha de inicio: </Strong> <?php echo $contratoSeleccionado['inicioContrato'] ?></p>
         <p><Strong>Fecha de fin: </Strong> <?php echo $contratoSeleccionado['finContrato'] ?></p>
 
-        <p><strong>Monto de Contrato: </strong><?php echo  '$'. number_format($contratoSeleccionado['montoContrato'],2,'.',',') ?></p>
-        <p><strong>Anticipo: </strong><?php echo '$'. number_format($contratoSeleccionado['anticipoContrato'],2,'.',',') ?></p>
+        <p><strong>Monto de Contrato:
+                </strong><?php echo '$' . number_format($contratoSeleccionado['montoContrato'], 2, '.', ',') ?></p>
+        <p><strong>Anticipo: </strong><?php echo '$' . number_format($contratoSeleccionado['anticipoContrato'], 2, '.', ',') ?></p>
         <hr>
         <?php
 
@@ -49,7 +50,7 @@ if (!isset($_GET['edit'])) {
                         echo '<h5><strong>Convenio </strong><a class="fas fa-download" href="../' . $convenio['documento'] . '"></a></h5>';
                         echo '<p class="conveniosFechaInicio" data-id="' . $convenio['idConvenio'] . '" ><strong>Fecha Inicio Convenio: </strong>' . $convenio['fechaInicio'] . '</p>';
                         echo '<p class="conveniosFechaFin"><strong>Fecha Fin Convenio: </strong>' . $convenio['fechaFinal'] . '</p>';
-                        echo '<p class="conveniosMontoAdicional"><strong>Monto Adicional: </strong>' . number_format($convenio['montoAdicional'],2,'.',',') . '</p>';
+                        echo '<p class="conveniosMontoAdicional"><strong>Monto Adicional: </strong>' . number_format($convenio['montoAdicional'], 2, '.', ',') . '</p>';
                         echo '<hr>';
                 }
 
@@ -62,7 +63,9 @@ if (!isset($_GET['edit'])) {
         </h5>
         <p><strong>Fecha de Inicio: </strong><?php echo $datosFianzas['fianzaCumplimiento']['fianzaCumplimientoInicio'] ?></p>
         <p><strong>Fecha de Fin: </strong><?php echo $datosFianzas['fianzaCumplimiento']['fianzaCumplimientoFin'] ?></p>
-        <p><strong>Monto de Fianza: </strong><?php echo '$'. number_format($datosFianzas['fianzaCumplimiento']['fianzaCumplimientoMonto'],2,'.',',') ?></p>
+        <p><strong>Monto de Fianza:
+                </strong><?php echo '$' . number_format($datosFianzas['fianzaCumplimiento']['fianzaCumplimientoMonto'], 2, '.', ',') ?>
+        </p>
         <p><strong>Numero de poliza: </strong><?php echo $datosFianzas['fianzaCumplimiento']['fianzaCumplimientoPoliza'] ?></p>
         <p><strong>Aseguradora: </strong><?php echo $datosFianzas['fianzaCumplimiento']['fianzaCumplimientoAseguradora'] ?></p>
         <hr>
@@ -72,7 +75,8 @@ if (!isset($_GET['edit'])) {
         </h5>
         <p><strong>Fecha de Inicio: </strong><?php echo $datosFianzas['fianzaAnticipo']['fianzaAnticipoInicio'] ?></p>
         <p><strong>Fecha de Fin: </strong><?php echo $datosFianzas['fianzaAnticipo']['fianzaAnticipoFin'] ?></p>
-        <p><strong>Monto de Fianza: </strong><?php echo '$'. number_format($datosFianzas['fianzaAnticipo']['fianzaAnticipoMonto'],2,'.',',') ?></p>
+        <p><strong>Monto de Fianza:
+                </strong><?php echo '$' . number_format($datosFianzas['fianzaAnticipo']['fianzaAnticipoMonto'], 2, '.', ',') ?></p>
         <p><strong>Numero de poliza: </strong><?php echo $datosFianzas['fianzaAnticipo']['fianzaAnticipoPoliza'] ?></p>
         <p><strong>Aseguradora: </strong><?php echo $datosFianzas['fianzaAnticipo']['fianzaAnticipoAseguradora'] ?></p>
         <hr>
@@ -81,7 +85,9 @@ if (!isset($_GET['edit'])) {
         </h5>
         <p><strong>Fecha de Inicio: </strong><?php echo $datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosInicio'] ?></p>
         <p><strong>Fecha de Fin: </strong><?php echo $datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosFin'] ?></p>
-        <p><strong>Monto de Fianza: </strong><?php echo '$'. number_format($datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosMonto'],2,'.',',') ?></p>
+        <p><strong>Monto de Fianza:
+                </strong><?php echo '$' . number_format($datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosMonto'], 2, '.', ',') ?>
+        </p>
         <p><strong>Numero de poliza: </strong><?php echo $datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosPoliza'] ?>
         </p>
         <p><strong>Aseguradora: </strong><?php echo $datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosAseguradora'] ?>
@@ -106,6 +112,7 @@ if (!isset($_GET['edit'])) {
                         value="<?php echo $contratoSeleccionado['direccion'] ?>" type="text"></p>
         <p><Strong>Numero Contrato: </Strong> <input id="contratoNumero"
                         value="<?php echo $contratoSeleccionado['numeroContrato'] ?>" type="text"></p>
+        <p><Strong>Numero de control: </Strong> <input type="text" id="contratoControl" value="<?php echo $contratoSeleccionado['numeroControl'] ?>"></p>
         <p><Strong>contratante: </Strong>
                 <select name="contratante" id="contratoContratante" style="max-width: 300px;">
                         <?php

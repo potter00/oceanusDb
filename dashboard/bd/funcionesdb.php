@@ -391,30 +391,54 @@ function CrearEmpresa($razonSocial, $conn)
 }
 
 //funcion para comprobar si un contrato ya existe en la base de datos por su nombre retorna true si existe y false si no existe
-function ComprobarContrato($nombreContrato, $conn)
+function ComprobarContrato($nombreContrato, $conn, $numeroControl)
 {
     try {
         $stmt = $conn->prepare('SELECT idContrato FROM contrato WHERE nombreContrato = :nombreContrato');
         $stmt->bindParam(':nombreContrato', $nombreContrato);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        /*if ($result) {
+            return true;
+        } else {
+            return false;
+        }*/
+    } catch (PDOException $e) {
+        return 'Error al conectar con la base de datos: ' . $e->getMessage();
+    }
+
+    //si el numero de control es igual a 0 se asigna el nuevo numero de control
+    try {
+        $stmt = $conn->prepare('SELECT numeroControl FROM contrato WHERE nombreContrato = :nombreContrato');
+        $stmt->bindParam(':nombreContrato', $nombreContrato);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            if ($result['numeroControl'] == 0) {
+                $stmt = $conn->prepare('UPDATE contrato SET numeroControl = :numeroControl WHERE nombreContrato = :nombreContrato');
+                $stmt->bindParam(':nombreContrato', $nombreContrato);
+                $stmt->bindParam(':numeroControl', $numeroControl);
+                $stmt->execute();
+            }
+        }
         if ($result) {
             return true;
         } else {
             return false;
         }
+
     } catch (PDOException $e) {
         return 'Error al conectar con la base de datos: ' . $e->getMessage();
     }
 }
 
 //funcion para la creacion de un contrato
-function CrearContrato( $tituloContrato, $nombreContrato, $numeroContrato, $idContratante, $direccion, $monto, $fechaInicio, $fechaFin, $conexion)
+function CrearContrato($tituloContrato, $nombreContrato, $numeroContrato, $idContratante, $direccion, $monto, $fechaInicio, $fechaFin, $conexion, $numeroControl)
 {
     //insertamos los datos de la tabla contrato y obtenemos el id del contrato
     try {
         //code...
-        $query = "INSERT INTO contrato (nombreContrato, numeroContrato, idContratante, direccion, montoContrato, inicioContrato, finContrato, titulo) VALUES (:nombreContrato, :numeroContrato, :idContratante, :direccion, :monto, :fechaInicio, :fechaFin, :tituloContrato)";
+        $query = "INSERT INTO contrato (nombreContrato, numeroContrato, idContratante, direccion, montoContrato, inicioContrato, finContrato, titulo, numeroControl) VALUES (:nombreContrato, :numeroContrato, :idContratante, :direccion, :monto, :fechaInicio, :fechaFin, :tituloContrato, :numeroControl)";
         $resultado = $conexion->prepare($query);
         $resultado->bindParam(':nombreContrato', $nombreContrato, PDO::PARAM_STR);
         $resultado->bindParam(':numeroContrato', $numeroContrato, PDO::PARAM_STR);
@@ -424,6 +448,7 @@ function CrearContrato( $tituloContrato, $nombreContrato, $numeroContrato, $idCo
         $resultado->bindParam(':fechaInicio', $fechaInicio, PDO::PARAM_STR);
         $resultado->bindParam(':fechaFin', $fechaFin, PDO::PARAM_STR);
         $resultado->bindParam(':tituloContrato', $tituloContrato, PDO::PARAM_STR);
+        $resultado->bindParam(':numeroControl', $numeroControl, PDO::PARAM_INT);
         $resultado->execute();
         $idContrato = $conexion->lastInsertId();
 
@@ -461,7 +486,7 @@ function CrearContrato( $tituloContrato, $nombreContrato, $numeroContrato, $idCo
         $resultado->bindParam(':idFianza', $idFianza, PDO::PARAM_INT);
         $resultado->execute();
 
-        
+
 
 
     } catch (\Throwable $th) {
@@ -508,17 +533,69 @@ function ObtenerFila($tabla, $id, $conn)
 //funcion para ver si una fecha  apasado o no
 function VerificarFecha($fecha)
 {
-    
+
     $fechaActual = date('Y-m-d');
     $fechaVencimiento = $fecha;
     $fechaActual = strtotime($fechaActual, 0);
     $fechaVencimiento = strtotime($fechaVencimiento, 0);
-    
-    
+
+
     if ($fechaActual > $fechaVencimiento) {
         return true;
     } else {
         return false;
     }
 }
+
+//funcion para crear una card con los datos de un contrato
+function CrearCardContrato($idContrato, $conn)
+{
+
+    $contrato = ObtenerContrato($idContrato, $conn);
+    $empresa = ObtenerEmpresa($contrato['idContratante'], $conn);
+
+    error_log('contrato: ' . print_r($contrato, true));
+    error_log('empresa: ' . print_r($empresa, true));
+
+    $html = '
+    <div class="col-md-4 mb-4">
+    <div class="card">
+    <div class="card-header">
+        <div>
+            <h5 class="card-title
+            ">' . $contrato['titulo'] . '</h5>
+            <h6 class="card-subtitle">' . $empresa['razonSocial'] . '</h6>
+        </div>
+       
+    </div>
+    <div class="card-body" style="line-height: 1.2;">
+        <p><strong>Numero de contrato: </strong>' . $contrato['numeroContrato'] . '</p>
+        <p><strong>Fecha de inicio: </strong>' . $contrato['inicioContrato'] . '</p>
+        <p><strong>Fecha de fin: </strong>' . $contrato['finContrato'] . '</p>
+    </div>
+</div>
+</div>';
+    return $html;
+}
+
+//funcion para dividir un string a un array con un delimitador
+function DividirString($string, $delimitador)
+{
+    $array = explode($delimitador, $string);
+    return $array;
+}
+
+//funcion para verificar si un estring es igual a cualquier elemento de un array
+function VerificarString($string, $array)
+{
+    for ($i = 0; $i < count($array); $i++) {
+        error_log('string: ' . $string);
+        error_log('array: ' . print_r($array, true));
+        if ($string == $array[$i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
 

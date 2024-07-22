@@ -1,4 +1,4 @@
-<div class="container">
+<div style="margin-left: 5%; margin-right: 5%;">
     <?php
     //obtenemos todas las facturas
     include_once '../../loginBase/bd/conexion.php';
@@ -26,12 +26,15 @@
         }
     }
 
+    
+
 
 
 
 
 
     ?>
+    
 
     <div style="float: left; width: 60%;">
         <h1 id="labelEmpresas" style="float: left; width: 60%">Facturas</h1>
@@ -56,7 +59,8 @@
                 <?php
                 foreach ($facturas as $factura) {
                     if ($_SESSION['checkBoxContrato'] != 0) {
-                        if ($factura['idContrato'] != $_SESSION['checkBoxContrato']) {
+                        $checkBoxContrato = explode(",", $_SESSION['checkBoxContrato']);
+                        if (!in_array($factura['idContrato'], $checkBoxContrato)) {
                             continue;
                         }
                     }
@@ -65,7 +69,7 @@
                     $direccionContrato = "indexdb.php?table=contratos&idContrato=" . $facturas[0]['idContrato'];
 
                     $empresaAsociada = ObtenerEmpresa($factura['idEmpresa'], $conexion);
-                    $direccionEmpresa = "indexdb.php?table=empresas&idEmpresa=" . $facturas[0]['idEmpresa'];
+                    $direccionEmpresa = "indexdb.php?tableS=empresas&idEmpresa=" . $facturas[0]['idEmpresa'];
                     ?>
                     <tr>
 
@@ -142,7 +146,9 @@
                 <?php
                 if (!isset($_GET['edit'])) {
                     ?>
-                    <h5><strong>Informacion de la Factura</strong><?php echo '<a class="fas fa-download" href="../' . $facturaSeleccionada['documento'] . '"></a>'; ?></h5>
+                    <h5><strong>Informacion de la
+                            Factura</strong><?php echo '<a class="fas fa-download" href="../' . $facturaSeleccionada['documento'] . '"></a>'; ?>
+                    </h5>
                     <p><strong><?php echo $facturaSeleccionada['titulo'] ?></strong></p>
                     <p><strong>Numero de factura: </strong><?php echo $facturaSeleccionada['numero'] ?></p>
                     <p><strong>Fecha de la Factura: </strong><?php echo $facturaSeleccionada['fecha'] ?></p>
@@ -179,12 +185,11 @@
                     <h5 style="max-width: 150px;  float: left; margin-top: 4px;"><strong>Factura</strong>
                     </h5>
                     <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="facturas"
-                        data-inputFile="inputFileFactura"
-                        data-datoExtra="<?php echo $facturaSeleccionada['idContrato'] ?>"
+                        data-inputFile="inputFileFactura" data-datoExtra="<?php echo $facturaSeleccionada['idContrato'] ?>"
                         data-nombreArchivo="<?php echo 'Factura_' . $facturaSeleccionada['numero'] ?>" data-idContrato="<?php
-                             
+
                              $ContratoAsociado = ObtenerContrato($facturaSeleccionada['idContrato'], $conexion);
-                             
+
                              if ($ContratoAsociado != 'Contrato no encontrado') {
                                  echo $ContratoAsociado['idContrato'];
                              } else {

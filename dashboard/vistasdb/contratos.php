@@ -20,7 +20,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
 
 ?>
 
-<div class="container">
+<div style="margin-left: 5%; margin-right: 5%;">
 
 
 
@@ -59,17 +59,26 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
             </thead>
             <tbody>
                 <?php foreach ($contratos as $contrato) {
-                    $direccion = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=subcontratos";
-                    $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=detalles";
-                    $redirreccionContratante = 'indexdb.php?table=empresas&idEmpresa=' . $contratoSeleccionado['idContrato'];
+
+                    if (isset($_GET['paginaActual'])) {
+
+                        $direccion = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=subcontratos&paginaActual=" . $_GET['paginaActual'];
+                        $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=detalles&paginaActual=" . $_GET['paginaActual'];
+                        $redirreccionContratante = 'indexdb.php?table=empresas&idEmpresa=' . $contratoSeleccionado['idContrato'] . '&paginaActual=' . $_GET['paginaActual'];
+                    } else {
+                        $direccion = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=subcontratos";
+                        $direccionDetalles = "indexdb.php?table=contratos&idContrato=" . $contrato['idContrato'] . "&seccion=detalles";
+                        $redirreccionContratante = 'indexdb.php?table=empresas&idEmpresa=' . $contratoSeleccionado['idContrato'];
+                    }
+
                     if ($contrato['subContrato'] == 'Cotizacion') {
                         continue;
                     }
                     ?>
                     <tr>
-                        <td><?php echo $contrato['idContrato'] ?></td>
+                        <td><?php echo $contrato['numeroControl'] ?></td>
                         <td class="text-lowercase">
-                            <?php echo '<a  href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?>
+                            <?php echo '<a class="linkContrato" href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?>
                         </td>
 
                         <td class="text-lowercase"><?php echo $contrato['nombreContrato'] ?></td>
@@ -142,21 +151,10 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                             session_start();
                         }
 
-                        if (isset($_SESSION['checkBoxContrato'])) {
-                            # code...
-                    
-                            if ($_SESSION['checkBoxContrato'] == $contrato['idContrato']) {
+                       
+                            echo '<td><input data-idContrato="' . $contrato['idContrato'] . '" type="checkbox" name="checkBoxContrato" class="checkBoxContrato"></td>';
 
-                                echo '<td><input type="checkbox" name="checkBoxContrato" class="checkBoxContrato" checked></td>';
-                            } else {
-                                echo '<td><input type="checkbox" name="checkBoxContrato" class="checkBoxContrato"></td>';
-
-
-                            }
-                        } else {
-                            echo '<td><input type="checkbox" name="checkBoxContrato" class="checkBoxContrato"></td>';
-
-                        }
+                        
 
                         ?>
                         <td><?php echo $contrato['direccion'] ?></td>
@@ -188,6 +186,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                             href="<?php echo "detalles_contrato.php?idContrato=" . $contratoSeleccionado['idContrato'] ?>"><?php echo $contratoSeleccionado['nombreContrato'] ?></a>
                     </h5>
                     <h6 class="card-subtitle">Contrato #<?php echo $contratoSeleccionado['numeroContrato'] ?></h6>
+                    <h6 class="card-subtitle">Numero de control #<?php echo $contratoSeleccionado['numeroControl'] ?></h6>
                 </div>
                 <div style="float: right;">
                     <?php
@@ -285,18 +284,18 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
 <script>
     // Obtener todos los checkboxes del grupo
     var checkboxes = document.querySelectorAll('.checkBoxContrato');
-
-    // Función para desactivar los demás checkboxes cuando uno es seleccionado
-    function seleccionUnica() {
-        // Iterar sobre cada checkbox
-        checkboxes.forEach(function (checkbox) {
-            // Si el checkbox actual no es el que se ha seleccionado, desactívalo
-            if (checkbox !== this) {
-                checkbox.disabled = this.checked;
-            }
-        }, this);
-    }
-
+    /*
+        // Función para desactivar los demás checkboxes cuando uno es seleccionado
+        function seleccionUnica() {
+            // Iterar sobre cada checkbox
+            checkboxes.forEach(function (checkbox) {
+                // Si el checkbox actual no es el que se ha seleccionado, desactívalo
+                if (checkbox !== this) {
+                    checkbox.disabled = this.checked;
+                }
+            }, this);
+        }
+    */
     // Agregar un listener de evento a cada checkbox
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', seleccionUnica);

@@ -320,7 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                 //si el contrato ya existe no lo crea
-                if (ComprobarContrato($nombreContrato, $conexion)) {
+                if (ComprobarContrato($nombreContrato, $conexion, $numero)) {
                     continue;
                 }
 
@@ -365,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 error_log('nombre Contrato' . $tituloContrato);
                 //creamos el contrato 
-                CrearContrato($tituloContrato, $nombreContrato, $numeroContrato, $idContratante, $direccion, $monto, $fechaInicio, $fechaFin, $conexion);
+                CrearContrato($tituloContrato, $nombreContrato, $numeroContrato, $idContratante, $direccion, $monto, $fechaInicio, $fechaFin, $conexion, $numero);
 
 
 

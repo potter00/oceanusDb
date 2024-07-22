@@ -270,6 +270,28 @@ if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
 $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
 $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
 
+//generamos un archivo vfc con los datos del usuario para el codigo qr
+$archivo = fopen("qr.txt", "w") or die("No se puede abrir el archivo");
+$txt = "Nombre: " . $dataPersonas[0]['Nombre'] . "\n";
+fwrite($archivo, $txt);
+$txt = "RFC: " . $dataPersonas[0]['Rfc'] . "\n";
+fwrite($archivo, $txt);
+$txt = "NSS: " . $dataMedicos[0]['NumeroSeguro'] . "\n";
+fwrite($archivo, $txt);
+$txt = "CURP: " . $dataPersonas[0]['Curp'] . "\n";
+fwrite($archivo, $txt);
+$txt = "Puesto: " . $dataAcademicos[0]['Carrera'] . "\n";
+fwrite($archivo, $txt);
+$txt = "Celular: " . $dataPersonas[0]['NumeroCelular'] . "\n";
+fwrite($archivo, $txt);
+$txt = "Vigencia: " . $dataPersonas[0]['InicioContrato'] . " - " . $dataPersonas[0]['FinContrato'] . "\n";
+fwrite($archivo, $txt);
+fclose($archivo);
+
+//generamos el codigo qr
+require 'phpqrcode/qrlib.php';
+QRcode::png("qr.txt", "img/QROceanus.png", QR_ECLEVEL_L, 3, 3);
+
 
 
 

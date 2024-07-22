@@ -3,6 +3,13 @@ class Conexion
 {
     public static function Conectar()
     {
+        
+        //si los datos ya estan definidos omitir la definicion
+        if (defined('servidor') && defined('nombre_bd') && defined('usuario') && defined('password')) {
+            return new PDO("mysql:host=" . servidor . ";dbname=" . nombre_bd, usuario, password);
+        }
+
+
         define('servidor', '127.0.0.1');
         define('nombre_bd', 'crud_2019');
         define('usuario', 'root');

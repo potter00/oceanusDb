@@ -28,7 +28,7 @@ if (!isset($_SESSION)) {
 
 
 
-<div class="container">
+<div style="margin-left: 5%; margin-right: 5%;">
 
 
     <div style="float: left; width: 60%;">
