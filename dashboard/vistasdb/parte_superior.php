@@ -299,7 +299,7 @@ if (isset($_GET['table'])) {
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
-      <div id="content">
+      <div id="content-fluid">
 
         <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -411,7 +411,7 @@ if (isset($_GET['table'])) {
 
         <!-- Begin Page Content -->
 
-        <div style="margin-left: 5%; margin-right: 5%;">
+        
 
 
           <?php
@@ -419,19 +419,7 @@ if (isset($_GET['table'])) {
           if ($_SESSION['checkBoxContrato'] != 0) {
             ?>
 
-            <div class="alert alert-primary" role="alert">
-              <h4 class="alert-heading">Contratos Seleccionados</h4>
-              <p>Se han seleccionado los siguientes contratos:</p>
-              <hr>
-              <p class="mb-0">
-                <?php
-                $contratosSeleccionados = DividirString($_SESSION['checkBoxContrato'], ",");
-                foreach ($contratosSeleccionados as $contrato) {
-                  echo $contrato . " ";
-                }
-                ?>
-              </p>
-            </div>
+            
 
             <div class="row">
               <?php
@@ -454,12 +442,14 @@ if (isset($_GET['table'])) {
               
               //cerramos la conexion y eliminamos la variable de conexion
               $conexion = null;
+
+              echo "</div>";
           }
 
           ?>
       
           </div>
-        </div>
+        
         <br>
         <hr>
         
