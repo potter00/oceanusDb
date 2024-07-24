@@ -1407,6 +1407,7 @@ $(document).ready(function () {
             });
     }
 
+    //
     function procesarDato(i, datos) {
         // Aquí va la lógica para procesar el dato en el índice 'i'
         var dataJson = {};
@@ -1541,6 +1542,7 @@ $(document).ready(function () {
         }
     }
 
+    //funcion para obtener el valor de un parametro de la url
     function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);

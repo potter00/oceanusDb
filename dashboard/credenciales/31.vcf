@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Urias Ruiz Omar Ignacio
+N:Urias Ruiz Omar Ignacio
+ORG:Oceanus
+TEL;TYPE=work,voice;VALUE=uri:tel:6221508692
+EMAIL:omar.ignacio.uri@gmail.com
+ADR;TYPE=work:;;Calle 1;Ciudad;Estado;CP;Pais
+END:VCARD

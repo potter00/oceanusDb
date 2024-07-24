@@ -270,27 +270,43 @@ if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
 $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
 $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
 
-//generamos un archivo vfc con los datos del usuario para el codigo qr
-$archivo = fopen("qr.txt", "w") or die("No se puede abrir el archivo");
-$txt = "Nombre: " . $dataPersonas[0]['Nombre'] . "\n";
-fwrite($archivo, $txt);
-$txt = "RFC: " . $dataPersonas[0]['Rfc'] . "\n";
-fwrite($archivo, $txt);
-$txt = "NSS: " . $dataMedicos[0]['NumeroSeguro'] . "\n";
-fwrite($archivo, $txt);
-$txt = "CURP: " . $dataPersonas[0]['Curp'] . "\n";
-fwrite($archivo, $txt);
-$txt = "Puesto: " . $dataAcademicos[0]['Carrera'] . "\n";
-fwrite($archivo, $txt);
-$txt = "Celular: " . $dataPersonas[0]['NumeroCelular'] . "\n";
-fwrite($archivo, $txt);
-$txt = "Vigencia: " . $dataPersonas[0]['InicioContrato'] . " - " . $dataPersonas[0]['FinContrato'] . "\n";
-fwrite($archivo, $txt);
+// Crear la carpeta si no existe
+if (!file_exists("credenciales/")) {
+    mkdir("credenciales/", 0777, true);
+}
+
+
+
+//generamos un archivo .vfc para generar una vcard con los datos del usuario si el archivo no existe lo creamos
+$archivo = fopen("credenciales/$id.vcf", "w+");
+
+//borramos contenido del archivo
+ftruncate($archivo, 0);
+
+
+fwrite($archivo, "BEGIN:VCARD\n");
+fwrite($archivo, "VERSION:3.0\n");
+fwrite($archivo, "FN:" . $dataPersonas[0]['Nombre'] . "\n");
+fwrite($archivo, "N:" . $dataPersonas[0]['Nombre'] . "\n");
+fwrite($archivo, "ORG:Oceanus Supervicion y proyectos SA de CV\n");
+fwrite($archivo, "TEL;TYPE=work,voice;VALUE=uri:tel:" . $dataPersonas[0]['NumeroCelular'] . "\n");
+fwrite($archivo, "EMAIL:" . $dataPersonas[0]['Correo'] . "\n");
+
+fwrite($archivo, "END:VCARD\n");
 fclose($archivo);
 
-//generamos el codigo qr
-require 'phpqrcode/qrlib.php';
-QRcode::png("qr.txt", "img/QROceanus.png", QR_ECLEVEL_L, 3, 3);
+
+
+
+
+//generamos un qr con la direccion del archivo .vfc, con phpqrcode
+include_once '../plugins/phpqrcode/qrlib.php';
+QRcode::png("http://192.168.0.14/loginbase/dashboard/credenciales/$id.vcf", "img/QROceanus.png", QR_ECLEVEL_L, 3);
+
+
+
+
+
 
 
 
@@ -332,18 +348,18 @@ QRcode::png("qr.txt", "img/QROceanus.png", QR_ECLEVEL_L, 3, 3);
             <p><strong>Celular:</strong>
                 <?php echo $dataPersonas[0]['NumeroCelular'] ?>
             </p>
-            <?php 
+            <?php
             if ($dataPersonas[0]['TipoContrato'] != 'indefinido') {
-                echo '<p><strong>Vigencia: </strong>'.$dataPersonas[0]['InicioContrato'].' - '.$dataPersonas[0]['FinContrato'].'</p>';
-            }else {
-                echo '<p><strong>Vigencia: </strong>'.$dataPersonas[0]['InicioContrato'].' - Indefinido</p>';
+                echo '<p><strong>Vigencia: </strong>' . $dataPersonas[0]['InicioContrato'] . ' - ' . $dataPersonas[0]['FinContrato'] . '</p>';
+            } else {
+                echo '<p><strong>Vigencia: </strong>' . $dataPersonas[0]['InicioContrato'] . ' - Indefinido</p>';
             }
-            
+
 
             ?>
-            
+
         </div>
-        
+
     </div>
 
     <!-- Credencial Reversa -->
