@@ -182,7 +182,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
         <div class="card">
             <div class="card-header">
                 <div style="float: left; width: 60%;">
-                    <h5 class="card-title"><a
+                    <h5 class="card-title text-lowercase"><a
                             href="<?php echo "detalles_contrato.php?idContrato=" . $contratoSeleccionado['idContrato'] ?>"><?php echo $contratoSeleccionado['nombreContrato'] ?></a>
                     </h5>
                     <h6 class="card-subtitle">Contrato #<?php echo $contratoSeleccionado['numeroContrato'] ?></h6>
@@ -251,7 +251,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                 <?php
                 if (isset($_GET['seccion'])) {
                     // Sanitize the input to prevent potential security issues
-                    $seccion = filter_var($_GET['seccion'], FILTER_SANITIZE_STRING);
+                    $seccion = htmlspecialchars($_GET['seccion']);
                     error_log($seccion);
 
                     // Use forward slashes for paths

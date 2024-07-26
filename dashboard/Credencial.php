@@ -290,20 +290,23 @@ fwrite($archivo, "FN:" . $dataPersonas[0]['Nombre'] . "\n");
 fwrite($archivo, "N:" . $dataPersonas[0]['Nombre'] . "\n");
 fwrite($archivo, "ORG:Oceanus Supervicion y proyectos SA de CV\n");
 fwrite($archivo, "LOGO;TYPE=JPEG;ENCODING=BASE64:" . base64_encode(file_get_contents($rutaImagenUsuario)) . "\n");
-fwrite($archivo, "TEL;TYPE=work,voice;VALUE=uri:tel:" . $dataPersonas[0]['NumeroCelular'] . "\n");
+//fwrite($archivo, "TEL;TYPE=work,voice;VALUE=uri:tel:" . $dataPersonas[0]['NumeroCelular'] . "\n");
 fwrite($archivo, "EMAIL:" . $dataPersonas[0]['Correo'] . "\n");
+fwrite($archivo, "ROLE:" . $dataAcademicos[0]['Carrera'] . "\n");
 fwrite($archivo, "URL:http://www.oceanus.mx\n");
 
 fwrite($archivo, "END:VCARD\n");
 fclose($archivo);
-
+//the cake is a lie
 //generamos el qr directamente con el contenido del archivo .vfc
 $qr = "BEGIN:VCARD\n";
 $qr .= "VERSION:3.0\n";
 $qr .= "FN:" . $dataPersonas[0]['Nombre'] . "\n";
 $qr .= "N:" . $dataPersonas[0]['Nombre'] . "\n";
 $qr .= "ORG:Oceanus Supervicion y proyectos SA de CV\n";
-$qr .= "TEL;TYPE=work,voice;VALUE=uri:tel:" . $dataPersonas[0]['NumeroCelular'] . "\n";
+$qr .= "ROLE: " . $dataAcademicos[0]['Carrera'] . "\n";
+//$qr .= "TEL;TYPE=work:" . $dataPersonas[0]['NumeroCelular'] . "\n";
+
 $qr .= "EMAIL:" . $dataPersonas[0]['Correo'] . "\n";
 $qr .= "URL:http://www.oceanus.mx\n";
 $qr .= "END:VCARD\n";
@@ -312,7 +315,11 @@ $qr .= "END:VCARD\n";
 include('../plugins/phpqrcode/qrlib.php');
 QRcode::png($qr, "img/QROceanus.png", QR_ECLEVEL_L, 2, 2);
 
+
+
 //QRcode::png("http://10.98.1.128/loginBase/dashboard/credenciales/$id.vcf", "img/QROceanus.png", QR_ECLEVEL_L, 2, 2);
+
+
 
 
 

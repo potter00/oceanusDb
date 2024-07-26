@@ -227,7 +227,7 @@ $(document).ready(function () {
     tablaContratos.column(4).visible(false);
     tablaContratos.column(6).visible(false);
     tablaContratos.column(11).visible(false);
-    tablaContratos.column(8).visible(false);
+    
     tablaContratos.column(9).visible(false);
     tablaContratos.column(10).visible(false);
 
@@ -463,6 +463,8 @@ $(document).ready(function () {
     $('#selectFacturaContrato').select2();
 
     $('#selectFacturaEmpresa').select2();
+
+    $('#selectFacturaNumeroContrato').select2();
 
     $("#btnGuardarEmpresa").click(function () {
         var razonSocial = $("#empresaRazonSocial").val();
@@ -887,7 +889,24 @@ $(document).ready(function () {
 
     $("#btnActualizarFactura").click(function () {
         var idFactura = getQueryParam('idFactura');
-        var idContrato = $("#selectFacturaContrato").val();
+
+        if ($("#numeroContratoFactura").is(":checked")) {
+            var idContrato = $("#selectFacturaNumeroContrato").val();
+        }else if($("#selectFacturaContrato").is(":checked")){
+            var idContrato = $("#selectFacturaContrato").val();
+        }else{
+
+            //si no se selecciona ningun checkbox de contrato mandamos una alerta y no hacemos nada
+            alert('Debes seleccionar un contrato');
+            return;
+        }
+        console.log($("#numeroContratoFactura").is(":checked"));
+        
+        
+        
+
+
+        
         var idEmpresa = $("#selectFacturaEmpresa").val();
         var fecha = $("#fechaFactura").val();
         var importe = $("#importeFactura").val();
@@ -1158,6 +1177,16 @@ $(document).ready(function () {
         }
     });
 
+    $("#btnDeseleccionarContratos").click(function () {
+        //deseleccionamos todos los contratos
+        var checkboxes = document.querySelectorAll('.checkBoxContrato');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = false;
+        });
+        enviarCheckboxAlServidor(0);
+        window.location.reload();
+    });
+
     $("#DescargarZipContrato").click(function () {
         //prevenimos el comportamiento por defecto del boton
         event.preventDefault();
@@ -1195,6 +1224,10 @@ $(document).ready(function () {
 
     });
 
+    $('.checkBoxFacturaContrato').on('change', function() {
+        
+        $('.checkBoxFacturaContrato').not(this).prop('checked', false);
+    });
 
 
 

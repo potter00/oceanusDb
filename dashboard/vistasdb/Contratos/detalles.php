@@ -34,8 +34,16 @@ if (!isset($_GET['edit'])) {
 
         <p><strong>Monto de Contrato:
                 </strong><?php echo '$' . number_format($contratoSeleccionado['montoContrato'], 2, '.', ',') ?></p>
-        <p><strong>Anticipo: </strong><?php echo '$' . number_format($contratoSeleccionado['anticipoContrato'], 2, '.', ',') ?>
-        </p>
+        <p><strong>Anticipo: </strong><?php 
+        
+        if($contratoSeleccionado['anticipoContrato'] == 0){
+                echo 'Sin Anticipo';
+
+        }else{
+        
+        echo '$' . number_format($contratoSeleccionado['anticipoContrato'], 2, '.', ',');
+        } ?></p>
+        
         <hr>
         <?php
 

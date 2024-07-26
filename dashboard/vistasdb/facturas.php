@@ -26,7 +26,7 @@
         }
     }
 
-    
+
 
 
 
@@ -34,7 +34,7 @@
 
 
     ?>
-    
+
 
     <div style="float: left; width: 60%;">
         <h1 id="labelEmpresas" style="float: left; width: 60%">Facturas</h1>
@@ -48,11 +48,13 @@
             <thead>
                 <tr>
                     <th>id</th>
+                    <th>Numero Factura</th>
+                    <th>importe</th>
                     <th>Nombre</th>
                     <th>Contrato</th>
                     <th>Empresa</th>
                     <th>fecha</th>
-                    <th>importe</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +76,8 @@
                     <tr>
 
                         <td style="width:15px"><?php echo $factura['idFactura'] ?></td>
+                        <td><?php echo $factura['numero'] ?></td>
+                        <td style="width:30px"><?php echo "$" . number_format($factura['importe'], 2) ?></td>
                         <td><?php
                         $direccion = "indexdb.php?table=facturas&idFactura=" . $factura['idFactura'];
                         echo '<a  href="' . $direccion . '">' . $factura['titulo'] . '</a> ';
@@ -97,7 +101,7 @@
                             ?>
                         </td>
                         <td style="width:150px"><?php echo $factura['fecha'] ?></td>
-                        <td style="width:30px"><?php echo $factura['importe'] ?></td>
+
                     </tr>
                 <?php } ?>
             </tbody>
@@ -135,7 +139,7 @@
                         <i class="fas fa-cog dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"></i>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a id="btnEliminarEmpresa" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
+                            <a id="btnEliminarFactura" class="dropdown-item" href="#"><i class="fas fa-trash"></i>
                                 Eliminar</a>
 
                         </div>
@@ -152,7 +156,8 @@
                     <p><strong><?php echo $facturaSeleccionada['titulo'] ?></strong></p>
                     <p><strong>Numero de factura: </strong><?php echo $facturaSeleccionada['numero'] ?></p>
                     <p><strong>Fecha de la Factura: </strong><?php echo $facturaSeleccionada['fecha'] ?></p>
-                    <p><strong>Importe Total: </strong><?php echo $facturaSeleccionada['importe'] ?></p>
+                    <p><strong>Importe Total: </strong><?php echo "$" . number_format($facturaSeleccionada['importe'], 2) ?>
+                    </p>
 
                     <p><strong>Contrato Asociado: </strong><?php
                     if ($ContratoAsociado != 'Contrato no encontrado') {
@@ -208,31 +213,55 @@
                     <p><strong>Importe Total: </strong><input type="text" id="importeFactura"
                             value="<?php echo $facturaSeleccionada['importe'] ?>"></p>
                     <p><strong>Contrato Asociado: </strong>
-                        <select id="selectFacturaContrato">
-                            <?php
-                            foreach ($contratos as $contrato) {
-                                if ($contrato['idContrato'] == $facturaSeleccionada['idContrato']) {
-                                    # code...
-                        
-                                    echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
-                                }
-                            }
-                            foreach ($contratos as $contrato) {
-                                if ($contrato['idContrato'] != $facturaSeleccionada['idContrato']) {
-                                    # code...
-                        
-                                    echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
-                                }
-                            }
-                            ?>
-                        </select>
+
                     </p>
+                    <p>Numero contrato: <input type="checkbox" class="checkBoxFacturaContrato"  id="numeroContratoFactura"><select style="max-width: 250px;" id="selectFacturaNumeroContrato">
+                        <?php
+                        foreach ($contratos as $contrato) {
+                            if ($contrato['idContrato'] == $facturaSeleccionada['idContrato']) {
+                                # code...
+                    
+                                echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['numeroContrato'] . '</option>';
+                            }
+                        }
+                        foreach ($contratos as $contrato) {
+                            if ($contrato['idContrato'] != $facturaSeleccionada['idContrato']) {
+                                # code...
+                    
+                                echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['numeroContrato'] . '</option>';
+                            }
+                        }
+
+
+
+
+                        ?>
+                    </select></p>
+                    <p>Nombre Contrato: <input type="checkbox" class="checkBoxFacturaContrato" data-seleccion="nombre"><select id="selectFacturaContrato">
+                        <?php
+                        foreach ($contratos as $contrato) {
+                            if ($contrato['idContrato'] == $facturaSeleccionada['idContrato']) {
+                                # code...
+                    
+                                echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
+                            }
+                        }
+                        foreach ($contratos as $contrato) {
+                            if ($contrato['idContrato'] != $facturaSeleccionada['idContrato']) {
+                                # code...
+                    
+                                echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
+                            }
+                        }
+                        ?>
+                    </select></p>
+                    
                     <p><strong>Empresa Asociada: </strong>
-                        <select id="selectFacturaEmpresa" style="max-width: 125px;">
+                        <select id="selectFacturaEmpresa" style="max-width: 250px;">
                             <?php
                             foreach ($empresas as $empresa) {
                                 if ($empresa['idEmpresa'] == $facturaSeleccionada['idEmpresa']) {
-                                    echo '<option value="' . $empresa['idEmpresa'] . '">' . $empresa['razonSocial'] . '</option>';
+                                    echo '<option  value="' . $empresa['idEmpresa'] . '">' . $empresa['razonSocial'] . '</option>';
                                 }
 
                             }
@@ -262,3 +291,10 @@
         </div>
     </div>
 </div>
+<script>
+    <script>
+        
+            
+        
+    </script>
+</script>

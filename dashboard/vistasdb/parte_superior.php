@@ -351,7 +351,7 @@ if (isset($_GET['table'])) {
 
             <!-- Nav Item - Messages -->
 
-
+            
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
@@ -418,7 +418,7 @@ if (isset($_GET['table'])) {
           //en caso de existir buscamos los contratos seleccionados y llamamos a la funcion CrearCardContrato
           if ($_SESSION['checkBoxContrato'] != 0) {
             ?>
-
+          
             
 
             <div class="row">
@@ -439,11 +439,15 @@ if (isset($_GET['table'])) {
                 echo CrearCardContrato($contrato, $conexion);
                 
               }
-              
+              //the cake is a lie
               //cerramos la conexion y eliminamos la variable de conexion
               $conexion = null;
 
               echo "</div>";
+
+              echo "<botton class='btn btn-primary' id='btnDeseleccionarContratos'>Deseleccionar elementos</botton>;";
+
+
           }
 
           ?>
