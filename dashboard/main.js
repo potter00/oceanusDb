@@ -515,127 +515,9 @@ $(document).ready(function () {
             var hojaNombre = libro.SheetNames[0];
             var hoja = libro.Sheets[hojaNombre];
             var datos = XLSX.utils.sheet_to_json(hoja);
-            
 
-            //subimos los datos a la base de datos
-            for (let i = 0; i < datos.length; i++) {
-                //verificamos que todos los campos estan llenos y existen, en caso de que no se añade un valor por defecto
-                var dataJson = {};
-                if (datos[i]['Nombre del trabajador'] == undefined) {
-                    dataJson['nombre'] = "Sin Nombre";
-
-
-                }else{
-                    dataJson['nombre'] = datos[i]['Nombre del trabajador'];
-                }
-
-                dataJson['fechaNacimiento'] = "1000-01-01";
-
-                if (datos[i]['CURP'] == undefined) {
-                    dataJson['curp'] = "000000000000000000";
-                    
-                }else{
-                    dataJson['curp'] = datos[i]['CURP'];
-                }
-
-                if (datos[i]['RFC'] == undefined) {
-                    dataJson['rfc'] = "0000000000000";
-                    
-                }else{
-                    dataJson['rfc'] = datos[i]['RFC'];
-                }
-
-                if (datos[i]['INE'] == undefined) {
-                    dataJson['ine'] = "0000000000";
-                    
-                }else{
-                    dataJson['ine'] = datos[i]['INE'];
-                }
-
-                if (datos[i]['estado civil'] == undefined) {
-                    dataJson['estadoCivil'] = "soltero";
-                    
-                }else{
-                    dataJson['estadoCivil'] = datos[i]['estado civil'];
-                }
-
-
-
-                dataJson['NumeroFijo'] = "0000000000";
-
-                if (datos[i]['telefono'] == undefined) {
-                    dataJson['numeroCelular'] = "0000000000";
-                    
-                }else{
-                    dataJson['numeroCelular'] = datos[i]['telefono'];
-                }
-
-                if (datos[i]['DOMICILIO'] == undefined) {
-                    dataJson['direccion'] = "Sin Direccion";
-                    
-                }else{
-                    dataJson['direccion'] = datos[i]['DOMICILIO'];
-                }
-                
-                dataJson['NumeroLicencia'] = "000000000000000";
-
-
-                if (datos[i]['numero de pasaporte'] == undefined) {
-                    dataJson['numeroPasaporte'] = "000000000";
-                    
-                }else{
-                    dataJson['numeroPasaporte'] = datos[i]['numero de pasaporte'];
-                }
-
-                dataJson['fechaIngreso'] = "1000-01-01";
-
-                dataJson['estado'] = "activo";
-                dataJson['tipoContrato'] = "temporal";
-                dataJson['inicioContrato'] = "1000-01-01";
-                dataJson['finContrato'] = "1000-01-01";
-                
-
-                if (datos[i]['correo'] == undefined) {
-                    dataJson['correo'] = "Sin Correo";
-                    
-                }else{
-                    dataJson['correo'] = datos[i]['correo'];
-                }
-
-
-
-
-                //datos medicos
-                dataJson['alergias'] = "Sin Alergias";
-                dataJson['enfermedadesCronicas'] = "Sin enfermedades cronicas";
-                dataJson['lesiones'] = "Sin lesiones";
-                dataJson['alergiasMedicamentos'] = "Sin alergias a medicamentos";
-
-                if (datos[i]['NUMERO DE SEGURO SOCIAL'] == undefined) {
-                    dataJson['numeroSeguro'] = "000000000000";
-                    
-                }else{ 
-                    dataJson['numeroSeguro'] = datos[i]['NUMERO DE SEGURO SOCIAL'];
-                }
-
-                dataJson['numeroEmergencia'] = "0000000000";
-                dataJson['tipoSangre'] = "NA";
-                dataJson['nombreEmergencia'] = "Sin Nombre";
-                dataJson['genero'] = "otro";
-                dataJson['relacionEmergencia'] = "Sin Relacion";
-
-                //datos academicos
-                dataJson['cedula'] = "0000000";
-                dataJson['carrera'] = "Sin Carrera";
-                dataJson['expLaboral'] = "Sin Experiencia Laboral";
-                dataJson['certificaciones'] = "Sin Certificaciones";
-                dataJson['gradoEstudios'] = "Sin Grado de Estudios";
-
-                console.log(dataJson);
-                darDeAltaPersona(dataJson);
-
-
-            }
+            document.getElementById('loader').style.display = 'block';
+            procesarDato(0, datos);
 
             actualizarTablaPersonas();
         };
@@ -647,7 +529,59 @@ $(document).ready(function () {
 
 
     });
+    $(document).on("click", "#btnBorrarImagen", function () {
+        //obtenemso el id de la persona
+        console.log("borrando imagen");
+        //mandamos una mensaje de confirmacion
+        var respuesta = confirm("¿Está seguro de eliminar la imagen de la persona?");
+        if (respuesta) {
+            //obtenemos el id de la persona
+            var id = getQueryParam('id');
 
+
+
+
+            console.log(id);
+            
+
+            //hacemos la peticion para borrar la imagen
+            var dataObject = {};
+            dataObject['id'] = id;
+            dataObject['opcion'] = 9; //borrar imagen
+            dataJSON = JSON.stringify(dataObject);
+            fetch('../dashboard/bd/copiaCrud.php', {
+                method: 'POST',
+                body: dataJSON,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.errores && data.errores.length > 0) {
+                        // Mostrar los errores en el contenedor
+                        console.log('Errores:', data.errores);
+
+                    } else {
+                        // La operación fue exitosa, puedes realizar otras acciones aquí
+                        console.log(data);
+                        window.location.href = "./detalles_usuario.php?id=" + id;
+
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            console.log("no se elimino la imagen");
+        }
+    });
 
 
     document.getElementById('fileInputExcel').addEventListener('change', function (e) {
@@ -666,6 +600,10 @@ $(document).ready(function () {
 
         lector.readAsBinaryString(archivo);
     });
+
+
+
+
 
     //funcion para subir archivo al servidor
     function subirArchivo(id, tipoDocumento, nombre, idFileInput) {
@@ -1361,7 +1299,7 @@ $(document).ready(function () {
 
 
     //añadir fila a la tabla de personas
-    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc,INE, estadoCivil,  numeroFijo, correo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
+    function añadirFilaPersonas(id, nombre, fechaNacimiento, curp, rfc, INE, estadoCivil, numeroFijo, correo, numeroCelular, direccion, numeroLicencia, numeroPasaporte, fechaIngreso, estado, tipoContrato, InicioContrato, finContrato) {
 
         rolUsuario = obtenerRolUsuario();
         rolUsuario = rolUsuario.trim();
@@ -1401,10 +1339,10 @@ $(document).ready(function () {
                     console.log(element.Correo)
                     if (checkbox.checked == true) {
 
-                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.INE, element.estadoCivil,  element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                        añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.INE, element.estadoCivil, element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
                     } else {
                         if (element.Estado == "activo") {
-                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.INE, element.estadoCivil , element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
+                            añadirFilaPersonas(element.Id, element.Nombre, element.FechaNacimiento, element.Curp, element.Rfc, element.INE, element.estadoCivil, element.NumeroFijo, element.Correo, element.NumeroCelular, element.Direccion, element.NumeroLicencia, element.NumeroPasaporte, element.FechaIngreso, element.Estado, element.TipoContrato, element.InicioContrato, element.FinContrato);
                         }
 
                     }
@@ -1434,8 +1372,8 @@ $(document).ready(function () {
 
     //funcion para dar de alta a una persona
     function darDeAltaPersona(dataObject) {
-       
-        
+
+
         dataObject['opcion'] = 1; //dar de alta
         dataJSON = JSON.stringify(dataObject);
         fetch('../dashboard/bd/copiaCrud.php', {
@@ -1459,7 +1397,7 @@ $(document).ready(function () {
                 } else {
                     // La operación fue exitosa, puedes realizar otras acciones aquí
                     console.log(data);
-                    
+
 
                 }
 
@@ -1469,7 +1407,147 @@ $(document).ready(function () {
             });
     }
 
-    
+    //
+    function procesarDato(i, datos) {
+        // Aquí va la lógica para procesar el dato en el índice 'i'
+        var dataJson = {};
+        if (datos[i]['Nombre del trabajador'] == undefined) {
+            dataJson['nombre'] = "Sin Nombre";
+
+
+        } else {
+            dataJson['nombre'] = datos[i]['Nombre del trabajador'];
+        }
+
+        dataJson['fechaNacimiento'] = "1000-01-01";
+
+        if (datos[i]['CURP'] == undefined) {
+            dataJson['curp'] = "000000000000000000";
+
+        } else {
+            dataJson['curp'] = datos[i]['CURP'];
+        }
+
+        if (datos[i]['RFC'] == undefined) {
+            dataJson['rfc'] = "0000000000000";
+
+        } else {
+            dataJson['rfc'] = datos[i]['RFC'];
+        }
+
+        if (datos[i]['INE'] == undefined) {
+            dataJson['ine'] = "0000000000";
+
+        } else {
+            dataJson['ine'] = datos[i]['INE'];
+        }
+
+        if (datos[i]['estado civil'] == undefined) {
+            dataJson['estadoCivil'] = "soltero";
+
+        } else {
+            dataJson['estadoCivil'] = datos[i]['estado civil'];
+        }
+
+
+
+        dataJson['numeroFijo'] = "0000000000";
+
+        if (datos[i]['telefono'] == undefined) {
+            dataJson['numeroCelular'] = "0000000000";
+
+        } else {
+            dataJson['numeroCelular'] = datos[i]['telefono'];
+        }
+
+        if (datos[i]['DOMICILIO'] == undefined) {
+            dataJson['direccion'] = "Sin Direccion";
+
+        } else {
+            dataJson['direccion'] = datos[i]['DOMICILIO'];
+        }
+
+        dataJson['numeroLicencia'] = "000000000000000";
+
+
+        if (datos[i]['numero de pasaporte'] == undefined) {
+            dataJson['numeroPasaporte'] = "000000000";
+
+        } else {
+            dataJson['numeroPasaporte'] = datos[i]['numero de pasaporte'];
+        }
+
+        dataJson['fechaIngreso'] = "1000-01-01";
+
+        dataJson['estado'] = "activo";
+        dataJson['tipoContrato'] = "temporal";
+        dataJson['fechaInicioContrato'] = "1000-01-01";
+        dataJson['fechaFinContrato'] = "1000-01-01";
+
+
+        if (datos[i]['correo'] == undefined) {
+            dataJson['correo'] = "Sin Correo";
+
+        } else {
+            dataJson['correo'] = datos[i]['correo'];
+        }
+
+
+
+
+        //datos medicos
+        dataJson['alergias'] = "Sin Alergias";
+        dataJson['enfermedadesCronicas'] = "Sin enfermedades cronicas";
+        dataJson['lesiones'] = "Sin lesiones";
+        dataJson['alergiasMedicamentos'] = "Sin alergias a medicamentos";
+
+        if (datos[i]['NUMERO DE SEGURO SOCIAL'] == undefined) {
+            dataJson['numeroSeguro'] = "000000000000";
+
+        } else {
+            dataJson['numeroSeguro'] = datos[i]['NUMERO DE SEGURO SOCIAL'];
+        }
+
+        dataJson['numeroEmergencia'] = "0000000000";
+        dataJson['tipoSangre'] = "NA";
+        dataJson['nombreEmergencia'] = "Sin Nombre";
+        dataJson['genero'] = "otro";
+        dataJson['relacionEmergencia'] = "Sin Relacion";
+
+        //datos academicos
+        dataJson['cedula'] = "0000000";
+        dataJson['carrera'] = "Sin Carrera";
+        dataJson['expLaboral'] = "Sin Experiencia Laboral";
+        dataJson['certificaciones'] = "Sin Certificaciones";
+        dataJson['gradoEstudios'] = "Sin Grado de Estudios";
+
+        console.log(dataJson);
+        darDeAltaPersona(dataJson);
+
+        // Mostramos el dato actual
+        console.log("Procesando dato en el índice", i);
+
+        // Incrementamos 'i' para pasar al siguiente dato
+        i++;
+
+        // Verificamos si hemos llegado al final del arreglo 'datos'
+        if (i < datos.length) {
+            // Programamos una llamada a la función 'procesarDato' con el siguiente índice después de 1000ms (1 segundo)
+            setTimeout(function () {
+                procesarDato(i, datos);
+            }, 10000);
+        } else {
+            console.log("terminado");
+            document.getElementById('loader').style.display = 'none';
+        }
+    }
+
+    //funcion para obtener el valor de un parametro de la url
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
 
 
 

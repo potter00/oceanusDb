@@ -270,6 +270,63 @@ if ($dataPersonas[0]['TipoContrato'] == 'indefinido') {
 $rutaImagenUsuario = $dataDocumentos[0]['Foto'];
 $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
 
+// Crear la carpeta si no existe
+if (!file_exists("credenciales/")) {
+    mkdir("credenciales/", 0777, true);
+}
+
+
+
+//generamos un archivo .vfc para generar una vcard con los datos del usuario si el archivo no existe lo creamos
+$archivo = fopen("credenciales/$id.vcf", "w+");
+
+//borramos contenido del archivo
+ftruncate($archivo, 0);
+
+
+fwrite($archivo, "BEGIN:VCARD\n");
+fwrite($archivo, "VERSION:3.0\n");
+fwrite($archivo, "FN:" . $dataPersonas[0]['Nombre'] . "\n");
+fwrite($archivo, "N:" . $dataPersonas[0]['Nombre'] . "\n");
+fwrite($archivo, "ORG:Oceanus Supervicion y proyectos SA de CV\n");
+fwrite($archivo, "LOGO;TYPE=JPEG;ENCODING=BASE64:" . base64_encode(file_get_contents($rutaImagenUsuario)) . "\n");
+//fwrite($archivo, "TEL;TYPE=work,voice;VALUE=uri:tel:" . $dataPersonas[0]['NumeroCelular'] . "\n");
+fwrite($archivo, "EMAIL:" . $dataPersonas[0]['Correo'] . "\n");
+fwrite($archivo, "ROLE:" . $dataAcademicos[0]['Carrera'] . "\n");
+fwrite($archivo, "URL:http://www.oceanus.mx\n");
+
+fwrite($archivo, "END:VCARD\n");
+fclose($archivo);
+//the cake is a lie
+//generamos el qr directamente con el contenido del archivo .vfc
+$qr = "BEGIN:VCARD\n";
+$qr .= "VERSION:3.0\n";
+$qr .= "FN:" . $dataPersonas[0]['Nombre'] . "\n";
+$qr .= "N:" . $dataPersonas[0]['Nombre'] . "\n";
+$qr .= "ORG:Oceanus Supervicion y proyectos SA de CV\n";
+$qr .= "ROLE: " . $dataAcademicos[0]['Carrera'] . "\n";
+//$qr .= "TEL;TYPE=work:" . $dataPersonas[0]['NumeroCelular'] . "\n";
+
+$qr .= "EMAIL:" . $dataPersonas[0]['Correo'] . "\n";
+$qr .= "URL:http://www.oceanus.mx\n";
+$qr .= "END:VCARD\n";
+
+//generamos el qr
+include('../plugins/phpqrcode/qrlib.php');
+QRcode::png($qr, "img/QROceanus.png", QR_ECLEVEL_L, 2, 2);
+
+
+
+//QRcode::png("http://10.98.1.128/loginBase/dashboard/credenciales/$id.vcf", "img/QROceanus.png", QR_ECLEVEL_L, 2, 2);
+
+
+
+
+
+
+
+
+
 
 
 
@@ -310,18 +367,18 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
             <p><strong>Celular:</strong>
                 <?php echo $dataPersonas[0]['NumeroCelular'] ?>
             </p>
-            <?php 
+            <?php
             if ($dataPersonas[0]['TipoContrato'] != 'indefinido') {
-                echo '<p><strong>Vigencia: </strong>'.$dataPersonas[0]['InicioContrato'].' - '.$dataPersonas[0]['FinContrato'].'</p>';
-            }else {
-                echo '<p><strong>Vigencia: </strong>'.$dataPersonas[0]['InicioContrato'].' - Indefinido</p>';
+                echo '<p><strong>Vigencia: </strong>' . $dataPersonas[0]['InicioContrato'] . ' - ' . $dataPersonas[0]['FinContrato'] . '</p>';
+            } else {
+                echo '<p><strong>Vigencia: </strong>' . $dataPersonas[0]['InicioContrato'] . ' - Indefinido</p>';
             }
-            
+
 
             ?>
-            
+
         </div>
-        
+
     </div>
 
     <!-- Credencial Reversa -->

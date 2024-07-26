@@ -6,3 +6,6 @@ configuracion.json
 configuracion.json
 loginBase.code-workspace
 bd/conexion.php
+dashboard/credenciales
+
+plugins/phpqrcode/QROceanus.png-errors.txt

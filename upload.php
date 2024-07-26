@@ -1,6 +1,15 @@
 <?php
 
-require_once('../loginBase/dashboard/bd/funciones.php');
+require_once ('../loginBase/dashboard/bd/funciones.php');
+require_once ('../loginBase/dashboard/bd/funcionesdb.php');
+require_once ('../loginBase/bd/conexion.php');
+
+
+//antes de devolver la respuesta cerramos la conexion
+$conexion = null;
+
+$objeto = new Conexion();
+$conexion = $objeto->Conectar();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datos_recibidos = json_decode(file_get_contents("php://input"), true);
 
@@ -29,28 +38,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombreArchivo = basename($_FILES['archivo']['name']);
 
             $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION); // Obtiene la extensión del archivo
-            if ($extension == 'pdf' || $extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'webp') {
-                # code...
-                $nombre = trim($nombre);
-                // Construir la ruta completa para guardar el archivo
-                $rutaArchivo = $carpetaDestino . $id . '_' . $nombre . '_' . $tipoDocumento . '.' . $extension;
-                error_log("extensión: " . $extension);
-                error_log("rutaArchivo: " . $rutaArchivo);
-                // Mover el archivo al destino
-                if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaArchivo)) {
-                    $respuesta = array('success' => true, 'message' => 'Archivo subido con éxito', 'ruta' => $rutaArchivo, 'id' => $id);
-                } else {
-                    $respuesta = array('success' => false, 'message' => 'Error al subir el archivo');
-                }
 
-                // Devolver la respuesta como JSON
-                header('Content-Type: application/json');
-                echo json_encode($respuesta);
+            # code...
+            $nombre = trim($nombre);
+            // Construir la ruta completa para guardar el archivo
+            $rutaArchivo = $carpetaDestino . $id . '_' . $nombre . '_' . $tipoDocumento . '.' . $extension;
+            error_log("extensión: " . $extension);
+            error_log("rutaArchivo: " . $rutaArchivo);
+            // Mover el archivo al destino
+            if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaArchivo)) {
+                $respuesta = array('success' => true, 'message' => 'Archivo subido con éxito', 'ruta' => $rutaArchivo, 'id' => $id);
             } else {
-                $respuesta = array('success' => false, 'message' => 'Error al subir el archivo, extensión no permitida');
-                header('Content-Type: application/json');
-                echo json_encode($respuesta);
+                $respuesta = array('success' => false, 'message' => 'Error al subir el archivo');
             }
+
+
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+
+            // Devolver la respuesta como JSON
+            header('Content-Type: application/json');
+            echo json_encode($respuesta);
+
             break;
         case 2: //eliminacion de carpeta
 
@@ -67,6 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $respuesta = array('success' => false, 'message' => 'Error al eliminar la carpeta');
             }
+
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
             header('Content-Type: application/json');
             echo json_encode($respuesta);
             break;
@@ -167,9 +179,241 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+
             header('Content-Type: application/json');
             $respuesta = array('success' => true, 'message' => 'Archivo guardado con éxito', 'ruta' => $carpetaRelativa, 'Id' => $id);
 
+            echo json_encode($respuesta);
+
+            break;
+
+        case 4: //subir archivos de contrato y devolver la ruta donde se guardo
+            $id = $_POST['id'];
+            $tipoDocumento = $_POST['tipoDocumento'];
+            $nombreDocumento = $_POST['nombreDocumento'];  //nombre del documento
+
+            //le añadimos un _ a cada espacion en blanco del nombre del documento
+            $nombreDocumento = str_replace(' ', '_', $nombreDocumento);
+
+            // Carpeta donde se guardarán los archivos (asegúrate de tener permisos de escritura)
+            $carpetaBase = 'archivos/contratos/';
+            $carpetaBaseEmpresas = 'archivos/empresas/';
+            switch ($tipoDocumento) {
+                case 'contrato':
+                    $carpetaDestino = $carpetaBase . $id . '/';
+                    break;
+                case 'facturas':
+                    $carpetaDestino = $carpetaBase . $id . '/facturas/';
+                    break;
+                case 'fianzas':
+                    $carpetaDestino = $carpetaBase . $id . '/fianzas/';
+                    break;
+                case 'empresa':
+                    $carpetaDestino = $carpetaBaseEmpresas;
+                    break;
+                case 'subContratado';
+                    $carpetaDestino = 'archivos/subContratados/';
+                    break;
+                default:
+                    $carpetaDestino = $carpetaBase . $id . '/';
+                    break;
+            }
+
+
+            // Crear la carpeta si no existe
+            if (!file_exists($carpetaDestino)) {
+                mkdir($carpetaDestino, 0777, true);
+            }
+
+            // Obtener el nombre original del archivo
+            $nombreArchivo = basename($_FILES['archivo']['name']);
+
+            $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION); // Obtiene la extensión del archivo
+
+            // Construir la ruta completa para guardar el archivo
+            $rutaArchivo = $carpetaDestino . $id . '_' . $nombreDocumento . '.' . $extension;
+            error_log("extensión: " . $extension);
+            error_log("rutaArchivo: " . $rutaArchivo);
+            error_log("tipoDocumento: " . $tipoDocumento);
+            error_log("nombreDocumento: " . $nombreDocumento);
+            // Mover el archivo al destino
+            if (isset($_FILES['archivo'])) {
+                if (move_uploaded_file($_FILES['archivo']['tmp_name'], $rutaArchivo)) {
+                    if ($tipoDocumento == 'contrato') {
+                        $message = ActualizarDato('contrato', $rutaArchivo, 'ubicacionContrato', $id, $conexion, 'idContrato');# code...
+                    } elseif ($tipoDocumento == 'fianzas') {
+                        if ($nombreDocumento == 'Fianza_Cumplimiento') {
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo, $conexion, 'fianza_cumplimiento', 'fianzaCumplimientoDoc');
+                        } elseif ($nombreDocumento == 'Fianza_Anticipo') {
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo, $conexion, 'fianza_anticipo', 'fianzaAnticipoDoc');
+                        } elseif ($nombreDocumento == 'Fianza_Vicios_Ocultos') {
+                            $message = ActualizarFianzaContrato($id, $rutaArchivo, $conexion, 'fianza_vicios_ocultos', 'fianzaViciosOcultosDoc');
+                        }
+
+                    } elseif ($tipoDocumento == 'facturas') {
+                        if (isset($_POST['datoExtra'])) {
+                            $message = ActualizarFacturaContrato($id, $rutaArchivo, $conexion, 'documento', $_POST['datoExtra']);
+
+                        } else {
+                            $message = 'Error no se a proporcionado id de la factura';
+                        }
+
+                    } elseif ($tipoDocumento == 'empresa') {
+                        error_log("tipoDocumento: " . $tipoDocumento);
+                        $message = ActualizarDato('empresa', $rutaArchivo, 'constanciaFiscal', $id, $conexion, 'idEmpresa');# code...
+                    } elseif ($tipoDocumento == 'subContratado') {
+                        error_log("tipoDocumento: " . $tipoDocumento);
+                        $message = ActualizarDato('subcontratados', $rutaArchivo, 'doc', $id, $conexion, 'idSubContratado');# code...
+                    }
+
+                    $respuesta = array('success' => true, 'message' => $message, 'ruta' => $rutaArchivo, 'id' => $id);
+                } else {
+                    // Si el archivo ya existe, cambiar el nombre del archivo existente
+                    $nombreArchivoNuevo = uniqid() . '.' . $extension;
+                    $rutaArchivoNuevo = $carpetaDestino . $nombreArchivoNuevo;
+
+                    if (rename($rutaArchivo, $rutaArchivoNuevo)) {
+                        $respuesta = array('success' => true, 'message' => 'Archivo subido con éxito', 'ruta' => $rutaArchivoNuevo);
+
+                    } else {
+                        $respuesta = array('success' => false, 'message' => 'Error al subir el archivo');
+                    }
+                }
+            } else {
+                $respuesta = array('success' => false, 'message' => 'No se ha seleccionado ningún archivo');
+            }
+
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+            // Devolver la respuesta como JSON
+            header('Content-Type: application/json');
+            echo json_encode($respuesta);
+
+            break;
+        case 5: //crear contratos en base a un excel con los datos
+
+            require 'vendor/autoload.php'; // Carga la librería PHPSpreadSheet
+            $dateFormat = new \PhpOffice\PhpSpreadsheet\Shared\Date();
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx(); // Crea una instancia de la clase Reader
+            $spreadsheet = $reader->load($_FILES['archivo']['tmp_name']); // Carga el archivo Excel
+            $sheet = $spreadsheet->getActiveSheet(); // Obtiene la hoja activa
+
+
+
+
+            // Itera sobre las filas y columnas
+            foreach ($sheet->getRowIterator() as $fila) {
+
+                $fila = $fila->getRowIndex();
+                $numero = $sheet->getCell('A' . $fila)->getValue();
+
+                if ($numero == 'NUM' || $numero == null) {
+                    continue;
+                }
+                $contratante = $sheet->getCell('B' . $fila)->getValue();
+                $idContratante = CrearEmpresa($contratante, $conexion);
+
+                $numeroContrato = $sheet->getCell('C' . $fila)->getValue();
+                $nombreContrato = $sheet->getCell('D' . $fila)->getValue();
+
+
+                //si el contrato ya existe no lo crea
+                if (ComprobarContrato($nombreContrato, $conexion, $numero)) {
+                    continue;
+                }
+
+                $direccion = $sheet->getCell('E' . $fila)->getValue();
+                $monto = $sheet->getCell('F' . $fila)->getValue();
+                $fechaInicio = $sheet->getCell('I' . $fila)->getValue();
+                $fechaFin = $sheet->getCell('J' . $fila)->getValue();
+
+                //trasnformamos las fechas de excel a un formato numerico
+
+
+
+
+                //si la fecha esta vacia le asignamos un valor por defecto
+                if ($fechaInicio == null || $fechaInicio == '') {
+
+                    $fechaInicio = '0001-01-01';
+
+                } else {
+
+                    $fechaInicio = $dateFormat::excelToDateTimeObject(intVal($fechaInicio))->format('Y-m-d');
+                }
+
+                if ($fechaFin == null || $fechaFin == '') {
+
+                    $fechaFin = '0001-01-01';
+
+                } else {
+                    $fechaFin = $dateFormat::excelToDateTimeObject(intval($fechaFin))->format('Y-m-d');
+                }
+
+                //si el monto no esta en formato numerico le asignamos un valor por defecto
+                if (!is_numeric($monto)) {
+                    $monto = 0;
+                }
+
+                //error_log($monto);
+
+                //se va a crear un titulo para el contrato tomando el nombre de este pero recortandolo a 20 caracteres y añadiendo 3 puntos suspensivos
+                $tituloContrato = substr($nombreContrato, 0, 20) . '...';
+
+
+                error_log('nombre Contrato' . $tituloContrato);
+                //creamos el contrato 
+                CrearContrato($tituloContrato, $nombreContrato, $numeroContrato, $idContratante, $direccion, $monto, $fechaInicio, $fechaFin, $conexion, $numero);
+
+
+
+
+
+            }
+
+
+
+
+            $respuesta = 'prueba terminada';
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+            // Devolver la respuesta como JSON
+            header('Content-Type: application/json');
+            echo json_encode($respuesta);
+
+            break;
+
+
+
+
+
+        case 6: //Generarl un archivo zip de la carpeta de un contrato en especifico
+            error_log("entro a la opcion 6");
+            $id = $_POST['id'];
+            $carpetaBase = 'archivos/contratos/';
+            $carpetaDestino = $carpetaBase . $id . '/';
+            $zip = new ZipArchive();
+            $nombreZip = $carpetaDestino . 'documentos.zip';
+            if ($zip->open($nombreZip, ZipArchive::CREATE) === TRUE) {
+                $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($carpetaDestino));
+                foreach ($files as $file) {
+                    $file = str_replace('\\', '/', $file);
+                    if (is_file($file)) {
+                        $zip->addFile($file, str_replace($carpetaDestino, '', $file));
+                    }
+                }
+                $zip->close();
+                $respuesta = array('success' => true, 'message' => 'Archivo zip creado con éxito', 'ruta' => $nombreZip);
+            } else {
+                $respuesta = array('success' => false, 'message' => 'Error al crear el archivo zip');
+            }
+            error_log('ruta: ' . $nombreZip);
+            //antes de devolver la respuesta cerramos la conexion
+            $conexion = null;
+            // Devolver la respuesta como JSON
+            header('Content-Type: application/json');
             echo json_encode($respuesta);
 
             break;
@@ -180,7 +424,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 } else {
-
+    //antes de devolver la respuesta cerramos la conexion
+    $conexion = null;
     //switch para descargar archivos
     $respuesta = array('success' => false, 'message' => 'Acceso denegado');
     header('Content-Type: application/json');

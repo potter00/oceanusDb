@@ -69,6 +69,7 @@
 
 
 
+
 <!-- sheetsJs -->
 <script src="../plugins/xlsx.extendscript.js"></script>
 
@@ -77,6 +78,7 @@
 
 <!-- Código propio JS -->
 <script type="text/javascript" src="./main.js"></script>
+<script type="text/javascript" src="./utils.js"></script>
 
 
 

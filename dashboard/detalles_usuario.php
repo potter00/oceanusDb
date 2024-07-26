@@ -83,6 +83,7 @@ $rutaImagenUsuario = "..\\" . $rutaImagenUsuario;
         <div class="image">
             <img src="<?php echo $rutaImagenUsuario ?>" alt="Imagen de Usuario" width="262.75px" height="240.55px"
                 style="border-radius: 20px;">
+                <button id="btnBorrarImagen" class="btn btn-sm btn-danger" style="margin-left: 80px;">Borrar imagen</button>
         </div>
         <div class="data-list">
             <h2>Datos del Usuario</h2>

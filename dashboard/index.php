@@ -18,17 +18,20 @@
     ?>
 
 
-    <div class="container">
+    <div style="margin-left: 5%; margin-right: 5%;">
         <div class="row">
-            <div class="">
+            <div style="margin-left: 5%; margin-right: 5%;">
 
                 <button id="btnActualizar" type="button" class="btn btn-primary" data-toggle="modal">Actualizar
                     Tabla</button>
                 <?php if ($_SESSION["s_rol"] == "admin") { ?>
-                    
-                <button id="btnNuevo" type="button" class="btn btn-success" data-toggle="modal">Nuevo</button>
-                <button id="btnSubirExcel" type="button" class="btn btn-primary" data-toggle="modal">SubirExcel</button>
-                <input class="fileInputExcel" type="file" id="fileInputExcel">
+
+                    <button id="btnNuevo" type="button" class="btn btn-success" data-toggle="modal">Nuevo</button>
+                    <button id="btnSubirExcel" type="button" class="btn btn-primary" data-toggle="modal">SubirExcel</button>
+                    <div id="loader" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Procesando datos...
+                    </div>
+                    <input class="fileInputExcel" type="file" id="fileInputExcel">
                 <?php } ?>
                 <div>
                     <!-- drag handle -->
@@ -56,7 +59,7 @@
             <div class="col-lg-12">
 
                 <div class="table-responsive">
-                    <table id="tablaPersonas" class="table table-striped table-bordered table-condensed"
+                    <table id="tablaPersonas" class="table table-sm table-striped table-bordered table-condensed"
                         style="width:100%">
                         <thead class="text-center">
                             <tr>

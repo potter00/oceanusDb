@@ -59,7 +59,7 @@
 </div>
 <div class="form-group">
     <label for="fechaIngreso">fecha de Ingreso: </label>
-    <input type="date" id="fechaIngreso" name="fechaIngreso" class="form-control" required>
+    <input type="date" id="fechaIngreso" name="fechaIngreso" class="form-control" value="01-01-0001">
 </div>
 <div class="button-container">
     <button disabled type="button" class="btn btn-light" onclick="mostrarSeccion(-1)">Anterior</button>

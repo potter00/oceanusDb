@@ -105,7 +105,7 @@
 
 
         // Realizar la solicitud POST con fetch
-        fetch('bd/CopiaCrud.php', {
+        fetch('bd/copiaCrud.php', {
             method: 'POST',
             body: formDataJSON,
             headers: {
