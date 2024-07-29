@@ -115,8 +115,12 @@ if (!isset($_SESSION)) {
 
                     if (!isset($_GET['edit'])) {
 
+                        if ($subContratadoSeleccionado['doc'] != '') {
+                            echo '<a class="fas fa-download" href="../' . $subContratadoSeleccionado['doc'] . '"></a>';
+                        } else {
+                            echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+                        }
 
-                        echo '<a class="fas fa-download" href="../' . $subContratadoSeleccionado['doc'] . '"></a>';
                     } else {
                         echo '<i class="fas fa-upload"></i> <!-- Icono de descarga -->';
                     }
@@ -148,7 +152,15 @@ if (!isset($_SESSION)) {
 
                     ?>
 
-                    <h5><strong>Informacion de SubContratado </strong><?php echo '<a class="fas fa-download" href="../' . $subContratadoSeleccionado['doc'] . '"></a>'  ?></h5>
+                    <h5><strong>Informacion de SubContratado </strong><?php
+
+                    if ($subContratadoSeleccionado['doc'] != '') {
+                        echo '<a class="fas fa-download" href="../' . $subContratadoSeleccionado['doc'] . '"></a>';
+                    } else {
+                        echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+                    }
+
+                    ?></h5>
                     <p><strong><?php echo $subContratadoSeleccionado['nombre'] ?> </strong></p>
                     <p><strong>RFC: </strong><?php echo $subContratadoSeleccionado['rfc'] ?></p>
                     <p><strong>INSS: </strong><?php echo $subContratadoSeleccionado['inss'] ?></p>

@@ -892,7 +892,7 @@ $(document).ready(function () {
 
         if ($("#numeroContratoFactura").is(":checked")) {
             var idContrato = $("#selectFacturaNumeroContrato").val();
-        }else if($("#selectFacturaContrato").is(":checked")){
+        }else if($("#nombreContratoFactura").is(":checked")){
             var idContrato = $("#selectFacturaContrato").val();
         }else{
 

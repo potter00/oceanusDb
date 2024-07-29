@@ -64,7 +64,8 @@ if (!isset($_SESSION)) {
                         ?>
                     <tr>
                         <td style="width:15px"><?php echo $empresa['idEmpresa'] ?></td>
-                        <td class="text-lowercase" ><?php echo '<a  href="' . $direccion . '">' . $razonSocial . '</a> '; ?></td>
+                        <td class="text-lowercase"><?php echo '<a  href="' . $direccion . '">' . $razonSocial . '</a> '; ?>
+                        </td>
                         <td><?php echo $empresa['representanteLegal'] ?></td>
                         <td><?php echo $empresa['rfc'] ?></td>
                         <td><?php echo $empresa['tipoRegimen'] ?></td>
@@ -108,7 +109,14 @@ if (!isset($_SESSION)) {
 
                     if (!isset($_GET['edit'])) {
 
-                        echo '<a class="fas fa-download" href="../' . $empresaResultante['constanciaFiscal']. '"></a>';
+                        //si la constancia fiscal no existe se muestra el icono de descarga en gris
+                        if ($empresaResultante['constanciaFiscal'] != null) {
+                            echo '<a class="fas fa-download" href="../' . $empresaResultante['constanciaFiscal'] . '"></a>';
+                        } else {
+                            echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+                        }
+
+
 
                     } else {
                         echo '<i class="fas fa-upload"></i> <!-- Icono de descarga -->';
@@ -135,7 +143,18 @@ if (!isset($_SESSION)) {
 
                 if (!isset($_GET['edit'])) {
                     ?>
-                    <h5><strong>Informacion de la empresa </strong><?php echo '<a class="fas fa-download" href="../' . $empresaResultante['constanciaFiscal']. '"></a>'; ?></i></h5>
+                    <h5><strong>Informacion de la empresa </strong><?php
+
+
+                    if ($empresaResultante['constanciaFiscal'] != null) {
+                        echo '<a class="fas fa-download" href="../' . $empresaResultante['constanciaFiscal'] . '"></a>';
+                    } else {
+                        echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+                    }
+
+
+
+                    ?></i></h5>
                     <br>
                     <p><strong> <?php echo $empresaResultante['razonSocial'] ?></strong></p>
                     <p><strong>Representante Legal: </strong><?php echo $empresaResultante['representanteLegal'] ?></p>
@@ -163,7 +182,8 @@ if (!isset($_SESSION)) {
                 <?php } else { ?>
                     <h5 style="max-width: 300px;  float: left; margin-top: 4px;"><strong>Factura</strong></h5>
                     <button type="button" class="btn btn-sm btnSubirArchivo" data-tipoArchivo="empresa"
-                        data-inputFile="inputFileEmpresa" data-idContrato="<?php echo $_GET['idEmpresa'] ?>" data-nombreArchivo="<?php echo $empresaResultante['razonSocial']   ?>"><i
+                        data-inputFile="inputFileEmpresa" data-idContrato="<?php echo $_GET['idEmpresa'] ?>"
+                        data-nombreArchivo="<?php echo $empresaResultante['razonSocial'] ?>"><i
                             class="fas fa-upload"></i></button>
                     <input type="file" id="inputFileEmpresa">
                     <br>

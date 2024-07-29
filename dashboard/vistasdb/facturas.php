@@ -127,9 +127,12 @@
                     }
 
                     if (!isset($_GET['edit'])) {
-
-                        echo '<a class="fas fa-download" href="../' . $facturaSeleccionada['documento'] . '"></a>';
-
+                        //si el documento es nulo el icono de descarga se muestra en gris
+                        if ($facturaSeleccionada['documento'] == null) {
+                            echo '<a class="fas fa-download" style="color: gray;"></a>';
+                        } else {
+                            echo '<a class="fas fa-download" href="../' . $facturaSeleccionada['documento'] . '"></a>';
+                        }
                     } else {
                         echo '<i class="fas fa-upload"></i> <!-- Icono de descarga -->';
                     }
@@ -151,7 +154,20 @@
                 if (!isset($_GET['edit'])) {
                     ?>
                     <h5><strong>Informacion de la
-                            Factura</strong><?php echo '<a class="fas fa-download" href="../' . $facturaSeleccionada['documento'] . '"></a>'; ?>
+                            Factura</strong><?php
+
+                            //si el documento es nulo el icono de descarga se muestra en gris
+                            if ($facturaSeleccionada['documento'] == null) {
+                                echo '<a class="fas fa-download" style="color: gray;"></a>';
+                            } else {
+                                echo '<a class="fas fa-download" href="../' . $facturaSeleccionada['documento'] . '"></a>';
+                            }
+
+
+
+
+
+                            ?>
                     </h5>
                     <p><strong><?php echo $facturaSeleccionada['titulo'] ?></strong></p>
                     <p><strong>Numero de factura: </strong><?php echo $facturaSeleccionada['numero'] ?></p>
@@ -215,47 +231,49 @@
                     <p><strong>Contrato Asociado: </strong>
 
                     </p>
-                    <p>Numero contrato: <input type="checkbox" class="checkBoxFacturaContrato"  id="numeroContratoFactura"><select style="max-width: 250px;" id="selectFacturaNumeroContrato">
-                        <?php
-                        foreach ($contratos as $contrato) {
-                            if ($contrato['idContrato'] == $facturaSeleccionada['idContrato']) {
-                                # code...
-                    
-                                echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['numeroContrato'] . '</option>';
+                    <p>Numero contrato: <input type="checkbox" class="checkBoxFacturaContrato"
+                            id="numeroContratoFactura"><select style="max-width: 250px;" id="selectFacturaNumeroContrato">
+                            <?php
+                            foreach ($contratos as $contrato) {
+                                if ($contrato['idContrato'] == $facturaSeleccionada['idContrato']) {
+                                    # code...
+                        
+                                    echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['numeroContrato'] . '</option>';
+                                }
                             }
-                        }
-                        foreach ($contratos as $contrato) {
-                            if ($contrato['idContrato'] != $facturaSeleccionada['idContrato']) {
-                                # code...
-                    
-                                echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['numeroContrato'] . '</option>';
+                            foreach ($contratos as $contrato) {
+                                if ($contrato['idContrato'] != $facturaSeleccionada['idContrato']) {
+                                    # code...
+                        
+                                    echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['numeroContrato'] . '</option>';
+                                }
                             }
-                        }
 
 
 
 
-                        ?>
-                    </select></p>
-                    <p>Nombre Contrato: <input type="checkbox" class="checkBoxFacturaContrato" data-seleccion="nombre"><select id="selectFacturaContrato">
-                        <?php
-                        foreach ($contratos as $contrato) {
-                            if ($contrato['idContrato'] == $facturaSeleccionada['idContrato']) {
-                                # code...
-                    
-                                echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
+                            ?>
+                        </select></p>
+                    <p>Nombre Contrato: <input type="checkbox" class="checkBoxFacturaContrato"
+                            data-seleccion="nombre" id="nombreContratoFactura"><select id="selectFacturaContrato">
+                            <?php
+                            foreach ($contratos as $contrato) {
+                                if ($contrato['idContrato'] == $facturaSeleccionada['idContrato']) {
+                                    # code...
+                        
+                                    echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
+                                }
                             }
-                        }
-                        foreach ($contratos as $contrato) {
-                            if ($contrato['idContrato'] != $facturaSeleccionada['idContrato']) {
-                                # code...
-                    
-                                echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
+                            foreach ($contratos as $contrato) {
+                                if ($contrato['idContrato'] != $facturaSeleccionada['idContrato']) {
+                                    # code...
+                        
+                                    echo '<option value="' . $contrato['idContrato'] . '">' . $contrato['titulo'] . '</option>';
+                                }
                             }
-                        }
-                        ?>
-                    </select></p>
-                    
+                            ?>
+                        </select></p>
+
                     <p><strong>Empresa Asociada: </strong>
                         <select id="selectFacturaEmpresa" style="max-width: 250px;">
                             <?php
@@ -293,8 +311,8 @@
 </div>
 <script>
     <script>
-        
-            
-        
-    </script>
+
+
+
+</script>
 </script>

@@ -4,8 +4,13 @@ if (!isset($_GET['edit'])) {
 
         ?>
 
-        <h5><strong>Informacion General </strong><a class="fas fa-download"
-                        href="../<?php echo $contratoSeleccionado['ubicacionContrato'] ?>"></a></i></h5>
+        <h5><strong>Informacion General </strong><?php
+                        if ($contratoSeleccionado['ubicacionContrato'] != null) {
+                                echo '<a class="fas fa-download" href="../' . $contratoSeleccionado['ubicacionContrato'] . '"></a>';
+                        } else {
+                                echo '<i class="fas fa-download"></i>';
+                        }
+                      ?></i></h5>
         <p><Strong>Nombre Completo del Contrato: </Strong><?php echo $contratoSeleccionado['nombreContrato'] ?></p>
         <p><strong>Ubicacion del Contrato: </strong><?php echo $contratoSeleccionado['direccion'] ?> </p>
         <p><Strong>contratante: </Strong>
@@ -68,7 +73,15 @@ if (!isset($_GET['edit'])) {
         ?>
 
         <h5><strong>Fianza De Cumplimiento
-                </strong><?php echo '<a class="fas fa-download" href="../' . $datosFianzas['fianzaCumplimiento']['fianzaCumplimientoDoc'] . '"></a>'; ?></i>
+                </strong><?php 
+                if($datosFianzas['fianzaCumplimiento']['fianzaCumplimientoDoc'] != null){
+
+
+                echo '<a class="fas fa-download" href="../' . $datosFianzas['fianzaCumplimiento']['fianzaCumplimientoDoc'] . '"></a>'; 
+                }else{
+                        echo '<i class="fas fa-download"></i>';
+                }
+                ?></i>
         </h5>
         <p><strong>Fecha de Inicio: </strong><?php echo $datosFianzas['fianzaCumplimiento']['fianzaCumplimientoInicio'] ?></p>
         <p><strong>Fecha de Fin: </strong><?php echo $datosFianzas['fianzaCumplimiento']['fianzaCumplimientoFin'] ?></p>
@@ -80,7 +93,17 @@ if (!isset($_GET['edit'])) {
         <hr>
 
         <h5><strong>Fianza de Anticipo
-                </strong><?php echo '<a class="fas fa-download" href="../' . $datosFianzas['fianzaAnticipo']['fianzaAnticipoDoc'] . '"></a>'; ?>
+                </strong><?php 
+
+                if($datosFianzas['fianzaAnticipo']['fianzaAnticipoDoc'] != null){
+                        echo '<a class="fas fa-download" href="../' . $datosFianzas['fianzaAnticipo']['fianzaAnticipoDoc'] . '"></a>';
+                }else{
+                        echo '<i class="fas fa-download"></i>';
+                }
+                
+                
+                
+                ?>
         </h5>
         <p><strong>Fecha de Inicio: </strong><?php echo $datosFianzas['fianzaAnticipo']['fianzaAnticipoInicio'] ?></p>
         <p><strong>Fecha de Fin: </strong><?php echo $datosFianzas['fianzaAnticipo']['fianzaAnticipoFin'] ?></p>
@@ -91,7 +114,13 @@ if (!isset($_GET['edit'])) {
         <p><strong>Aseguradora: </strong><?php echo $datosFianzas['fianzaAnticipo']['fianzaAnticipoAseguradora'] ?></p>
         <hr>
         <h5><strong>Fianza de Vicios Ocultos
-                </strong><?php echo '<a class="fas fa-download" href="../' . $datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosDoc'] . '"></a>'; ?>
+                </strong><?php 
+                if($datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosDoc'] != null){
+                        echo '<a class="fas fa-download" href="../' . $datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosDoc'] . '"></a>';
+                }else{
+                        echo '<i class="fas fa-download"></i>';
+                }
+                ?>
         </h5>
         <p><strong>Fecha de Inicio: </strong><?php echo $datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosInicio'] ?></p>
         <p><strong>Fecha de Fin: </strong><?php echo $datosFianzas['fianzaViciosOcultos']['fianzaViciosOcultosFin'] ?></p>

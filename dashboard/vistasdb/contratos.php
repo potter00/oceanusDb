@@ -151,10 +151,10 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                             session_start();
                         }
 
-                       
-                            echo '<td><input data-idContrato="' . $contrato['idContrato'] . '" type="checkbox" name="checkBoxContrato" class="checkBoxContrato"></td>';
 
-                        
+                        echo '<td><input data-idContrato="' . $contrato['idContrato'] . '" type="checkbox" name="checkBoxContrato" class="checkBoxContrato"></td>';
+
+
 
                         ?>
                         <td><?php echo $contrato['direccion'] ?></td>
@@ -186,7 +186,8 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                             href="<?php echo "detalles_contrato.php?idContrato=" . $contratoSeleccionado['idContrato'] ?>"><?php echo $contratoSeleccionado['nombreContrato'] ?></a>
                     </h5>
                     <h6 class="card-subtitle">Contrato #<?php echo $contratoSeleccionado['numeroContrato'] ?></h6>
-                    <h6 class="card-subtitle">Numero de control #<?php echo $contratoSeleccionado['numeroControl'] ?></h6>
+                    <h6 class="card-subtitle">Numero de control #<?php echo $contratoSeleccionado['numeroControl'] ?>
+                    </h6>
                 </div>
                 <div style="float: right;">
                     <?php
@@ -228,7 +229,14 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     if (isset($_GET['edit'])) {
                         echo '<i class="fas fa-upload"></i>';
                     } else {
-                        echo '<a class="fas fa-download" href="" id="DescargarZipContrato">  </a>';
+
+                        if ($contratoSeleccionado['ubicacionContrato'] != null) {
+                            # code...
+                    
+                            echo '<a class="fas fa-download" href="" id="DescargarZipContrato">  </a>';
+                        } else {
+                            echo '<i class="fas fa-download"></i> <!-- Icono de descarga -->';
+                        }
                     }
                     ?>
 
