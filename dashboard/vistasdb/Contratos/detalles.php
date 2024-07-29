@@ -190,7 +190,7 @@ if (!isset($_GET['edit'])) {
                                 if ($contrato['idContrato'] == $contratoSeleccionado['idContratoFuente']) {
                                         echo 'selected';
                                 }
-                                echo '>' . $contrato['titulo'] . '</option>';
+                                echo '>' . $contrato['numeroContrato'] . '</option>';
                         }
                         ?>
 

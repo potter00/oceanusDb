@@ -42,10 +42,11 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                     <th>id</th>
                     <th>Titulo</th>
                     <th>Nombre Del Contrato</th>
+                    <th>Numero de contrato</th>
+                    
                     <th>Contratante</th>
                     <th>Contratado</th>
                     <th>Tipo de Contrato</th>
-                    <th>Numero de contrato</th>
                     <th>Inicio Contrato</th>
                     <th>Fin Contrato</th>
                     <th>Monto Contrato</th>
@@ -81,7 +82,8 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                             <?php echo '<a class="linkContrato" href="' . $direccionDetalles . '">' . $contrato['titulo'] . '</a> '; ?>
                         </td>
 
-                        <td class="text-lowercase"><?php echo $contrato['nombreContrato'] ?></td>
+                        <td class="text-lowercase"><?php echo '<a class="linkContrato" href="' . $direccionDetalles . '">' . $contrato['nombreContrato'] . '</a> '; ?></td>
+                        <td><?php echo $contrato['numeroContrato'] ?></td>
                         <td class="text-lowercase" style="max-width: 50px;"><?php
                         echo '<a  href="' . $redirreccionContratante . '">' . obtenerNombreEmpresa($contrato['idContratante'], $conexion) . '</a> ';
 
@@ -89,7 +91,7 @@ $datosFianzas = obtenerFianzaContrato($contratoSeleccionado['idContrato'], $cone
                         <td class="text-lowercase"><?php echo obtenerNombreEmpresa($contrato['idContratado'], $conexion) ?>
                         </td>
                         <td class="text-lowercase"><?php echo $contrato['subContrato'] ?></td>
-                        <td><?php echo $contrato['numeroContrato'] ?></td>
+                       
                         <td><?php echo $contrato['inicioContrato'] ?></td>
                         <td><?php echo $contrato['finContrato'] ?></td>
                         <td><?php echo $contrato['montoContrato'] ?></td>

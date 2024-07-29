@@ -222,12 +222,12 @@ $(document).ready(function () {
 
     });
     tablaContratos.buttons().container().appendTo('#tablaContratos_wrapper .col-md-6:eq(0)');
+    tablaContratos.column(1).visible(false);
     tablaContratos.column(5).visible(false);
-    tablaContratos.column(2).visible(false);
     tablaContratos.column(4).visible(false);
     tablaContratos.column(6).visible(false);
     tablaContratos.column(11).visible(false);
-    
+    tablaContratos.column(14).visible(false);
     tablaContratos.column(9).visible(false);
     tablaContratos.column(10).visible(false);
 
